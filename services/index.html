@@ -161,10 +161,47 @@
 
     /* ── 1. Hero ──────────────────────────────────── */
     .hero {
+      position: relative;
+      overflow: hidden;
       background: var(--color-dark);
       border-bottom: 1px solid rgba(240,235,227,0.07);
     }
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      z-index: 0;
+    }
+    .hero-bg__video {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+    }
+    .hero-bg__overlay {
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(
+          to right,
+          rgba(13, 13, 13, 0.82) 0%,
+          rgba(13, 13, 13, 0.45) 45%,
+          rgba(13, 13, 13, 0.45) 55%,
+          rgba(13, 13, 13, 0.72) 100%
+        ),
+        linear-gradient(
+          to bottom,
+          rgba(13, 13, 13, 0.55) 0%,
+          rgba(13, 13, 13, 0.25) 45%,
+          rgba(13, 13, 13, 0.65) 100%
+        );
+      pointer-events: none;
+    }
     .hero .inner {
+      position: relative;
+      z-index: 1;
       padding-top: clamp(3.5rem, 8vw, 5.5rem);
       padding-bottom: clamp(3rem, 7vw, 5rem);
     }
@@ -488,6 +525,12 @@
 
       <!-- ── 1. Hero ─────────────────────────────────────────────────── -->
       <section class="hero">
+        <div class="hero-bg" aria-hidden="true">
+          <video class="hero-bg__video" autoplay muted loop playsinline preload="auto">
+            <source src="/assets/video/11925567_2160_3840_25fps.mp4" type="video/mp4" />
+          </video>
+          <div class="hero-bg__overlay"></div>
+        </div>
         <div class="inner">
           <p class="hero__tag">/ Services</p>
           <h1 class="hero__heading">One team. Every part of the back office.</h1>

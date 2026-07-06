@@ -547,11 +547,13 @@
 
     .media-card {
       position: relative;
+      display: block;
       flex: 0 0 min(78vw, 56rem);
       height: 100%;
       border-radius: clamp(1.5rem, 3vw, 2.5rem);
       overflow: hidden;
       color: #fff;
+      text-decoration: none;
       scroll-snap-align: start;
       scroll-snap-stop: always;
       user-select: none;
@@ -804,11 +806,11 @@
       align-items: center;
       justify-content: center;
       color: #fff;
-      text-decoration: none;
+      pointer-events: none;
       transition: border-color 0.25s ease, background 0.25s ease, transform 0.25s ease;
     }
 
-    .media-card__action:hover {
+    .media-card:hover .media-card__action {
       border-color: var(--color-accent);
       background: rgba(200, 169, 110, 0.2);
       transform: scale(1.06);
@@ -1439,7 +1441,7 @@
           </header>
           <div class="media-carousel__viewport">
             <div class="media-carousel__track">
-              <article class="media-card anim-el">
+              <a href="/services/billing-rcm/" class="media-card anim-el" aria-label="Learn about Billing &amp; RCM">
                 <div class="media-card__bg" style="--card-bg: url('/assets/images/Jace Coody - Revenue Cycle Manager.jpg');"></div>
                 <div class="media-card__scrim" aria-hidden="true"></div>
                 <span class="media-card__tag">/ Billing &amp; RCM</span>
@@ -1447,11 +1449,11 @@
                   <h3 class="media-card__title">Billing &amp; revenue cycle</h3>
                   <p class="media-card__desc">Claims, denials, and collections handled end-to-end so revenue doesn&rsquo;t slip through the cracks.</p>
                 </div>
-                <a href="/services/billing-rcm/" class="media-card__action" aria-label="Learn about Billing &amp; RCM">
+                <span class="media-card__action" aria-hidden="true">
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-                </a>
-              </article>
-              <article class="media-card anim-el">
+                </span>
+              </a>
+              <a href="/services/compliance/" class="media-card anim-el" aria-label="Learn about Compliance">
                 <div class="media-card__bg" style="--card-bg: url('/assets/images/River Bailey - Headshot.jpg');"></div>
                 <div class="media-card__scrim" aria-hidden="true"></div>
                 <span class="media-card__tag">/ Compliance</span>
@@ -1459,11 +1461,11 @@
                   <h3 class="media-card__title">Compliance</h3>
                   <p class="media-card__desc">Policies, audits, and regulatory readiness kept current &mdash; without pulling your team off mission-critical work.</p>
                 </div>
-                <a href="/services/compliance/" class="media-card__action" aria-label="Learn about Compliance">
+                <span class="media-card__action" aria-hidden="true">
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-                </a>
-              </article>
-              <article class="media-card anim-el">
+                </span>
+              </a>
+              <a href="/services/credentialing/" class="media-card anim-el" aria-label="Learn about Credentialing">
                 <div class="media-card__bg" style="--card-bg: url('/assets/images/services-credentialing.png');"></div>
                 <div class="media-card__scrim" aria-hidden="true"></div>
                 <span class="media-card__tag">/ Credentialing</span>
@@ -1471,11 +1473,11 @@
                   <h3 class="media-card__title">Credentialing &amp; enrollment</h3>
                   <p class="media-card__desc">Provider enrollment and payer credentialing managed with clear timelines and fewer surprises.</p>
                 </div>
-                <a href="/services/credentialing/" class="media-card__action" aria-label="Learn about Credentialing">
+                <span class="media-card__action" aria-hidden="true">
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-                </a>
-              </article>
-              <article class="media-card anim-el">
+                </span>
+              </a>
+              <a href="/services/accounting/" class="media-card anim-el" aria-label="Learn about Accounting">
                 <div class="media-card__bg" style="--card-bg: url('/assets/images/services-acounting.png');"></div>
                 <div class="media-card__scrim" aria-hidden="true"></div>
                 <span class="media-card__tag">/ Accounting</span>
@@ -1483,11 +1485,11 @@
                   <h3 class="media-card__title">Accounting</h3>
                   <p class="media-card__desc">Books, reconciliations, and month-end close run cleanly &mdash; numbers you can trust when decisions matter.</p>
                 </div>
-                <a href="/services/accounting/" class="media-card__action" aria-label="Learn about Accounting">
+                <span class="media-card__action" aria-hidden="true">
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-                </a>
-              </article>
-              <article class="media-card anim-el">
+                </span>
+              </a>
+              <a href="/services/financial-reporting/" class="media-card anim-el" aria-label="Learn about Financial reporting">
                 <div class="media-card__bg" style="--card-bg: url('/assets/images/services-financial_reporting.png');"></div>
                 <div class="media-card__scrim" aria-hidden="true"></div>
                 <span class="media-card__tag">/ Financial reporting</span>
@@ -1495,11 +1497,11 @@
                   <h3 class="media-card__title">Financial reporting</h3>
                   <p class="media-card__desc">Dashboards and board-ready reporting that show where the business stands &mdash; without spreadsheet chaos.</p>
                 </div>
-                <a href="/services/financial-reporting/" class="media-card__action" aria-label="Learn about Financial reporting">
+                <span class="media-card__action" aria-hidden="true">
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-                </a>
-              </article>
-              <article class="media-card anim-el">
+                </span>
+              </a>
+              <a href="/services/contracting/" class="media-card anim-el" aria-label="Learn about Contracting &amp; Negotiation">
                 <div class="media-card__bg" style="--card-bg: url('/assets/images/Micaul Bass - Director of Government Affairs & Payer Strategy.jpg');"></div>
                 <div class="media-card__scrim" aria-hidden="true"></div>
                 <span class="media-card__tag">/ Contracting</span>
@@ -1507,11 +1509,11 @@
                   <h3 class="media-card__title">Contracting &amp; negotiation</h3>
                   <p class="media-card__desc">Payer contracts reviewed, benchmarked, and negotiated so your rates reflect the actual value of your services.</p>
                 </div>
-                <a href="/services/contracting/" class="media-card__action" aria-label="Learn about Contracting &amp; Negotiation">
+                <span class="media-card__action" aria-hidden="true">
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-                </a>
-              </article>
-              <article class="media-card anim-el">
+                </span>
+              </a>
+              <a href="/services/eligibility/" class="media-card anim-el" aria-label="Learn about Eligibility Verification">
                 <div class="media-card__bg" style="--card-bg: url('/assets/images/services-eligibility_verification.png');"></div>
                 <div class="media-card__scrim" aria-hidden="true"></div>
                 <span class="media-card__tag">/ Eligibility</span>
@@ -1519,22 +1521,22 @@
                   <h3 class="media-card__title">Eligibility verification</h3>
                   <p class="media-card__desc">Benefits and coverage checked before service so coverage gaps are caught early, not after a claim is denied.</p>
                 </div>
-                <a href="/services/eligibility/" class="media-card__action" aria-label="Learn about Eligibility Verification">
+                <span class="media-card__action" aria-hidden="true">
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-                </a>
-              </article>
-              <article class="media-card anim-el">
-                <div class="media-card__bg" style="--card-bg: url('/assets/images/conference-room.png');"></div>
+                </span>
+              </a>
+              <a href="/services/workflow/" class="media-card anim-el" aria-label="Learn about Workflow Optimization">
+                <div class="media-card__bg" style="--card-bg: url('/assets/images/conference-room.png'); --card-bg-position: center 35%;"></div>
                 <div class="media-card__scrim" aria-hidden="true"></div>
                 <span class="media-card__tag">/ Workflow</span>
                 <div class="media-card__content">
                   <h3 class="media-card__title">Workflow optimization</h3>
                   <p class="media-card__desc">Intake, admin, and back-office workflows mapped and improved so work moves cleanly without constant rework.</p>
                 </div>
-                <a href="/services/workflow/" class="media-card__action" aria-label="Learn about Workflow Optimization">
+                <span class="media-card__action" aria-hidden="true">
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-                </a>
-              </article>
+                </span>
+              </a>
             </div>
           </div>
         </div>
@@ -1891,7 +1893,7 @@
           });
 
           const hoverSelectors =
-            "a, button, .btn, input[type='email'], .carousel-nav, .media-card__action, .bento__link, .video-stage__play, .video-ctrl, .site-nav__link, .site-nav__cta, .site-nav__toggle, .site-nav__logo, .site-footer__social, .site-footer__link";
+            "a, button, .btn, input[type='email'], .carousel-nav, .media-card, .bento__link, .video-stage__play, .video-ctrl, .site-nav__link, .site-nav__cta, .site-nav__toggle, .site-nav__logo, .site-footer__social, .site-footer__link";
           document.querySelectorAll(hoverSelectors).forEach(function (el) {
             el.addEventListener("mouseenter", function () {
               cursor.classList.add("is-hover");
