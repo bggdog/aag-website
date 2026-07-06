@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Financial Reporting — Aurora Advisory Group</title>
+  <meta name="description" content="Dashboards and board-ready reporting that show where the business stands — without the spreadsheet chaos." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;1,9..40,400&family=Playfair+Display:wght@700&display=swap" rel="stylesheet" />
+  <link rel="icon" type="image/png" href="/icons/favicon.png" />
+  <link rel="apple-touch-icon" href="/icons/favicon.png" />
+  <link rel="manifest" href="/site.webmanifest" />
+  <style>
+    :root {
+      --color-dark:   #0d0d0d;
+      --color-cream:  #f5f0e8;
+      --color-sand:   #e8e0d0;
+      --color-forest: #1c2b1e;
+      --color-accent: #c8a96e;
+      --font-heading: "Playfair Display", Georgia, serif;
+      --font-body:    "DM Sans", system-ui, sans-serif;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+
+    html { scroll-padding-top: 5rem; }
+
+    body {
+      margin: 0;
+      font-family: var(--font-body);
+      font-size: clamp(15px, 2.5vw, 18px);
+      font-weight: 400;
+      line-height: 1.55;
+      color: #f0ebe3;
+      background: var(--color-dark);
+      overflow-x: hidden;
+      cursor: none;
+    }
+
+    @media (hover: none), (pointer: coarse) {
+      body { cursor: auto; }
+      .custom-cursor { display: none !important; }
+    }
+
+    /* Scroll progress */
+    .scroll-progress {
+      position: fixed; top: 0; left: 0;
+      height: 2px; width: 0%;
+      background: var(--color-accent);
+      z-index: 9999; pointer-events: none;
+    }
+
+    /* Custom cursor */
+    .custom-cursor {
+      position: fixed; width: 10px; height: 10px;
+      border-radius: 50%; background: var(--color-accent);
+      pointer-events: none; z-index: 10000;
+      left: 0; top: 0; margin-left: -5px; margin-top: -5px;
+      transition: transform 0.12s ease, width 0.2s ease, height 0.2s ease,
+                  margin 0.2s ease, background 0.2s ease, mix-blend-mode 0.2s ease;
+      will-change: transform;
+    }
+    .custom-cursor.is-hover {
+      width: 40px; height: 40px;
+      margin-left: -20px; margin-top: -20px;
+      background: #fff; mix-blend-mode: difference;
+    }
+
+    /* Nav */
+    .site-nav {
+      position: fixed; top: 0; left: 0; right: 0;
+      z-index: 10001;
+      height: clamp(3.5rem, 8vw, 4.25rem);
+      display: flex; align-items: center;
+      justify-content: space-between; gap: 1rem;
+      padding: 0 clamp(1.25rem, 4vw, 2.5rem);
+      background: rgba(13,13,13,0.85);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid rgba(240,235,227,0.08);
+    }
+    .site-nav__logo {
+      font-family: var(--font-heading);
+      font-size: clamp(1rem, 2.2vw, 1.125rem);
+      font-weight: 700; color: #f0ebe3;
+      text-decoration: none; letter-spacing: -0.02em; flex-shrink: 0;
+    }
+    .site-nav__logo span { color: var(--color-accent); }
+    .site-nav__links {
+      display: flex; align-items: center;
+      gap: clamp(1rem, 2.5vw, 2rem);
+      list-style: none; margin: 0; padding: 0;
+    }
+    .site-nav__link {
+      font-size: 0.75rem; font-weight: 500;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      color: rgba(240,235,227,0.7); text-decoration: none;
+      transition: color 0.2s ease; white-space: nowrap;
+    }
+    .site-nav__link:hover { color: var(--color-accent); }
+    .site-nav__cta {
+      display: inline-flex; align-items: center; justify-content: center;
+      padding: 0.55rem 1.15rem; border-radius: 999px;
+      font-size: 0.75rem; font-weight: 500;
+      letter-spacing: 0.06em; text-transform: uppercase;
+      text-decoration: none; color: var(--color-dark);
+      background: var(--color-accent);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .site-nav__cta:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 8px 24px rgba(200,169,110,0.3);
+    }
+    .site-nav__toggle {
+      display: none; width: 2.5rem; height: 2.5rem; padding: 0;
+      border: 1px solid rgba(240,235,227,0.25); border-radius: 50%;
+      background: transparent; color: #f0ebe3; cursor: none;
+      align-items: center; justify-content: center;
+    }
+    .site-nav__toggle svg { width: 1.125rem; height: 1.125rem; }
+    .site-nav__toggle .icon-close { display: none; }
+    .site-nav.is-open .site-nav__toggle .icon-menu { display: none; }
+    .site-nav.is-open .site-nav__toggle .icon-close { display: block; }
+
+    /* Shared layout */
+    .page-shell {
+      min-height: 100vh;
+      padding-top: clamp(3.5rem, 8vw, 4.25rem);
+      display: flex; flex-direction: column;
+    }
+
+    .inner {
+      max-width: 1200px; margin: 0 auto; width: 100%;
+      padding: 0 clamp(1.5rem, 5vw, 4rem);
+    }
+
+    section { padding: clamp(4rem, 8vw, 7rem) 0; }
+
+    /* Shared typography */
+    .eyebrow {
+      display: inline-block;
+      font-size: 0.72rem; font-weight: 500;
+      letter-spacing: 0.14em; text-transform: uppercase;
+      color: var(--color-accent); margin-bottom: 1.1rem;
+    }
+
+    .section-heading {
+      font-family: var(--font-heading);
+      font-size: clamp(1.75rem, 4vw, 2.75rem);
+      line-height: 1.1; margin: 0 0 1rem;
+    }
+
+    /* Buttons */
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center;
+      font-family: var(--font-body); font-weight: 500;
+      font-size: 0.95rem; letter-spacing: 0.06em; text-transform: uppercase;
+      text-decoration: none; color: var(--color-dark);
+      background: var(--color-accent); border: none;
+      padding: 1rem 1.75rem; border-radius: 999px; cursor: none;
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+    }
+    .btn:hover { transform: translateY(-2px); box-shadow: 0 12px 32px rgba(200,169,110,0.35); }
+    .btn--outline {
+      background: transparent; color: #f0ebe3;
+      border: 1px solid rgba(200,169,110,0.55);
+    }
+    .btn--outline:hover { border-color: var(--color-accent); color: var(--color-accent); box-shadow: none; }
+    .btn-row { display: flex; flex-wrap: wrap; gap: 0.75rem 1rem; align-items: center; }
+
+    /* ── 1. Hero ──────────────────────────────────── */
+    .hero {
+      background: var(--color-dark);
+      border-bottom: 1px solid rgba(240,235,227,0.07);
+    }
+    .hero .inner {
+      padding-top: clamp(3rem, 7vw, 5rem);
+      padding-bottom: clamp(3rem, 7vw, 5rem);
+    }
+    .hero__tag {
+      font-size: 0.72rem; font-weight: 500;
+      letter-spacing: 0.14em; text-transform: uppercase;
+      color: var(--color-accent); margin: 0 0 1.25rem;
+    }
+    .hero__heading {
+      font-family: var(--font-heading);
+      font-size: clamp(2.5rem, 6vw, 4.5rem);
+      line-height: 1.04; letter-spacing: -0.02em;
+      margin: 0 0 1.25rem; max-width: 18ch;
+    }
+    .hero__desc {
+      font-size: clamp(1rem, 2vw, 1.2rem);
+      line-height: 1.65; opacity: 0.78;
+      margin: 0 0 2.25rem; max-width: 48ch;
+    }
+
+    /* Breadcrumb */
+    .breadcrumb {
+      display: flex; align-items: center; gap: 0.5rem;
+      font-size: 0.75rem; opacity: 0.45; margin-bottom: 2rem;
+      list-style: none; padding: 0; flex-wrap: wrap;
+    }
+    .breadcrumb a { color: inherit; text-decoration: none; }
+    .breadcrumb a:hover { color: var(--color-accent); opacity: 1; }
+    .breadcrumb__sep { opacity: 0.4; }
+
+    /* ── 2. What's included ───────────────────────── */
+    .included { background: rgba(255,255,255,0.02); }
+    .included__intro {
+      font-size: clamp(1rem, 1.8vw, 1.1rem);
+      opacity: 0.75; max-width: 52ch; margin: 0 0 2.5rem;
+      line-height: 1.65;
+    }
+    .included__grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 1.25rem;
+    }
+    .included__card {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(240,235,227,0.1);
+      border-radius: 1rem;
+      padding: 1.5rem;
+    }
+    .included__card-icon {
+      width: 36px; height: 36px;
+      border-radius: 8px;
+      background: rgba(200,169,110,0.15);
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 1rem;
+    }
+    .included__card-icon svg { width: 18px; height: 18px; color: var(--color-accent); }
+    .included__card-title {
+      font-weight: 500; font-size: 1rem;
+      margin: 0 0 0.35rem; line-height: 1.3;
+    }
+    .included__card-desc {
+      font-size: 0.88rem; opacity: 0.65;
+      margin: 0; line-height: 1.55;
+    }
+
+    /* ── 3. Why it matters ────────────────────────── */
+    .why { background: var(--color-dark); }
+    .why__grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: clamp(3rem, 6vw, 6rem);
+      align-items: center;
+    }
+    .why__body p {
+      font-size: clamp(0.95rem, 1.8vw, 1.05rem);
+      line-height: 1.7; opacity: 0.8; margin: 0 0 1.1rem;
+    }
+    .why__body p:last-child { margin-bottom: 0; }
+    .why__stat-block {
+      background: rgba(200,169,110,0.08);
+      border: 1px solid rgba(200,169,110,0.2);
+      border-radius: 1.25rem;
+      padding: clamp(2rem, 5vw, 3rem);
+      text-align: center;
+    }
+    .why__stat-num {
+      font-family: var(--font-heading);
+      font-size: clamp(3rem, 7vw, 5rem);
+      color: var(--color-accent);
+      line-height: 1; margin-bottom: 0.75rem;
+      display: block;
+    }
+    .why__stat-label {
+      font-size: clamp(0.9rem, 1.6vw, 1rem);
+      opacity: 0.7; line-height: 1.5;
+    }
+
+    /* ── 4. How it works ──────────────────────────── */
+    .how { background: rgba(255,255,255,0.02); }
+    .how__steps {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1.5rem;
+      margin-top: 2.5rem;
+    }
+    .how__step {
+      position: relative;
+      padding: 1.75rem 1.5rem;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(240,235,227,0.1);
+      border-radius: 1rem;
+    }
+    .how__step-num {
+      font-family: var(--font-heading);
+      font-size: 2.5rem; line-height: 1;
+      color: rgba(200,169,110,0.25);
+      margin-bottom: 0.75rem; display: block;
+    }
+    .how__step-title {
+      font-weight: 500; font-size: 1rem;
+      margin: 0 0 0.4rem;
+    }
+    .how__step-desc {
+      font-size: 0.88rem; opacity: 0.65;
+      margin: 0; line-height: 1.55;
+    }
+
+    /* ── 5. CTA strip ─────────────────────────────── */
+    .cta-strip {
+      background: var(--color-forest);
+      padding: clamp(4rem, 8vw, 6rem) 0;
+      text-align: center;
+    }
+    .cta-strip__heading {
+      font-family: var(--font-heading);
+      font-size: clamp(2rem, 5vw, 3.25rem);
+      line-height: 1.08; margin: 0 0 1rem;
+    }
+    .cta-strip__sub {
+      font-size: clamp(1rem, 2vw, 1.1rem);
+      opacity: 0.75; margin: 0 auto 2rem;
+      max-width: 40ch; line-height: 1.6;
+    }
+
+    /* Footer */
+    .site-footer {
+      background: var(--color-dark); color: #f0ebe3;
+      border-top: 1px solid rgba(240,235,227,0.08);
+    }
+    .site-footer__main {
+      display: grid;
+      grid-template-columns: 1.35fr 1fr 1fr 1fr;
+      gap: clamp(2rem, 4vw, 3rem);
+      padding: clamp(2.5rem, 6vw, 4rem) clamp(1.5rem, 5vw, 4rem);
+    }
+    .site-footer__logo {
+      font-family: var(--font-heading); font-size: 1.35rem;
+      font-weight: 700; margin-bottom: 0.75rem;
+    }
+    .site-footer__logo span { color: var(--color-accent); }
+    .site-footer__tagline {
+      margin: 0 0 1.5rem; font-size: 0.9rem;
+      line-height: 1.6; opacity: 0.65; max-width: 28ch;
+    }
+    .site-footer__socials { display: flex; gap: 0.65rem; }
+    .site-footer__social {
+      width: 36px; height: 36px; border-radius: 8px;
+      border: 1px solid rgba(240,235,227,0.15);
+      background: rgba(255,255,255,0.04);
+      display: inline-flex; align-items: center; justify-content: center;
+      color: #f0ebe3; text-decoration: none;
+      transition: border-color 0.2s ease, background 0.2s ease;
+    }
+    .site-footer__social:hover { border-color: var(--color-accent); background: rgba(200,169,110,0.12); }
+    .site-footer__social svg { width: 14px; height: 14px; }
+    .site-footer__col-title {
+      font-size: 0.7rem; font-weight: 500;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      opacity: 0.45; margin-bottom: 1rem;
+    }
+    .site-footer__links { display: flex; flex-direction: column; gap: 0.55rem; }
+    .site-footer__link {
+      font-size: 0.9rem; color: rgba(240,235,227,0.7);
+      text-decoration: none; transition: color 0.2s ease;
+    }
+    .site-footer__link:hover { color: var(--color-accent); }
+    .site-footer__partner {
+      display: flex; align-items: flex-start; gap: 0.5rem;
+      margin-top: 1.25rem; font-size: 0.8rem; opacity: 0.5; line-height: 1.45;
+    }
+    .site-footer__partner-dot {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: var(--color-accent); flex-shrink: 0; margin-top: 0.35rem;
+    }
+    .site-footer__bottom {
+      display: flex; flex-wrap: wrap;
+      justify-content: space-between; align-items: center;
+      gap: 1rem;
+      padding: 1.5rem clamp(1.5rem, 5vw, 4rem) 2rem;
+      border-top: 1px solid rgba(240,235,227,0.08);
+    }
+    .site-footer__copy { margin: 0; font-size: 0.8rem; opacity: 0.4; }
+    .site-footer__legal { display: flex; flex-wrap: wrap; gap: 1.25rem; }
+    .site-footer__legal a {
+      font-size: 0.8rem; color: rgba(240,235,227,0.4);
+      text-decoration: none; transition: color 0.2s ease;
+    }
+    .site-footer__legal a:hover { color: var(--color-accent); }
+
+    /* Responsive */
+    @media (max-width: 767px) {
+      .site-nav__toggle { display: inline-flex; }
+      .site-nav__links {
+        position: fixed;
+        top: clamp(3.5rem, 8vw, 4.25rem);
+        left: 0; right: 0;
+        flex-direction: column; align-items: stretch; gap: 0;
+        padding: 0.75rem clamp(1.25rem, 4vw, 2.5rem) 1.25rem;
+        background: rgba(13,13,13,0.96);
+        backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+        border-bottom: 1px solid rgba(240,235,227,0.1);
+        opacity: 0; visibility: hidden;
+        transform: translateY(-0.5rem);
+        transition: opacity 0.25s ease, transform 0.25s ease, visibility 0.25s;
+        pointer-events: none;
+      }
+      .site-nav.is-open .site-nav__links {
+        opacity: 1; visibility: visible;
+        transform: translateY(0); pointer-events: auto;
+      }
+      .site-nav__links li { border-bottom: 1px solid rgba(240,235,227,0.08); }
+      .site-nav__links li:last-child { border-bottom: none; padding-top: 0.5rem; }
+      .site-nav__link, .site-nav__cta { display: block; padding: 0.85rem 0; text-align: left; }
+      .site-nav__cta { width: 100%; text-align: center; }
+
+      .why__grid { grid-template-columns: 1fr; }
+      .site-footer__main { grid-template-columns: 1fr 1fr; }
+    }
+
+    @media (max-width: 480px) {
+      .site-footer__main { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="scroll-progress" id="scrollProgress" aria-hidden="true"></div>
+  <div class="custom-cursor" id="customCursor" aria-hidden="true"></div>
+
+  <header class="site-nav" id="siteNav">
+    <a href="/" class="site-nav__logo">Aurora<span>.</span></a>
+    <button type="button" class="site-nav__toggle" id="siteNavToggle" aria-expanded="false" aria-controls="siteNavMenu" aria-label="Open menu">
+      <svg class="icon-menu" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+      <svg class="icon-close" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+    </button>
+    <ul class="site-nav__links" id="siteNavMenu">
+      <li><a href="/about/" class="site-nav__link">About</a></li>
+      <li><a href="/services/" class="site-nav__link">Services</a></li>
+      <li><a href="/contact/" class="site-nav__cta">Let&rsquo;s talk</a></li>
+    </ul>
+  </header>
+
+  <div class="page-shell">
+    <main>
+
+      <!-- 1. Hero -->
+      <section class="hero">
+        <div class="inner">
+          <ol class="breadcrumb" aria-label="Breadcrumb">
+            <li><a href="../../">Home</a></li>
+            <li aria-hidden="true" class="breadcrumb__sep">/</li>
+            <li><a href="/services/">Services</a></li>
+            <li aria-hidden="true" class="breadcrumb__sep">/</li>
+            <li aria-current="page">Financial Reporting</li>
+          </ol>
+          <p class="hero__tag">/ Financial Reporting</p>
+          <h1 class="hero__heading">Clarity at a glance.</h1>
+          <p class="hero__desc">Claims, denials, and collections handled end-to-end — so money that belongs to you doesn&rsquo;t disappear into billing backlogs or payer disputes.</p>
+          <div class="btn-row">
+            <a href="/contact/" class="btn">Schedule a consultation</a>
+            <a href="/services/" class="btn btn--outline">All services</a>
+          </div>
+        </div>
+      </section>
+
+      <!-- 2. What's included -->
+      <section class="included">
+        <div class="inner">
+          <span class="eyebrow">What&rsquo;s included</span>
+          <h2 class="section-heading">Reporting that actually gets used.</h2>
+          <p class="included__intro">From the moment a claim is created to the moment cash posts, we own the process — so your team doesn&rsquo;t have to.</p>
+          <div class="included__grid">
+            <div class="included__card">
+              <div class="included__card-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+              </div>
+              <p class="included__card-title">Monthly financial packages</p>
+              <p class="included__card-desc">Income statement, balance sheet, and cash flow report delivered monthly in a format built for your audience.</p>
+            </div>
+            <div class="included__card">
+              <div class="included__card-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+              </div>
+              <p class="included__card-title">KPI dashboards</p>
+              <p class="included__card-desc">Custom dashboards tracking the metrics that matter most to your business — revenue, margin, headcount cost, and more.</p>
+            </div>
+            <div class="included__card">
+              <div class="included__card-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"/></svg>
+              </div>
+              <p class="included__card-title">Board &amp; investor reporting</p>
+              <p class="included__card-desc">Board-ready packages prepared and formatted for your reporting cadence — monthly, quarterly, or as needed.</p>
+            </div>
+            <div class="included__card">
+              <div class="included__card-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+              </div>
+              <p class="included__card-title">Budget vs. actuals</p>
+              <p class="included__card-desc">Actuals tracked against budget every month with variance commentary so you know where you’re ahead and where to pay attention.</p>
+            </div>
+            <div class="included__card">
+              <div class="included__card-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+              </div>
+              <p class="included__card-title">Cash flow forecasting</p>
+              <p class="included__card-desc">Rolling cash flow projections so you can plan ahead and avoid surprises before they arrive.</p>
+            </div>
+            <div class="included__card">
+              <div class="included__card-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+              </div>
+              <p class="included__card-title">Ad hoc analysis</p>
+              <p class="included__card-desc">We track contract terms and flag underpayments so you get reimbursed at the rate you&rsquo;re actually owed.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 3. Why it matters -->
+      <section class="why">
+        <div class="inner">
+          <div class="why__grid">
+            <div class="why__body">
+              <span class="eyebrow">Why it matters</span>
+              <h2 class="section-heading">Billing errors are the most expensive thing you&rsquo;re not tracking.</h2>
+              <p>Most practices lose 5–15% of collectible revenue to billing problems — denials that don&rsquo;t get appealed, claims that never went out clean, and follow-ups that fall through the cracks when your team is stretched thin.</p>
+              <p>The problem compounds when billing is handled internally by staff who have ten other jobs. You don&rsquo;t always know money is being left on the table — it just quietly disappears.</p>
+              <p>AAG builds a reporting system that pulls the right numbers together every month, presents them clearly, and gives you the narrative — what changed, why it changed, and what to watch next.</p>
+            </div>
+            <div>
+              <div class="why__stat-block">
+                <span class="why__stat-num">3&times;</span>
+                <p class="why__stat-label">Faster board reporting on average when financial packages are built and maintained by a dedicated team.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 4. How it works -->
+      <section class="how">
+        <div class="inner">
+          <span class="eyebrow">How it works</span>
+          <h2 class="section-heading">From raw data to board-ready package.</h2>
+          <div class="how__steps">
+            <div class="how__step">
+              <span class="how__step-num">01</span>
+              <p class="how__step-title">Collect</p>
+              <p class="how__step-desc">We pull data from your accounting system, payroll, and any other sources into a single clean dataset.</p>
+            </div>
+            <div class="how__step">
+              <span class="how__step-num">02</span>
+              <p class="how__step-title">Analyze</p>
+              <p class="how__step-desc">Numbers reviewed for accuracy, variance from prior periods identified, and KPIs calculated.</p>
+            </div>
+            <div class="how__step">
+              <span class="how__step-num">03</span>
+              <p class="how__step-title">Build</p>
+              <p class="how__step-desc">Reports and dashboards assembled in your preferred format — slides, PDF, or live dashboard.</p>
+            </div>
+            <div class="how__step">
+              <span class="how__step-num">04</span>
+              <p class="how__step-title">Deliver</p>
+              <p class="how__step-desc">Package delivered with a written narrative — what changed, what it means, and what to watch next month.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 5. CTA strip -->
+      <section class="cta-strip">
+        <div class="inner">
+          <h2 class="cta-strip__heading">Ready to run on real numbers?</h2>
+          <p class="cta-strip__sub">Schedule a free consultation. We&rsquo;ll assess your current billing setup and tell you exactly where the gaps are.</p>
+          <a href="/contact/" class="btn">Schedule a free consultation</a>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+      <div class="site-footer__main">
+        <div>
+          <div class="site-footer__logo">Aurora<span>.</span></div>
+          <p class="site-footer__tagline">Back-office support for businesses in the growth stage. We do what no one wants to do &mdash; so you can do what you were meant to.</p>
+          <div class="site-footer__socials">
+            <a href="#" class="site-footer__social" aria-label="LinkedIn"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2z"/><circle cx="4" cy="4" r="2"/></svg></a>
+            <a href="#" class="site-footer__social" aria-label="X"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a>
+          </div>
+        </div>
+        <div>
+          <p class="site-footer__col-title">Services</p>
+          <nav class="site-footer__links" aria-label="Services">
+            <a href="/services/credentialing/" class="site-footer__link">Credentialing &amp; enrollment</a>
+            <a href="/services/contracting/" class="site-footer__link">Contracting &amp; negotiation</a>
+            <a href="/services/billing-rcm/" class="site-footer__link">Billing &amp; RCM</a>
+            <a href="/services/compliance/" class="site-footer__link">Compliance</a>
+            <a href="/services/financial-reporting/" class="site-footer__link">Financial reporting</a>
+            <a href="/services/accounting/" class="site-footer__link">Accounting</a>
+            <a href="/services/marketing/" class="site-footer__link">Creative marketing</a>
+          </nav>
+        </div>
+        <div>
+          <p class="site-footer__col-title">Company</p>
+          <nav class="site-footer__links" aria-label="Company">
+            <a href="/about/" class="site-footer__link">About AAG</a>
+            <a href="/services/" class="site-footer__link">Who we work with</a>
+            <a href="/about/#why" class="site-footer__link">Why AAG</a>
+            <a href="/about/#forvis" class="site-footer__link">Forvis Mazars partnership</a>
+          </nav>
+        </div>
+        <div>
+          <p class="site-footer__col-title">Get in touch</p>
+          <nav class="site-footer__links" aria-label="Contact">
+            <a href="/contact/" class="site-footer__link">Schedule a consultation</a>
+            <a href="/contact/#message" class="site-footer__link">Send us a message</a>
+            <a href="mailto:hello@auroraadvisory.com" class="site-footer__link">hello@auroraadvisory.com</a>
+          </nav>
+          <p class="site-footer__partner">
+            <span class="site-footer__partner-dot" aria-hidden="true"></span>
+            Accounting in partnership with Forvis Mazars
+          </p>
+        </div>
+      </div>
+      <div class="site-footer__bottom">
+        <p class="site-footer__copy">&copy; <span id="year"></span> Aurora Advisory Group. All rights reserved.</p>
+        <div class="site-footer__legal">
+          <a href="#">Privacy policy</a>
+          <a href="#">Terms of use</a>
+        </div>
+      </div>
+    </footer>
+  </div>
+
+  <script>
+    (function () {
+      "use strict";
+      document.getElementById("year").textContent = new Date().getFullYear();
+
+      var progressEl = document.getElementById("scrollProgress");
+      window.addEventListener("scroll", function () {
+        var total = document.documentElement.scrollHeight - window.innerHeight;
+        progressEl.style.width = (total > 0 ? Math.min(100, (window.scrollY / total) * 100) : 0) + "%";
+      }, { passive: true });
+
+      var cursor = document.getElementById("customCursor");
+      document.addEventListener("mousemove", function (e) {
+        cursor.style.transform = "translate(" + e.clientX + "px," + e.clientY + "px)";
+      });
+      document.querySelectorAll("a, button").forEach(function (el) {
+        el.addEventListener("mouseenter", function () { cursor.classList.add("is-hover"); });
+        el.addEventListener("mouseleave", function () { cursor.classList.remove("is-hover"); });
+      });
+
+      var siteNav = document.getElementById("siteNav");
+      var navToggle = document.getElementById("siteNavToggle");
+      if (navToggle) {
+        navToggle.addEventListener("click", function () {
+          var open = siteNav.classList.toggle("is-open");
+          navToggle.setAttribute("aria-expanded", open ? "true" : "false");
+          navToggle.setAttribute("aria-label", open ? "Close menu" : "Open menu");
+        });
+      }
+    })();
+  </script>
+</body>
+</html>

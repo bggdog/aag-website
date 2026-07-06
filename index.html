@@ -1,0 +1,1910 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AAG 2.0 — Coming Soon</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;1,9..40,400&family=Playfair+Display:wght@700&display=swap" rel="stylesheet" />
+  <link rel="icon" type="image/png" href="/icons/favicon.png" />
+  <link rel="apple-touch-icon" href="/icons/favicon.png" />
+  <link rel="manifest" href="/site.webmanifest" />
+  <style>
+    /* --- CSS variables (palette) --- */
+    :root {
+      --color-dark: #0d0d0d;
+      --color-cream: #f5f0e8;
+      --color-sand: #e8e0d0;
+      --color-forest: #1c2b1e;
+      --color-accent: #c8a96e;
+      --radius-section: 24px;
+      --font-heading: "Playfair Display", Georgia, serif;
+      --font-body: "DM Sans", system-ui, sans-serif;
+    }
+
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-padding-top: 4.25rem;
+      overflow-x: clip;
+    }
+
+    body {
+      margin: 0;
+      font-family: var(--font-body);
+      font-size: clamp(15px, 2.5vw, 18px);
+      font-weight: 400;
+      line-height: 1.55;
+      color: var(--color-dark);
+      background: var(--color-dark);
+      cursor: none; /* custom cursor on pointer devices */
+    }
+
+    /* --- Fixed site nav --- */
+    .site-nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 10001;
+      height: clamp(3.5rem, 8vw, 4.25rem);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      padding: 0 clamp(1.25rem, 4vw, 2.5rem);
+      background: rgba(13, 13, 13, 0.5);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid rgba(240, 235, 227, 0.06);
+      transition: background 0.3s ease, border-color 0.3s ease;
+    }
+
+    .site-nav.is-scrolled {
+      background: rgba(13, 13, 13, 0.9);
+      border-bottom-color: rgba(240, 235, 227, 0.1);
+    }
+
+    .site-nav__logo {
+      font-family: var(--font-heading);
+      font-size: clamp(1rem, 2.2vw, 1.125rem);
+      font-weight: 700;
+      color: #f0ebe3;
+      text-decoration: none;
+      letter-spacing: -0.02em;
+      flex-shrink: 0;
+    }
+
+    .site-nav__logo span {
+      color: var(--color-accent);
+    }
+
+    .site-nav__links {
+      display: flex;
+      align-items: center;
+      gap: clamp(1rem, 2.5vw, 2rem);
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    .site-nav__link {
+      font-size: 0.75rem;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: rgba(240, 235, 227, 0.7);
+      text-decoration: none;
+      transition: color 0.2s ease;
+      white-space: nowrap;
+    }
+
+    .site-nav__link:hover {
+      color: var(--color-accent);
+    }
+
+    .site-nav__cta {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0.55rem 1.15rem;
+      border-radius: 999px;
+      font-size: 0.75rem;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      text-decoration: none;
+      color: var(--color-dark);
+      background: var(--color-accent);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .site-nav__cta:hover {
+      color: var(--color-dark);
+      transform: translateY(-1px);
+      box-shadow: 0 8px 24px rgba(200, 169, 110, 0.3);
+    }
+
+    .site-nav__toggle {
+      display: none;
+      width: 2.5rem;
+      height: 2.5rem;
+      padding: 0;
+      border: 1px solid rgba(240, 235, 227, 0.25);
+      border-radius: 50%;
+      background: transparent;
+      color: #f0ebe3;
+      cursor: none;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .site-nav__toggle svg {
+      width: 1.125rem;
+      height: 1.125rem;
+    }
+
+    .site-nav__toggle .icon-close {
+      display: none;
+    }
+
+    .site-nav.is-open .site-nav__toggle .icon-menu {
+      display: none;
+    }
+
+    .site-nav.is-open .site-nav__toggle .icon-close {
+      display: block;
+    }
+
+    /* Hide custom cursor on coarse pointers / touch */
+    @media (hover: none), (pointer: coarse) {
+      body {
+        cursor: auto;
+      }
+      .custom-cursor {
+        display: none !important;
+      }
+    }
+
+    /* --- Scroll progress bar --- */
+    .scroll-progress {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 2px;
+      width: 0%;
+      background: var(--color-accent);
+      z-index: 9999;
+      pointer-events: none;
+      transform-origin: left center;
+    }
+
+    /* --- Custom cursor (desktop / fine pointer) --- */
+    /* Screen-reader only label */
+    .visually-hidden {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
+    .custom-cursor {
+      position: fixed;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--color-accent);
+      pointer-events: none;
+      z-index: 10000;
+      left: 0;
+      top: 0;
+      margin-left: -5px;
+      margin-top: -5px;
+      mix-blend-mode: normal;
+      /* Lag follows mouse via transform transition (per spec) */
+      transition: transform 0.12s ease, width 0.2s ease, height 0.2s ease,
+        margin 0.2s ease, background 0.2s ease, mix-blend-mode 0.2s ease;
+      will-change: transform;
+    }
+
+    .custom-cursor.is-hover {
+      width: 40px;
+      height: 40px;
+      margin-left: -20px;
+      margin-top: -20px;
+      background: #fff;
+      mix-blend-mode: difference;
+    }
+
+    /*
+      Native stacked sticky sections:
+      Each .stack-section sticks when its top reaches the viewport top.
+      The browser releases a sticky section when its normal-flow space has
+      scrolled past. Increasing z-index values let later sections draw over
+      earlier ones, creating the card-stack fold effect without JS animation.
+      Do not put overflow: hidden/auto/scroll on .sticky-stack or any parent
+      of these sections, because overflow ancestors break position: sticky.
+    */
+    .sticky-stack {
+      position: relative;
+      background: var(--color-dark);
+    }
+
+    .stack-section {
+      position: sticky;
+      top: 0;
+      width: 100%;
+      height: 100vh;
+      min-height: 100vh;
+      overflow: hidden;
+      border-top-left-radius: 24px;
+      border-top-right-radius: 24px;
+      box-shadow: 0 -24px 60px rgba(0, 0, 0, 0.24);
+    }
+
+    .stack-section--hero {
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      background: var(--color-dark);
+      color: #f0ebe3;
+    }
+
+    .stack-section--services {
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      background:
+        linear-gradient(
+          to bottom,
+          rgba(13, 13, 13, 0.95) 0%,
+          rgba(13, 13, 13, 0.88) 50%,
+          rgba(13, 13, 13, 0.95) 100%
+        ),
+        var(--color-dark);
+      color: #f0ebe3;
+    }
+
+    .stack-section--bento {
+      z-index: 3;
+      background:
+        radial-gradient(circle at 80% 10%, rgba(200, 169, 110, 0.12), transparent 38%),
+        #11120f;
+      color: #f0ebe3;
+    }
+
+    .stack-section--cost {
+      z-index: 4;
+      background: var(--color-forest);
+      color: #f0ebe3;
+    }
+
+    .stack-section--footer {
+      z-index: 5;
+      background: var(--color-dark);
+      color: #f0ebe3;
+    }
+
+    .stack-section--cost .section-content--cost {
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      min-height: 100%;
+      height: 100%;
+      padding-top: calc(clamp(3.5rem, 8vw, 4.25rem) + clamp(1rem, 2vh, 2rem));
+      padding-bottom: clamp(1rem, 3vw, 2rem);
+    }
+
+    .stack-section--footer .site-footer {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      height: 100%;
+      width: 100%;
+    }
+    .section-content {
+      width: 100%;
+      padding: clamp(1.5rem, 5vw, 4rem);
+    }
+
+    .inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    /* --- Hero --- */
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      z-index: 0;
+    }
+
+    .hero-bg__video {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+    }
+
+    .hero-bg__overlay {
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(
+          to right,
+          rgba(13, 13, 13, 0.82) 0%,
+          rgba(13, 13, 13, 0.45) 45%,
+          rgba(13, 13, 13, 0.45) 55%,
+          rgba(13, 13, 13, 0.72) 100%
+        ),
+        linear-gradient(
+          to bottom,
+          rgba(13, 13, 13, 0.55) 0%,
+          rgba(13, 13, 13, 0.25) 45%,
+          rgba(13, 13, 13, 0.65) 100%
+        );
+      pointer-events: none;
+    }
+
+    .hero .section-content {
+      position: relative;
+      z-index: 1;
+      padding-top: calc(clamp(3.5rem, 8vw, 4.25rem) + clamp(1rem, 3vw, 2rem));
+    }
+
+    .hero .inner {
+      position: relative;
+    }
+
+    .hero h1 {
+      font-family: var(--font-heading);
+      font-weight: 700;
+      font-size: clamp(56px, 8vw, 120px);
+      line-height: 1.02;
+      letter-spacing: -0.02em;
+      margin: 0 0 1rem;
+    }
+
+    .hero .subline {
+      font-size: clamp(16px, 2.2vw, 20px);
+      font-weight: 400;
+      max-width: min(52ch, 40rem);
+      opacity: 0.88;
+      margin-bottom: 2rem;
+    }
+
+    .hero-ctas {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem 1rem;
+      align-items: center;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-body);
+      font-weight: 500;
+      font-size: 0.95rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      text-decoration: none;
+      color: var(--color-dark);
+      background: var(--color-accent);
+      border: none;
+      padding: 1rem 1.75rem;
+      border-radius: 999px;
+      cursor: none;
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 32px rgba(200, 169, 110, 0.35);
+    }
+
+    /* Secondary CTA on dark hero */
+    .btn--outline {
+      background: transparent;
+      color: #f0ebe3;
+      border: 1px solid rgba(200, 169, 110, 0.55);
+      box-shadow: none;
+    }
+
+    .btn--outline:hover {
+      border-color: var(--color-accent);
+      color: var(--color-accent);
+      box-shadow: none;
+    }
+
+    /* --- Section 2: media carousel (reference-style) --- */
+    .section-content--carousel {
+      padding: clamp(1.25rem, 3vh, 2rem) 0 0;
+    }
+
+    .media-carousel {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      min-height: 0;
+    }
+
+    .media-carousel__header {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: clamp(1.25rem, 4vw, 3rem);
+      align-items: end;
+      padding-left: clamp(1.5rem, 5vw, 4rem);
+      padding-right: clamp(1.5rem, 5vw, 4rem);
+      margin-bottom: clamp(1rem, 2vw, 1.5rem);
+    }
+
+    .media-carousel__copy {
+      max-width: 46rem;
+    }
+
+    .media-carousel__title {
+      font-family: var(--font-heading);
+      font-size: clamp(2rem, 5vw, 3.5rem);
+      line-height: 0.95;
+      margin: 0 0 clamp(0.75rem, 1.5vw, 1rem);
+      color: #f0ebe3;
+      letter-spacing: -0.04em;
+    }
+
+    .media-carousel__intro {
+      margin: 0;
+      max-width: 42rem;
+      font-size: clamp(0.95rem, 1.8vw, 1.125rem);
+      line-height: 1.6;
+      opacity: 0.9;
+    }
+
+    .media-carousel__nav {
+      display: flex;
+      gap: 0.65rem;
+      flex-shrink: 0;
+    }
+
+    .carousel-nav {
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      border: 1px solid rgba(240, 235, 227, 0.45);
+      background: transparent;
+      color: #f0ebe3;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      cursor: none;
+      padding: 0;
+      transition: border-color 0.25s ease, background 0.25s ease, transform 0.25s ease;
+    }
+
+    .carousel-nav:hover:not(:disabled) {
+      border-color: var(--color-accent);
+      background: rgba(200, 169, 110, 0.12);
+      transform: scale(1.04);
+    }
+
+    .carousel-nav:disabled {
+      opacity: 0.28;
+      cursor: not-allowed;
+    }
+
+    .carousel-nav svg {
+      width: 18px;
+      height: 18px;
+      display: block;
+    }
+
+    .media-carousel__viewport {
+      overflow-x: auto;
+      overflow-y: hidden;
+      scroll-behavior: smooth;
+      scroll-snap-type: x mandatory;
+      scrollbar-width: none;
+      cursor: grab;
+      touch-action: pan-y;
+      flex: 1 1 auto;
+      min-height: 0;
+      padding-left: clamp(1.5rem, 5vw, 4rem);
+      padding-bottom: 0;
+    }
+
+    .media-carousel__viewport::-webkit-scrollbar {
+      display: none;
+    }
+
+    .media-carousel__viewport.is-dragging {
+      cursor: grabbing;
+    }
+
+    .media-carousel__track {
+      display: flex;
+      gap: clamp(1rem, 2vw, 1.5rem);
+      height: 100%;
+      width: max-content;
+    }
+
+    .media-card {
+      position: relative;
+      flex: 0 0 min(78vw, 56rem);
+      height: 100%;
+      border-radius: clamp(1.5rem, 3vw, 2.5rem);
+      overflow: hidden;
+      color: #fff;
+      scroll-snap-align: start;
+      scroll-snap-stop: always;
+      user-select: none;
+    }
+
+    .stack-section--services .section-content--carousel {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      min-height: 0;
+      width: 100%;
+      padding-top: calc(clamp(3.5rem, 8vw, 4.25rem) + clamp(1rem, 3vw, 1.5rem));
+      padding-bottom: clamp(1.25rem, 3vh, 2rem);
+    }
+
+    /* --- Services bento (scrolls in after peel card) --- */
+    .services-bento {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      background: var(--color-dark);
+      padding: clamp(2rem, 5vw, 3rem) clamp(1.5rem, 5vw, 4rem) clamp(3rem, 6vw, 4.5rem);
+    }
+
+    .stack-section--bento.services-bento {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      background:
+        radial-gradient(circle at 80% 10%, rgba(200, 169, 110, 0.12), transparent 38%),
+        #11120f;
+      padding-top: calc(clamp(3.5rem, 8vw, 4.25rem) + clamp(1rem, 2vh, 1.75rem));
+      padding-bottom: clamp(1.25rem, 3vh, 2rem);
+    }
+
+    .services-bento__title {
+      font-family: var(--font-heading);
+      font-size: clamp(1.5rem, 3vw, 2.25rem);
+      font-weight: 700;
+      margin: 0 0 clamp(1.25rem, 3vw, 2rem);
+      max-width: 18ch;
+      color: #f0ebe3;
+    }
+
+    .bento {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      grid-auto-rows: minmax(clamp(5.75rem, 12vh, 7.5rem), auto);
+      gap: clamp(0.75rem, 1.5vw, 1rem);
+      max-width: 75rem;
+      margin: 0 auto;
+    }
+
+    .bento__item {
+      position: relative;
+      border-radius: 1.25rem;
+      padding: clamp(1.1rem, 2.5vw, 1.5rem);
+      border: 1px solid rgba(240, 235, 227, 0.1);
+      background: rgba(255, 255, 255, 0.04);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      transition: border-color 0.3s ease, transform 0.35s ease;
+    }
+
+    .bento__item::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(
+        ellipse 80% 70% at 100% 0%,
+        rgba(200, 169, 110, 0.14),
+        transparent 55%
+      );
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.35s ease;
+    }
+
+    .bento__item:hover {
+      border-color: rgba(200, 169, 110, 0.35);
+      transform: translateY(-3px);
+    }
+
+    .bento__item:hover::before {
+      opacity: 1;
+    }
+
+    .bento__item--feature {
+      grid-column: span 6;
+      grid-row: span 2;
+      background: linear-gradient(145deg, rgba(200, 169, 110, 0.18), rgba(255, 255, 255, 0.03));
+      border-color: rgba(200, 169, 110, 0.22);
+      justify-content: space-between;
+    }
+
+    .bento__item--tall {
+      grid-column: span 3;
+      grid-row: span 2;
+    }
+
+    .bento__item--wide {
+      grid-column: span 5;
+    }
+
+    .bento__item--compact {
+      grid-column: span 4;
+    }
+
+    .bento__item--compact:last-of-type {
+      grid-column: span 3;
+    }
+
+    .bento__item--cta {
+      grid-column: span 3;
+      grid-row: span 2;
+      background: linear-gradient(160deg, rgba(200, 169, 110, 0.22), rgba(13, 13, 13, 0.6));
+      border-color: rgba(200, 169, 110, 0.35);
+    }
+
+    .bento__label {
+      font-size: 0.72rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--color-accent);
+      margin-bottom: 0.5rem;
+    }
+
+    .bento__heading {
+      font-family: var(--font-heading);
+      font-size: clamp(1.15rem, 2vw, 1.5rem);
+      line-height: 1.15;
+      margin: 0 0 0.4rem;
+      color: #f0ebe3;
+    }
+
+    .bento__item--feature .bento__heading {
+      font-size: clamp(1.5rem, 2.8vw, 2rem);
+      max-width: 14ch;
+    }
+
+    .bento__text {
+      margin: 0;
+      font-size: clamp(0.85rem, 1.4vw, 0.95rem);
+      line-height: 1.5;
+      opacity: 0.82;
+      max-width: 36ch;
+    }
+
+    .bento__stat {
+      font-family: var(--font-heading);
+      font-size: clamp(2rem, 4vw, 2.75rem);
+      color: var(--color-accent);
+      line-height: 1;
+      margin: 0 0 0.35rem;
+    }
+
+    .bento__link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      margin-top: 0.75rem;
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: var(--color-accent);
+      text-decoration: none;
+      letter-spacing: 0.04em;
+    }
+
+    .bento__link:hover {
+      text-decoration: underline;
+    }
+
+    .media-card__bg {
+      position: absolute;
+      inset: -8%;
+      background: var(--card-bg, #2a2418);
+      background-size: cover;
+      background-position: var(--card-bg-position, center 18%);
+      transform: scale(1.08);
+      will-change: transform;
+      transition: transform 0.6s ease;
+    }
+
+    .media-card:hover .media-card__bg {
+      transform: scale(1.12);
+    }
+
+    .media-card__scrim {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        180deg,
+        rgba(0, 0, 0, 0.15) 0%,
+        rgba(0, 0, 0, 0.05) 35%,
+        rgba(0, 0, 0, 0.55) 100%
+      );
+      pointer-events: none;
+    }
+
+    .media-card__tag {
+      position: absolute;
+      top: clamp(1.25rem, 3vw, 2rem);
+      left: clamp(1.25rem, 3vw, 2rem);
+      z-index: 2;
+      font-size: 0.8rem;
+      letter-spacing: 0.04em;
+      padding: 0.45rem 0.85rem;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.55);
+      background: rgba(0, 0, 0, 0.2);
+      backdrop-filter: blur(6px);
+    }
+
+    .media-card__content {
+      position: absolute;
+      left: clamp(1.25rem, 3vw, 2rem);
+      right: clamp(4.5rem, 8vw, 6rem);
+      bottom: clamp(1.25rem, 3vw, 2rem);
+      z-index: 2;
+    }
+
+    .media-card__title {
+      font-family: var(--font-heading);
+      font-weight: 700;
+      font-size: clamp(1.75rem, 3.5vw, 2.75rem);
+      line-height: 1.1;
+      margin: 0 0 0.65rem;
+    }
+
+    .media-card__desc {
+      margin: 0;
+      font-size: clamp(0.875rem, 1.5vw, 1rem);
+      line-height: 1.5;
+      opacity: 0.92;
+      max-width: 36ch;
+    }
+
+    .media-card__action {
+      position: absolute;
+      right: clamp(1.25rem, 3vw, 2rem);
+      bottom: clamp(1.25rem, 3vw, 2rem);
+      z-index: 2;
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      border: 1px solid rgba(255, 255, 255, 0.55);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      text-decoration: none;
+      transition: border-color 0.25s ease, background 0.25s ease, transform 0.25s ease;
+    }
+
+    .media-card__action:hover {
+      border-color: var(--color-accent);
+      background: rgba(200, 169, 110, 0.2);
+      transform: scale(1.06);
+    }
+
+    .media-card__action svg {
+      width: 18px;
+      height: 18px;
+    }
+
+    /* --- Cost of not using AAG (forest section) --- */
+    .cost-proof__grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      gap: clamp(1.5rem, 4vw, 3rem);
+      align-items: center;
+      width: 100%;
+    }
+
+    .cost-proof__video {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 0;
+    }
+
+    .cost-video-stage {
+      position: relative;
+      height: min(calc(100vh - 7rem), 52rem);
+      width: auto;
+      max-width: 100%;
+      aspect-ratio: 9 / 16;
+      border-radius: clamp(1rem, 2vw, 1.5rem);
+      overflow: hidden;
+      background: linear-gradient(165deg, #243528 0%, #141f17 48%, #0d1410 100%);
+      border: 1px solid rgba(240, 235, 227, 0.12);
+      box-shadow: 0 24px 48px rgba(0, 0, 0, 0.35);
+    }
+
+    .cost-video-stage__player {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      background: #0d1410;
+      z-index: 2;
+    }
+
+    .cost-proof__eyebrow {
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--color-accent);
+      margin: 0 0 0.75rem;
+    }
+
+    .cost-proof__heading {
+      font-family: var(--font-heading);
+      font-size: clamp(1.75rem, 4.2vw, 2.75rem);
+      line-height: 1.08;
+      margin: 0 0 0.85rem;
+      max-width: 16ch;
+    }
+
+    .cost-proof__lead {
+      margin: 0 0 clamp(1.25rem, 3vw, 1.75rem);
+      font-size: clamp(0.95rem, 1.8vw, 1.05rem);
+      line-height: 1.6;
+      opacity: 0.85;
+      max-width: 42ch;
+    }
+
+    .cost-proof__panels {
+      display: flex;
+      flex-direction: column;
+      gap: clamp(0.85rem, 2vw, 1.1rem);
+    }
+
+    .cost-panel {
+      border-radius: 1rem;
+      padding: clamp(1rem, 2.5vw, 1.35rem);
+      border: 1px solid rgba(240, 235, 227, 0.1);
+      background: rgba(0, 0, 0, 0.18);
+    }
+
+    .cost-panel__label {
+      font-size: 0.68rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--color-accent);
+      margin-bottom: 0.5rem;
+    }
+
+    .cost-panel__headline {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: baseline;
+      gap: 0.5rem 0.75rem;
+      margin-bottom: 0.35rem;
+    }
+
+    .cost-panel__num {
+      font-family: var(--font-heading);
+      font-size: clamp(1.75rem, 4vw, 2.5rem);
+      line-height: 1;
+      color: var(--color-accent);
+    }
+
+    .cost-panel__num-suffix {
+      font-size: 0.55em;
+      font-weight: 700;
+    }
+
+    .cost-panel__title {
+      font-size: clamp(0.95rem, 1.8vw, 1.05rem);
+      font-weight: 500;
+      margin: 0;
+    }
+
+    .cost-panel__text {
+      margin: 0;
+      font-size: 0.9rem;
+      line-height: 1.55;
+      opacity: 0.8;
+    }
+
+    .cost-panel__source {
+      margin: 0.65rem 0 0;
+      font-size: 0.72rem;
+      opacity: 0.45;
+      letter-spacing: 0.02em;
+    }
+
+    .cost-panel__items {
+      margin-top: 0.85rem;
+      border-top: 1px solid rgba(240, 235, 227, 0.08);
+    }
+
+    .cost-panel__row {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 1rem;
+      padding: 0.55rem 0;
+      border-bottom: 1px solid rgba(240, 235, 227, 0.06);
+      font-size: 0.85rem;
+    }
+
+    .cost-panel__row:last-child {
+      border-bottom: none;
+    }
+
+    .cost-panel__row-label {
+      opacity: 0.72;
+    }
+
+    .cost-panel__row-val {
+      font-weight: 500;
+      text-align: right;
+      flex-shrink: 0;
+    }
+
+    .cost-proof__footnote {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.65rem;
+      margin: clamp(1rem, 2.5vw, 1.35rem) 0 0;
+      font-size: 0.88rem;
+      line-height: 1.55;
+      opacity: 0.78;
+    }
+
+    .cost-proof__footnote-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--color-accent);
+      flex-shrink: 0;
+      margin-top: 0.45rem;
+    }
+
+    /* --- Site footer --- */
+    .site-footer {
+      background: var(--color-dark);
+      color: #f0ebe3;
+      border-top: 1px solid rgba(240, 235, 227, 0.08);
+    }
+
+    .stack-section--footer {
+      overflow-y: auto;
+    }
+
+    .site-footer__cta {
+      text-align: center;
+      padding: clamp(3.5rem, 8vw, 4.25rem) clamp(1.5rem, 5vw, 4rem) clamp(1.5rem, 3vw, 2rem);
+      border-bottom: 1px solid rgba(240, 235, 227, 0.08);
+    }
+
+    .site-footer__eyebrow {
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--color-accent);
+      margin-bottom: 1rem;
+    }
+
+    .site-footer__cta h2 {
+      font-family: var(--font-heading);
+      font-size: clamp(2rem, 5vw, 3.25rem);
+      line-height: 1.08;
+      margin: 0 0 1rem;
+      max-width: 18ch;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .site-footer__cta-lead {
+      margin: 0 auto 2rem;
+      max-width: 36ch;
+      font-size: clamp(1rem, 2vw, 1.125rem);
+      opacity: 0.8;
+      line-height: 1.6;
+    }
+
+    .site-footer__cta-btns {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem 1rem;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .site-footer__trust {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 1rem 1.75rem;
+      margin-top: 1.5rem;
+      padding-top: 1.25rem;
+      border-top: 1px solid rgba(240, 235, 227, 0.08);
+    }
+
+    .site-footer__trust-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.8rem;
+      opacity: 0.55;
+    }
+
+    .site-footer__trust-item svg {
+      width: 14px;
+      height: 14px;
+      color: var(--color-accent);
+    }
+
+    .site-footer__main {
+      display: grid;
+      grid-template-columns: 1.35fr 1fr 1fr 1fr;
+      gap: clamp(2rem, 4vw, 3rem);
+      padding: clamp(1.5rem, 4vw, 2.5rem) clamp(1.5rem, 5vw, 4rem);
+    }
+
+    .site-footer__logo {
+      font-family: var(--font-heading);
+      font-size: 1.35rem;
+      font-weight: 700;
+      margin-bottom: 0.75rem;
+    }
+
+    .site-footer__logo span {
+      color: var(--color-accent);
+    }
+
+    .site-footer__tagline {
+      margin: 0 0 1.5rem;
+      font-size: 0.9rem;
+      line-height: 1.6;
+      opacity: 0.65;
+      max-width: 28ch;
+    }
+
+    .site-footer__socials {
+      display: flex;
+      gap: 0.65rem;
+    }
+
+    .site-footer__social {
+      width: 36px;
+      height: 36px;
+      border-radius: 8px;
+      border: 1px solid rgba(240, 235, 227, 0.15);
+      background: rgba(255, 255, 255, 0.04);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      color: #f0ebe3;
+      text-decoration: none;
+      transition: border-color 0.2s ease, background 0.2s ease;
+    }
+
+    .site-footer__social:hover {
+      border-color: var(--color-accent);
+      background: rgba(200, 169, 110, 0.12);
+    }
+
+    .site-footer__social svg {
+      width: 14px;
+      height: 14px;
+    }
+
+    .site-footer__col-title {
+      font-size: 0.7rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      opacity: 0.45;
+      margin-bottom: 1rem;
+    }
+
+    .site-footer__links {
+      display: flex;
+      flex-direction: column;
+      gap: 0.55rem;
+    }
+
+    .site-footer__link {
+      font-size: 0.9rem;
+      color: rgba(240, 235, 227, 0.7);
+      text-decoration: none;
+      transition: color 0.2s ease;
+    }
+
+    .site-footer__link:hover {
+      color: var(--color-accent);
+    }
+
+    .site-footer__partner {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.5rem;
+      margin-top: 1.25rem;
+      font-size: 0.8rem;
+      opacity: 0.5;
+      line-height: 1.45;
+    }
+
+    .site-footer__partner-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--color-accent);
+      flex-shrink: 0;
+      margin-top: 0.35rem;
+    }
+
+    .site-footer__bottom {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+      padding: 1.5rem clamp(1.5rem, 5vw, 4rem) 2rem;
+      border-top: 1px solid rgba(240, 235, 227, 0.08);
+    }
+
+    .site-footer__copy {
+      margin: 0;
+      font-size: 0.8rem;
+      opacity: 0.4;
+    }
+
+    .site-footer__legal {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.25rem;
+    }
+
+    .site-footer__legal a {
+      font-size: 0.8rem;
+      color: rgba(240, 235, 227, 0.4);
+      text-decoration: none;
+      transition: color 0.2s ease;
+    }
+
+    .site-footer__legal a:hover {
+      color: var(--color-accent);
+    }
+
+    /* --- Mobile --- */
+    @media (max-width: 767px) {
+      .site-nav__toggle {
+        display: inline-flex;
+      }
+
+      .site-nav__links {
+        position: fixed;
+        top: clamp(3.5rem, 8vw, 4.25rem);
+        left: 0;
+        right: 0;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0;
+        padding: 0.75rem clamp(1.25rem, 4vw, 2.5rem) 1.25rem;
+        background: rgba(13, 13, 13, 0.96);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        border-bottom: 1px solid rgba(240, 235, 227, 0.1);
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(-0.5rem);
+        transition: opacity 0.25s ease, transform 0.25s ease, visibility 0.25s;
+        pointer-events: none;
+      }
+
+      .site-nav.is-open .site-nav__links {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
+        pointer-events: auto;
+      }
+
+      .site-nav__links li {
+        border-bottom: 1px solid rgba(240, 235, 227, 0.08);
+      }
+
+      .site-nav__links li:last-child {
+        border-bottom: none;
+        padding-top: 0.5rem;
+      }
+
+      .site-nav__link,
+      .site-nav__cta {
+        display: block;
+        padding: 0.85rem 0;
+        text-align: left;
+      }
+
+      .site-nav__cta {
+        width: 100%;
+        text-align: center;
+      }
+
+      .bento {
+        grid-template-columns: 1fr;
+        grid-auto-rows: minmax(3.85rem, auto);
+        gap: 0.55rem;
+      }
+
+      .stack-section--bento.services-bento {
+        padding-top: calc(clamp(3.5rem, 8vw, 4.25rem) + 0.85rem);
+        padding-bottom: 1rem;
+      }
+
+      .bento__item {
+        padding: 0.85rem;
+      }
+
+      .bento__item--feature,
+      .bento__item--tall,
+      .bento__item--wide,
+      .bento__item--compact,
+      .bento__item--cta {
+        grid-column: 1;
+        grid-row: auto;
+      }
+
+      .bento__item--feature {
+        min-height: auto;
+      }
+
+      .bento__heading,
+      .bento__item--feature .bento__heading {
+        font-size: clamp(1rem, 5vw, 1.25rem);
+      }
+
+      .bento__text {
+        font-size: 0.8rem;
+        line-height: 1.35;
+      }
+
+      .bento__stat {
+        font-size: clamp(1.45rem, 8vw, 2rem);
+      }
+
+      .hero h1 {
+        font-size: clamp(36px, 12vw, 72px);
+      }
+
+      .hero-bg__overlay {
+        background:
+          linear-gradient(
+            to bottom,
+            rgba(13, 13, 13, 0.78) 0%,
+            rgba(13, 13, 13, 0.35) 40%,
+            rgba(13, 13, 13, 0.75) 100%
+          );
+      }
+
+      .media-carousel__header {
+        grid-template-columns: 1fr;
+        align-items: start;
+      }
+
+      .media-carousel__nav {
+        justify-content: flex-end;
+      }
+
+      .media-card {
+        flex: 0 0 88vw;
+        height: 100%;
+      }
+
+      .cost-proof__grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+      }
+
+      .cost-proof__video {
+        display: none;
+      }
+
+      .cost-video-stage {
+        height: min(42vh, 24rem);
+        width: auto;
+        max-width: min(92vw, 22rem);
+        margin: 0 auto;
+      }
+
+      .cost-proof__heading {
+        font-size: clamp(1.65rem, 9vw, 2.25rem);
+      }
+
+      .cost-proof__lead,
+      .cost-panel__text,
+      .cost-proof__footnote {
+        font-size: 0.82rem;
+        line-height: 1.4;
+      }
+
+      .cost-panel {
+        padding: 0.85rem;
+      }
+
+      .cost-proof__heading {
+        max-width: none;
+      }
+
+      .site-footer__main {
+        grid-template-columns: 1fr;
+      }
+
+      .site-footer__cta-btns {
+        flex-direction: column;
+      }
+
+      .site-footer__cta-btns .btn {
+        width: 100%;
+        max-width: 20rem;
+      }
+
+      .site-footer__bottom {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Fixed UI: scroll depth + custom cursor (cursor hidden on touch via CSS) -->
+  <div class="scroll-progress" id="scrollProgress" aria-hidden="true"></div>
+  <div class="custom-cursor" id="customCursor" aria-hidden="true"></div>
+
+  <header class="site-nav" id="siteNav">
+    <a href="/" class="site-nav__logo">Aurora<span>.</span></a>
+    <button type="button" class="site-nav__toggle" id="siteNavToggle" aria-expanded="false" aria-controls="siteNavMenu" aria-label="Open menu">
+      <svg class="icon-menu" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+      <svg class="icon-close" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+    </button>
+    <ul class="site-nav__links" id="siteNavMenu">
+      <li><a href="/about/" class="site-nav__link">About</a></li>
+      <li><a href="/services/" class="site-nav__link">Services</a></li>
+      <li><a href="/contact/" class="site-nav__cta">Let&rsquo;s talk</a></li>
+    </ul>
+  </header>
+
+  <!-- ========== 1. Hero ========== -->
+  <main class="sticky-stack">
+    <section class="stack-section stack-section--hero hero" id="top" data-section="hero">
+      <div class="hero-bg" aria-hidden="true">
+        <video class="hero-bg__video" autoplay muted loop playsinline preload="auto">
+          <source src="/assets/video/11925567_2160_3840_25fps.mp4" type="video/mp4" />
+        </video>
+        <div class="hero-bg__overlay"></div>
+      </div>
+      <div class="section-content">
+        <div class="inner">
+          <h1 class="anim-el">You didn&rsquo;t build this to manage the back office.</h1>
+          <p class="subline anim-el">AAG steps in at the exact moment when doing it yourself isn&rsquo;t working anymore &mdash; but bringing someone on full-time isn&rsquo;t the right move yet. We handle the operational side so you can focus on the work that actually matters.</p>
+          <div class="hero-ctas anim-el">
+            <a href="/contact/" class="btn">Schedule a free consultation</a>
+            <a href="#services" class="btn btn--outline">See what we do</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== 2. Services — carousel + bento ========== -->
+    <section class="stack-section stack-section--services services" id="services" data-section="services">
+      <div class="section-content section-content--carousel">
+        <div class="media-carousel" id="mediaCarousel" tabindex="0" aria-roledescription="carousel" aria-label="AAG services">
+          <header class="media-carousel__header">
+            <div class="media-carousel__copy">
+              <h2 class="media-carousel__title">Our Services</h2>
+              <p class="media-carousel__intro anim-el">From billing and credentialing to compliance and accounting &mdash; we take the operational weight off your plate entirely. One team. Eight service areas. No long-term contracts.</p>
+            </div>
+            <div class="media-carousel__nav anim-el">
+              <button type="button" class="carousel-nav" data-carousel-prev aria-label="Previous slide">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg>
+              </button>
+              <button type="button" class="carousel-nav" data-carousel-next aria-label="Next slide">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>
+              </button>
+            </div>
+          </header>
+          <div class="media-carousel__viewport">
+            <div class="media-carousel__track">
+              <article class="media-card anim-el">
+                <div class="media-card__bg" style="--card-bg: url('/assets/images/Jace Coody - Revenue Cycle Manager.jpg');"></div>
+                <div class="media-card__scrim" aria-hidden="true"></div>
+                <span class="media-card__tag">/ Billing &amp; RCM</span>
+                <div class="media-card__content">
+                  <h3 class="media-card__title">Billing &amp; revenue cycle</h3>
+                  <p class="media-card__desc">Claims, denials, and collections handled end-to-end so revenue doesn&rsquo;t slip through the cracks.</p>
+                </div>
+                <a href="/services/billing-rcm/" class="media-card__action" aria-label="Learn about Billing &amp; RCM">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+                </a>
+              </article>
+              <article class="media-card anim-el">
+                <div class="media-card__bg" style="--card-bg: url('/assets/images/River Bailey - Headshot.jpg');"></div>
+                <div class="media-card__scrim" aria-hidden="true"></div>
+                <span class="media-card__tag">/ Compliance</span>
+                <div class="media-card__content">
+                  <h3 class="media-card__title">Compliance</h3>
+                  <p class="media-card__desc">Policies, audits, and regulatory readiness kept current &mdash; without pulling your team off mission-critical work.</p>
+                </div>
+                <a href="/services/compliance/" class="media-card__action" aria-label="Learn about Compliance">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+                </a>
+              </article>
+              <article class="media-card anim-el">
+                <div class="media-card__bg" style="--card-bg: url('/assets/images/services-credentialing.png');"></div>
+                <div class="media-card__scrim" aria-hidden="true"></div>
+                <span class="media-card__tag">/ Credentialing</span>
+                <div class="media-card__content">
+                  <h3 class="media-card__title">Credentialing &amp; enrollment</h3>
+                  <p class="media-card__desc">Provider enrollment and payer credentialing managed with clear timelines and fewer surprises.</p>
+                </div>
+                <a href="/services/credentialing/" class="media-card__action" aria-label="Learn about Credentialing">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+                </a>
+              </article>
+              <article class="media-card anim-el">
+                <div class="media-card__bg" style="--card-bg: url('/assets/images/services-acounting.png');"></div>
+                <div class="media-card__scrim" aria-hidden="true"></div>
+                <span class="media-card__tag">/ Accounting</span>
+                <div class="media-card__content">
+                  <h3 class="media-card__title">Accounting</h3>
+                  <p class="media-card__desc">Books, reconciliations, and month-end close run cleanly &mdash; numbers you can trust when decisions matter.</p>
+                </div>
+                <a href="/services/accounting/" class="media-card__action" aria-label="Learn about Accounting">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+                </a>
+              </article>
+              <article class="media-card anim-el">
+                <div class="media-card__bg" style="--card-bg: url('/assets/images/services-financial_reporting.png');"></div>
+                <div class="media-card__scrim" aria-hidden="true"></div>
+                <span class="media-card__tag">/ Financial reporting</span>
+                <div class="media-card__content">
+                  <h3 class="media-card__title">Financial reporting</h3>
+                  <p class="media-card__desc">Dashboards and board-ready reporting that show where the business stands &mdash; without spreadsheet chaos.</p>
+                </div>
+                <a href="/services/financial-reporting/" class="media-card__action" aria-label="Learn about Financial reporting">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+                </a>
+              </article>
+              <article class="media-card anim-el">
+                <div class="media-card__bg" style="--card-bg: url('/assets/images/Micaul Bass - Director of Government Affairs & Payer Strategy.jpg');"></div>
+                <div class="media-card__scrim" aria-hidden="true"></div>
+                <span class="media-card__tag">/ Contracting</span>
+                <div class="media-card__content">
+                  <h3 class="media-card__title">Contracting &amp; negotiation</h3>
+                  <p class="media-card__desc">Payer contracts reviewed, benchmarked, and negotiated so your rates reflect the actual value of your services.</p>
+                </div>
+                <a href="/services/contracting/" class="media-card__action" aria-label="Learn about Contracting &amp; Negotiation">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+                </a>
+              </article>
+              <article class="media-card anim-el">
+                <div class="media-card__bg" style="--card-bg: url('/assets/images/services-eligibility_verification.png');"></div>
+                <div class="media-card__scrim" aria-hidden="true"></div>
+                <span class="media-card__tag">/ Eligibility</span>
+                <div class="media-card__content">
+                  <h3 class="media-card__title">Eligibility verification</h3>
+                  <p class="media-card__desc">Benefits and coverage checked before service so coverage gaps are caught early, not after a claim is denied.</p>
+                </div>
+                <a href="/services/eligibility/" class="media-card__action" aria-label="Learn about Eligibility Verification">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+                </a>
+              </article>
+              <article class="media-card anim-el">
+                <div class="media-card__bg" style="--card-bg: url('/assets/images/conference-room.png');"></div>
+                <div class="media-card__scrim" aria-hidden="true"></div>
+                <span class="media-card__tag">/ Workflow</span>
+                <div class="media-card__content">
+                  <h3 class="media-card__title">Workflow optimization</h3>
+                  <p class="media-card__desc">Intake, admin, and back-office workflows mapped and improved so work moves cleanly without constant rework.</p>
+                </div>
+                <a href="/services/workflow/" class="media-card__action" aria-label="Learn about Workflow Optimization">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+                </a>
+              </article>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  <section class="stack-section stack-section--bento services-bento" data-section="services-bento">
+    <h2 class="services-bento__title anim-el">Built for growth-stage operators</h2>
+    <div class="bento">
+      <article class="bento__item bento__item--feature anim-el">
+        <span class="bento__label">Sweet spot</span>
+        <h3 class="bento__heading">Too big to DIY. Not ready for full in-house ops.</h3>
+        <p class="bento__text">AAG fits the moment the back office becomes a real problem &mdash; without the cost and risk of a full-time hire.</p>
+      </article>
+      <article class="bento__item bento__item--tall anim-el">
+        <span class="bento__label">Coverage</span>
+        <p class="bento__stat">8</p>
+        <h3 class="bento__heading">Service areas</h3>
+        <p class="bento__text">Billing, compliance, accounting, credentialing, contracting, reporting, and more &mdash; one team.</p>
+      </article>
+      <article class="bento__item bento__item--cta anim-el">
+        <span class="bento__label">Next step</span>
+        <h3 class="bento__heading">Free consultation</h3>
+        <p class="bento__text">We&rsquo;ll map where AAG fits and what working together would look like.</p>
+        <a href="/contact/" class="bento__link">Schedule a call &rarr;</a>
+      </article>
+      <article class="bento__item bento__item--wide anim-el">
+        <span class="bento__label">Engagement</span>
+        <h3 class="bento__heading">No long-term contracts</h3>
+        <p class="bento__text">Tailored scope sized to where your business is today. Only what you need, when you need it.</p>
+      </article>
+      <article class="bento__item bento__item--compact anim-el">
+        <span class="bento__label">Cost</span>
+        <p class="bento__stat">$85k+</p>
+        <p class="bento__text">True annual cost of one in-house back-office hire &mdash; we cover all eight areas for a fraction of that.</p>
+      </article>
+      <article class="bento__item bento__item--compact anim-el">
+        <span class="bento__label">Time back</span>
+        <p class="bento__stat">30+ hrs</p>
+        <p class="bento__text">Lost per week to admin on average. We take that load so you can focus on the work that builds the business.</p>
+      </article>
+    </div>
+  </section>
+
+  <!-- ========== 4. Cost of not using AAG (forest) ========== -->
+  <section class="stack-section stack-section--cost cost-proof" data-section="cost" id="cost">
+      <div class="section-content section-content--cost">
+        <div class="inner cost-proof__grid">
+          <div class="cost-proof__video anim-el">
+            <div class="cost-video-stage">
+              <img
+                class="cost-video-stage__player"
+                src="/assets/images/cost-breakdown.png"
+                alt="Cost breakdown showing the time and expense of managing back-office work without AAG"
+              />
+            </div>
+          </div>
+
+          <div class="cost-proof__content">
+            <p class="cost-proof__eyebrow anim-el">The cost of waiting</p>
+            <h2 class="cost-proof__heading anim-el">What it actually costs to go without.</h2>
+            <p class="cost-proof__lead anim-el">Hire in-house, or keep doing it yourself. Either way, the back office takes more than you think.</p>
+
+            <div class="cost-proof__panels">
+              <article class="cost-panel cost-panel--time anim-el">
+                <p class="cost-panel__label">Option one &mdash; do it yourself</p>
+                <div class="cost-panel__headline">
+                  <span class="cost-panel__num">30+ <span class="cost-panel__num-suffix">hrs</span></span>
+                  <h3 class="cost-panel__title">Lost every week to admin</h3>
+                </div>
+                <p class="cost-panel__text">That&rsquo;s two full working days per week on billing, compliance, reporting, and paperwork &mdash; instead of work that grows the business.</p>
+                <p class="cost-panel__source">ServiceNow State of Work Report</p>
+              </article>
+
+              <article class="cost-panel cost-panel--hire anim-el">
+                <p class="cost-panel__label">Option two &mdash; hire in-house</p>
+                <div class="cost-panel__headline">
+                  <span class="cost-panel__num">$85k<span class="cost-panel__num-suffix">+</span></span>
+                  <h3 class="cost-panel__title">Per year for one back-office hire</h3>
+                </div>
+                <p class="cost-panel__text">Salary, benefits, payroll tax, onboarding, turnover &mdash; and one person still rarely covers all eight areas you need.</p>
+                <div class="cost-panel__items">
+                  <div class="cost-panel__row">
+                    <span class="cost-panel__row-label">Base salary</span>
+                    <span class="cost-panel__row-val">$55k&ndash;$65k</span>
+                  </div>
+                  <div class="cost-panel__row">
+                    <span class="cost-panel__row-label">Benefits &amp; health insurance</span>
+                    <span class="cost-panel__row-val">$12k&ndash;$18k</span>
+                  </div>
+                  <div class="cost-panel__row">
+                    <span class="cost-panel__row-label">Payroll taxes &amp; overhead</span>
+                    <span class="cost-panel__row-val">$6k&ndash;$8k</span>
+                  </div>
+                  <div class="cost-panel__row">
+                    <span class="cost-panel__row-label">Training &amp; onboarding</span>
+                    <span class="cost-panel__row-val">$3k&ndash;$5k</span>
+                  </div>
+                  <div class="cost-panel__row">
+                    <span class="cost-panel__row-label">Full coverage across 8 service areas</span>
+                    <span class="cost-panel__row-val">Unlikely</span>
+                  </div>
+                </div>
+                <p class="cost-panel__source">Society for Human Resource Management</p>
+              </article>
+            </div>
+
+            <p class="cost-proof__footnote anim-el">
+              <span class="cost-proof__footnote-dot" aria-hidden="true"></span>
+              AAG covers billing, compliance, accounting, credentialing, and more &mdash; at a fraction of the hire, with none of the DIY time tax.
+            </p>
+          </div>
+        </div>
+      </div>
+  </section>
+
+  <!-- ========== 5. Footer ========== -->
+  <section class="stack-section stack-section--footer" data-section="footer" id="notify">
+      <footer class="site-footer">
+        <div class="site-footer__cta" id="footer-cta">
+        <p class="site-footer__eyebrow anim-el">Get started</p>
+        <h2 class="anim-el">Ready to get back to the work that matters?</h2>
+        <p class="site-footer__cta-lead anim-el">Schedule a free consultation and we&rsquo;ll figure out exactly where AAG can help &mdash; and what it would look like to work together.</p>
+        <div class="site-footer__cta-btns anim-el">
+          <a href="/contact/" class="btn">Schedule a free consultation</a>
+          <a href="/services/" class="btn btn--outline">Explore our services</a>
+        </div>
+        <div class="site-footer__trust anim-el">
+          <span class="site-footer__trust-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            No long-term contracts
+          </span>
+          <span class="site-footer__trust-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            Free initial consultation
+          </span>
+          <span class="site-footer__trust-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            Scoped to your needs only
+          </span>
+        </div>
+      </div>
+
+      <div class="site-footer__main inner">
+        <div class="site-footer__brand anim-el">
+          <div class="site-footer__logo">Aurora<span>.</span></div>
+          <p class="site-footer__tagline">Back-office support for businesses in the growth stage. We do what no one wants to do &mdash; so you can do what you were meant to.</p>
+          <div class="site-footer__socials">
+            <a href="#" class="site-footer__social" aria-label="LinkedIn">
+              <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2z"/><circle cx="4" cy="4" r="2"/></svg>
+            </a>
+            <a href="#" class="site-footer__social" aria-label="X">
+              <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+            </a>
+          </div>
+        </div>
+        <div class="anim-el">
+          <p class="site-footer__col-title">Services</p>
+          <nav class="site-footer__links" aria-label="Services">
+            <a href="/services/credentialing/" class="site-footer__link">Credentialing &amp; enrollment</a>
+            <a href="/services/contracting/" class="site-footer__link">Contracting &amp; negotiation</a>
+            <a href="/services/billing-rcm/" class="site-footer__link">Billing &amp; RCM</a>
+            <a href="/services/compliance/" class="site-footer__link">Compliance</a>
+            <a href="/services/financial-reporting/" class="site-footer__link">Financial reporting</a>
+            <a href="/services/accounting/" class="site-footer__link">Accounting</a>
+            <a href="/services/marketing/" class="site-footer__link">Creative marketing</a>
+          </nav>
+        </div>
+        <div class="anim-el">
+          <p class="site-footer__col-title">Company</p>
+          <nav class="site-footer__links" aria-label="Company">
+            <a href="/about/" class="site-footer__link">About AAG</a>
+            <a href="/services/" class="site-footer__link">Who we work with</a>
+            <a href="/about/#why" class="site-footer__link">Why AAG</a>
+            <a href="/about/#forvis" class="site-footer__link">Forvis Mazars partnership</a>
+          </nav>
+        </div>
+        <div class="anim-el">
+          <p class="site-footer__col-title">Get in touch</p>
+          <nav class="site-footer__links" aria-label="Contact">
+            <a href="/contact/" class="site-footer__link">Schedule a consultation</a>
+            <a href="/contact/#message" class="site-footer__link">Send us a message</a>
+            <a href="mailto:hello@auroraadvisory.com" class="site-footer__link">hello@auroraadvisory.com</a>
+          </nav>
+          <p class="site-footer__partner">
+            <span class="site-footer__partner-dot" aria-hidden="true"></span>
+            Accounting in partnership with Forvis Mazars
+          </p>
+        </div>
+      </div>
+
+      <div class="site-footer__bottom anim-el">
+        <p class="site-footer__copy">&copy; <span id="year"></span> Aurora Advisory Group. All rights reserved.</p>
+        <div class="site-footer__legal">
+          <a href="#">Privacy policy</a>
+          <a href="#">Terms of use</a>
+        </div>
+      </div>
+      </footer>
+  </section>
+  </main>
+
+  <script>
+    /**
+     * Native interactions only. The stacked scrolling effect is handled by CSS
+     * position: sticky; JavaScript is limited to nav, progress, cursor, and
+     * carousel button controls.
+     */
+    (function () {
+      "use strict";
+
+      document.addEventListener("DOMContentLoaded", function () {
+        document.getElementById("year").textContent = new Date().getFullYear();
+
+        /* --- Scroll progress bar using native browser scroll --- */
+        const progressEl = document.getElementById("scrollProgress");
+        function updateScrollProgress() {
+          const scrollTop = window.scrollY || document.documentElement.scrollTop || 0;
+          const limit = Math.max(0, document.documentElement.scrollHeight - window.innerHeight);
+          const p = limit > 0 ? (scrollTop / limit) * 100 : 0;
+          progressEl.style.width = Math.min(100, Math.max(0, p)) + "%";
+        }
+        window.addEventListener("scroll", updateScrollProgress, { passive: true });
+        updateScrollProgress();
+
+        /* Fixed nav: scrolled state + mobile menu */
+        const siteNav = document.getElementById("siteNav");
+        const siteNavToggle = document.getElementById("siteNavToggle");
+
+        function getNavOffset() {
+          return (siteNav ? siteNav.offsetHeight : 68) + 12;
+        }
+
+        function closeSiteNav() {
+          if (!siteNav) return;
+          siteNav.classList.remove("is-open");
+          if (siteNavToggle) siteNavToggle.setAttribute("aria-expanded", "false");
+        }
+
+        if (siteNavToggle && siteNav) {
+          siteNavToggle.addEventListener("click", function () {
+            const open = siteNav.classList.toggle("is-open");
+            siteNavToggle.setAttribute("aria-expanded", open ? "true" : "false");
+            siteNavToggle.setAttribute("aria-label", open ? "Close menu" : "Open menu");
+          });
+        }
+
+        window.addEventListener(
+          "scroll",
+          function () {
+            if (siteNav) siteNav.classList.toggle("is-scrolled", window.scrollY > 24);
+          },
+          { passive: true }
+        );
+        if (siteNav) siteNav.classList.toggle("is-scrolled", window.scrollY > 24);
+
+        /* In-page anchors: native smooth scroll, offset for fixed nav. */
+        document.addEventListener(
+          "click",
+          function (e) {
+            const link = e.target.closest('a[href^="#"]');
+            if (!link) return;
+            const href = link.getAttribute("href");
+            if (!href || href === "#") return;
+            const id = href.slice(1);
+            const targetEl = document.getElementById(id);
+            if (!targetEl) return;
+            e.preventDefault();
+            closeSiteNav();
+            const top = targetEl.getBoundingClientRect().top + window.scrollY - getNavOffset();
+            window.scrollTo({ top: Math.max(0, top), behavior: "smooth" });
+          },
+          false
+        );
+
+        /* --- Media carousel: native horizontal scroll snap + arrow buttons --- */
+        (function initMediaCarousel(root) {
+          if (!root) return;
+          const viewport = root.querySelector(".media-carousel__viewport");
+          const cards = root.querySelectorAll(".media-card");
+          const prevBtn = root.querySelector("[data-carousel-prev]");
+          const nextBtn = root.querySelector("[data-carousel-next]");
+          if (!viewport || !cards.length || !prevBtn || !nextBtn) return;
+
+          let index = 0;
+
+          function getStep() {
+            const first = cards[0];
+            const styles = getComputedStyle(first);
+            const cardWidth = first.getBoundingClientRect().width;
+            const gap = parseFloat(getComputedStyle(first.parentElement).gap) || 24;
+            return cardWidth + gap + (parseFloat(styles.marginLeft) || 0);
+          }
+
+          function updateNav() {
+            const maxScroll = viewport.scrollWidth - viewport.clientWidth - 2;
+            prevBtn.disabled = viewport.scrollLeft <= 2;
+            nextBtn.disabled = viewport.scrollLeft >= maxScroll;
+          }
+
+          function goTo(i) {
+            index = Math.max(0, Math.min(cards.length - 1, i));
+            viewport.scrollTo({
+              left: index * getStep(),
+              behavior: "smooth",
+            });
+            updateNav();
+          }
+
+          prevBtn.addEventListener("click", function () {
+            goTo(index - 1);
+          });
+          nextBtn.addEventListener("click", function () {
+            goTo(index + 1);
+          });
+
+          viewport.addEventListener(
+            "scroll",
+            function () {
+              index = Math.round(viewport.scrollLeft / Math.max(getStep(), 1));
+              updateNav();
+            },
+            { passive: true }
+          );
+
+          root.addEventListener("keydown", function (e) {
+            if (e.key === "ArrowLeft") {
+              e.preventDefault();
+              goTo(index - 1);
+            }
+            if (e.key === "ArrowRight") {
+              e.preventDefault();
+              goTo(index + 1);
+            }
+          });
+
+          updateNav();
+          window.addEventListener("resize", updateNav);
+        })(document.getElementById("mediaCarousel"));
+
+        /* --- Custom cursor: CSS transition on transform gives slight lag --- */
+        const cursor = document.getElementById("customCursor");
+
+        function isTouchLike() {
+          return window.matchMedia("(hover: none), (pointer: coarse)").matches;
+        }
+
+        if (!isTouchLike() && cursor) {
+          cursor.style.transform =
+            "translate(" + window.innerWidth / 2 + "px, " + window.innerHeight / 2 + "px)";
+
+          document.addEventListener("mousemove", function (e) {
+            cursor.style.transform = "translate(" + e.clientX + "px, " + e.clientY + "px)";
+          });
+
+          const hoverSelectors =
+            "a, button, .btn, input[type='email'], .carousel-nav, .media-card__action, .bento__link, .video-stage__play, .video-ctrl, .site-nav__link, .site-nav__cta, .site-nav__toggle, .site-nav__logo, .site-footer__social, .site-footer__link";
+          document.querySelectorAll(hoverSelectors).forEach(function (el) {
+            el.addEventListener("mouseenter", function () {
+              cursor.classList.add("is-hover");
+            });
+            el.addEventListener("mouseleave", function () {
+              cursor.classList.remove("is-hover");
+            });
+          });
+        }
+
+        window.addEventListener("load", updateScrollProgress);
+      });
+    })();
+  </script>
+</body>
+</html>
