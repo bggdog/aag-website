@@ -529,25 +529,6 @@
       z-index: 0;
     }
 
-    .showcase-connect::after {
-      content: "";
-      position: absolute;
-      inset: -2px;
-      border-radius: inherit;
-      background: conic-gradient(
-        from 0deg,
-        rgba(100, 200, 255, 0.55),
-        rgba(180, 130, 255, 0.45),
-        rgba(200, 169, 110, 0.5),
-        rgba(90, 220, 200, 0.45),
-        rgba(130, 170, 255, 0.55),
-        rgba(100, 200, 255, 0.55)
-      );
-      animation: showcase-aurora-spin 8s linear infinite;
-      opacity: 0.65;
-      z-index: 0;
-    }
-
     @keyframes showcase-aurora-shift {
       0%,
       100% {
@@ -558,12 +539,6 @@
       50% {
         background-position: 100% 50%;
         opacity: 0.95;
-      }
-    }
-
-    @keyframes showcase-aurora-spin {
-      to {
-        transform: rotate(360deg);
       }
     }
 
