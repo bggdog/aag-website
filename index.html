@@ -465,6 +465,17 @@
       margin: 0 auto;
     }
 
+    .showcase__heading {
+      font-family: var(--font-heading);
+      font-weight: 700;
+      font-size: clamp(2rem, 5vw, 3.25rem);
+      line-height: 1.08;
+      letter-spacing: -0.02em;
+      color: #141414;
+      margin: 0;
+      text-align: center;
+    }
+
     .showcase-video {
       position: relative;
       width: min(84vw, 68rem);
@@ -1589,6 +1600,7 @@
     <section class="stack-section stack-section--showcase showcase" id="showcase" data-section="showcase">
       <div class="section-content section-content--showcase">
         <div class="showcase__layout">
+          <h2 class="showcase__heading">Why we started AAG</h2>
           <div class="showcase-video">
             <div class="showcase-video__placeholder" aria-hidden="true"></div>
             <video
