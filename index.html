@@ -469,8 +469,8 @@
 
     .showcase-video {
       position: relative;
-      width: min(72vw, 56rem);
-      max-height: min(58vh, 32rem);
+      width: min(84vw, 68rem);
+      max-height: min(66vh, 40rem);
       aspect-ratio: 16 / 9;
       border-radius: clamp(1rem, 2vw, 1.5rem);
       overflow: hidden;
@@ -498,28 +498,123 @@
     }
 
     .showcase-connect {
-      animation: showcase-connect-glow 2.8s ease-in-out infinite;
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      text-decoration: none;
+      border-radius: 999px;
+      cursor: none;
+      isolation: isolate;
+      transition: transform 0.25s ease;
     }
 
-    @keyframes showcase-connect-glow {
+    .showcase-connect::before {
+      content: "";
+      position: absolute;
+      inset: -5px;
+      border-radius: inherit;
+      background: linear-gradient(
+        120deg,
+        rgba(90, 180, 255, 0.75),
+        rgba(160, 110, 255, 0.65),
+        rgba(200, 169, 110, 0.7),
+        rgba(80, 210, 190, 0.65),
+        rgba(120, 160, 255, 0.75)
+      );
+      background-size: 320% 320%;
+      animation: showcase-aurora-shift 5.5s ease-in-out infinite;
+      filter: blur(14px);
+      opacity: 0.8;
+      z-index: 0;
+    }
+
+    .showcase-connect::after {
+      content: "";
+      position: absolute;
+      inset: -2px;
+      border-radius: inherit;
+      background: conic-gradient(
+        from 0deg,
+        rgba(100, 200, 255, 0.55),
+        rgba(180, 130, 255, 0.45),
+        rgba(200, 169, 110, 0.5),
+        rgba(90, 220, 200, 0.45),
+        rgba(130, 170, 255, 0.55),
+        rgba(100, 200, 255, 0.55)
+      );
+      animation: showcase-aurora-spin 8s linear infinite;
+      opacity: 0.65;
+      z-index: 0;
+    }
+
+    @keyframes showcase-aurora-shift {
       0%,
       100% {
-        box-shadow: 0 8px 24px rgba(200, 169, 110, 0.22);
+        background-position: 0% 50%;
+        opacity: 0.65;
       }
 
       50% {
-        box-shadow:
-          0 0 24px rgba(200, 169, 110, 0.55),
-          0 0 48px rgba(200, 169, 110, 0.22),
-          0 12px 32px rgba(200, 169, 110, 0.35);
+        background-position: 100% 50%;
+        opacity: 0.95;
       }
     }
 
+    @keyframes showcase-aurora-spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    .showcase-connect__inner {
+      position: relative;
+      z-index: 1;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      border-radius: 999px;
+      padding: 1rem 1.9rem;
+      min-width: 10.5rem;
+      border: 1px solid rgba(255, 255, 255, 0.18);
+    }
+
+    .showcase-connect__video {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      pointer-events: none;
+    }
+
+    .showcase-connect__scrim {
+      position: absolute;
+      inset: 0;
+      background: rgba(13, 13, 13, 0.42);
+      pointer-events: none;
+    }
+
+    .showcase-connect__label {
+      position: relative;
+      z-index: 1;
+      font-family: var(--font-body);
+      font-weight: 500;
+      font-size: 0.95rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: #fff;
+    }
+
     .showcase-connect:hover {
-      animation: none;
-      box-shadow:
-        0 0 28px rgba(200, 169, 110, 0.6),
-        0 12px 32px rgba(200, 169, 110, 0.4);
+      transform: translateY(-2px);
+    }
+
+    .showcase-connect:hover::before {
+      opacity: 1;
+      filter: blur(16px);
     }
 
     /* --- Section 2: media carousel (reference-style) --- */
@@ -1416,8 +1511,8 @@
       }
 
       .showcase-video {
-        width: min(90vw, 56rem);
-        max-height: min(46vh, 24rem);
+        width: min(92vw, 68rem);
+        max-height: min(52vh, 28rem);
       }
 
       .cost-proof__grid {
@@ -1523,15 +1618,23 @@
             <video
               class="showcase-video__player"
               muted
+              loop
               playsinline
-              controls
-              preload="metadata"
+              preload="auto"
               aria-label="AAG overview video"
             >
               <!-- Add when export is ready: <source src="/assets/video/showcase.mp4" type="video/mp4" /> -->
             </video>
           </div>
-          <a href="/contact/" class="btn showcase-connect">Connect</a>
+          <a href="/contact/" class="showcase-connect">
+            <span class="showcase-connect__inner">
+              <video class="showcase-connect__video" muted loop playsinline autoplay preload="auto" aria-hidden="true">
+                <source src="/assets/video/11925567_2160_3840_25fps.mp4" type="video/mp4" />
+              </video>
+              <span class="showcase-connect__scrim" aria-hidden="true"></span>
+              <span class="showcase-connect__label">Connect</span>
+            </span>
+          </a>
         </div>
       </div>
     </section>
@@ -1992,6 +2095,28 @@
           window.addEventListener("resize", updateNav);
         })(document.getElementById("mediaCarousel"));
 
+        /* --- Showcase video: play when section scrolls into view --- */
+        (function initShowcaseVideo() {
+          const section = document.getElementById("showcase");
+          const video = section ? section.querySelector(".showcase-video__player") : null;
+          if (!section || !video) return;
+
+          const observer = new IntersectionObserver(
+            function (entries) {
+              entries.forEach(function (entry) {
+                if (entry.isIntersecting) {
+                  video.play().catch(function () {});
+                } else {
+                  video.pause();
+                }
+              });
+            },
+            { threshold: 0.35 }
+          );
+
+          observer.observe(section);
+        })();
+
         /* --- Custom cursor: CSS transition on transform gives slight lag --- */
         const cursor = document.getElementById("customCursor");
 
@@ -2008,7 +2133,7 @@
           });
 
           const hoverSelectors =
-            "a, button, .btn, input[type='email'], .carousel-nav, .media-card, .bento__link, .video-stage__play, .video-ctrl, .site-nav__link, .site-nav__cta, .site-nav__toggle, .site-nav__logo, .site-footer__social, .site-footer__link";
+            "a, button, .btn, input[type='email'], .carousel-nav, .media-card, .showcase-connect, .bento__link, .video-stage__play, .video-ctrl, .site-nav__link, .site-nav__cta, .site-nav__toggle, .site-nav__logo, .site-footer__social, .site-footer__link";
           document.querySelectorAll(hoverSelectors).forEach(function (el) {
             el.addEventListener("mouseenter", function () {
               cursor.classList.add("is-hover");
