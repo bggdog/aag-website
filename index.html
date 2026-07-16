@@ -262,7 +262,7 @@
     }
 
     .stack-section--services {
-      z-index: 2;
+      z-index: 3;
       display: flex;
       flex-direction: column;
       justify-content: flex-start;
@@ -277,8 +277,19 @@
       color: #f0ebe3;
     }
 
+    .stack-section--showcase {
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      background:
+        radial-gradient(circle at 50% 0%, rgba(200, 169, 110, 0.08), transparent 42%),
+        var(--color-dark);
+      color: #f0ebe3;
+    }
+
     .stack-section--bento {
-      z-index: 3;
+      z-index: 4;
       background:
         radial-gradient(circle at 80% 10%, rgba(200, 169, 110, 0.12), transparent 38%),
         #11120f;
@@ -286,13 +297,13 @@
     }
 
     .stack-section--cost {
-      z-index: 4;
+      z-index: 5;
       background: var(--color-forest);
       color: #f0ebe3;
     }
 
     .stack-section--footer {
-      z-index: 5;
+      z-index: 6;
       background: var(--color-dark);
       color: #f0ebe3;
     }
@@ -432,6 +443,83 @@
       border-color: var(--color-accent);
       color: var(--color-accent);
       box-shadow: none;
+    }
+
+    /* --- Showcase video (below hero) --- */
+    .section-content--showcase {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+      min-height: 100%;
+      padding-top: calc(clamp(3.5rem, 8vw, 4.25rem) + clamp(0.75rem, 2vh, 1.5rem));
+      padding-bottom: clamp(1.25rem, 3vh, 2rem);
+    }
+
+    .showcase__layout {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: clamp(1.25rem, 3vh, 2rem);
+      width: 100%;
+      max-width: 72rem;
+      margin: 0 auto;
+    }
+
+    .showcase-video {
+      position: relative;
+      width: min(72vw, 56rem);
+      max-height: min(58vh, 32rem);
+      aspect-ratio: 16 / 9;
+      border-radius: clamp(1rem, 2vw, 1.5rem);
+      overflow: hidden;
+      border: 1px solid rgba(240, 235, 227, 0.12);
+      box-shadow: 0 24px 48px rgba(0, 0, 0, 0.35);
+    }
+
+    .showcase-video__placeholder {
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(circle at 50% 38%, rgba(200, 169, 110, 0.1), transparent 58%),
+        linear-gradient(165deg, #1a1916 0%, #11100e 48%, #0d0d0d 100%);
+      pointer-events: none;
+    }
+
+    .showcase-video__player {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      background: transparent;
+      z-index: 1;
+    }
+
+    .showcase-connect {
+      animation: showcase-connect-glow 2.8s ease-in-out infinite;
+    }
+
+    @keyframes showcase-connect-glow {
+      0%,
+      100% {
+        box-shadow: 0 8px 24px rgba(200, 169, 110, 0.22);
+      }
+
+      50% {
+        box-shadow:
+          0 0 24px rgba(200, 169, 110, 0.55),
+          0 0 48px rgba(200, 169, 110, 0.22),
+          0 12px 32px rgba(200, 169, 110, 0.35);
+      }
+    }
+
+    .showcase-connect:hover {
+      animation: none;
+      box-shadow:
+        0 0 28px rgba(200, 169, 110, 0.6),
+        0 12px 32px rgba(200, 169, 110, 0.4);
     }
 
     /* --- Section 2: media carousel (reference-style) --- */
@@ -1327,6 +1415,11 @@
         height: 100%;
       }
 
+      .showcase-video {
+        width: min(90vw, 56rem);
+        max-height: min(46vh, 24rem);
+      }
+
       .cost-proof__grid {
         grid-template-columns: 1fr;
         gap: 1rem;
@@ -1421,7 +1514,29 @@
       </div>
     </section>
 
-    <!-- ========== 2. Services — carousel + bento ========== -->
+    <!-- ========== 2. Showcase video ========== -->
+    <section class="stack-section stack-section--showcase showcase" id="showcase" data-section="showcase">
+      <div class="section-content section-content--showcase">
+        <div class="showcase__layout">
+          <div class="showcase-video">
+            <div class="showcase-video__placeholder" aria-hidden="true"></div>
+            <video
+              class="showcase-video__player"
+              muted
+              playsinline
+              controls
+              preload="metadata"
+              aria-label="AAG overview video"
+            >
+              <!-- Add when export is ready: <source src="/assets/video/showcase.mp4" type="video/mp4" /> -->
+            </video>
+          </div>
+          <a href="/contact/" class="btn showcase-connect">Connect</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== 3. Services — carousel + bento ========== -->
     <section class="stack-section stack-section--services services" id="services" data-section="services">
       <div class="section-content section-content--carousel">
         <div class="media-carousel" id="mediaCarousel" tabindex="0" aria-roledescription="carousel" aria-label="AAG services">
