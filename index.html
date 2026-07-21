@@ -10,6 +10,8 @@
   <link rel="icon" type="image/png" href="/icons/favicon.png" />
   <link rel="apple-touch-icon" href="/icons/favicon.png" />
   <link rel="manifest" href="/site.webmanifest" />
+  <link rel="preload" as="video" href="/assets/video/Jackson%20Explainer%20Video.mp4" type="video/mp4" />
+  <link rel="preload" as="image" href="/assets/images/jackson-explainer-poster.jpg" />
   <style>
     /* --- CSS variables (palette) --- */
     :root {
@@ -466,6 +468,15 @@
       padding: 0 clamp(1rem, 4vw, 3rem);
     }
 
+    .showcase__media {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: clamp(1.25rem, 3vh, 2rem);
+      width: 100%;
+      margin-top: clamp(1.75rem, 4.5vh, 3.25rem);
+    }
+
     .showcase__stage {
       position: relative;
       width: min(84vw, 68rem);
@@ -512,6 +523,38 @@
         radial-gradient(circle at 50% 38%, rgba(200, 169, 110, 0.1), transparent 58%),
         linear-gradient(165deg, #1a1916 0%, #11100e 48%, #0d0d0d 100%);
       pointer-events: none;
+    }
+
+    .showcase-video__loader {
+      position: absolute;
+      inset: 0;
+      z-index: 3;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(20, 20, 20, 0.28);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.25s ease;
+    }
+
+    .showcase-video.is-loading .showcase-video__loader {
+      opacity: 1;
+    }
+
+    .showcase-video__loader-ring {
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      border: 2px solid rgba(200, 169, 110, 0.22);
+      border-top-color: var(--color-accent);
+      animation: showcase-loader-spin 0.85s linear infinite;
+    }
+
+    @keyframes showcase-loader-spin {
+      to {
+        transform: rotate(360deg);
+      }
     }
 
     .showcase-video__player {
@@ -1028,15 +1071,41 @@
 
     .cost-video-stage {
       position: relative;
-      height: min(calc(100vh - 7rem), 52rem);
-      width: auto;
+      width: 100%;
       max-width: 100%;
-      aspect-ratio: 9 / 16;
+      aspect-ratio: 16 / 9;
+      max-height: min(calc(100vh - 9rem), 32rem);
       border-radius: clamp(1rem, 2vw, 1.5rem);
       overflow: hidden;
       background: linear-gradient(165deg, #243528 0%, #141f17 48%, #0d1410 100%);
       border: 1px solid rgba(240, 235, 227, 0.12);
       box-shadow: 0 24px 48px rgba(0, 0, 0, 0.35);
+    }
+
+    .cost-video-stage__loader {
+      position: absolute;
+      inset: 0;
+      z-index: 3;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(13, 20, 16, 0.35);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.25s ease;
+    }
+
+    .cost-video-stage.is-loading .cost-video-stage__loader {
+      opacity: 1;
+    }
+
+    .cost-video-stage__loader-ring {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      border: 2px solid rgba(200, 169, 110, 0.22);
+      border-top-color: var(--color-accent);
+      animation: showcase-loader-spin 0.85s linear infinite;
     }
 
     .cost-video-stage__player {
@@ -1045,6 +1114,7 @@
       width: 100%;
       height: 100%;
       object-fit: cover;
+      object-position: center top;
       background: #0d1410;
       z-index: 2;
     }
@@ -1516,6 +1586,10 @@
         height: 100%;
       }
 
+      .showcase__media {
+        margin-top: clamp(1.25rem, 3vh, 2rem);
+      }
+
       .showcase__stage {
         width: min(92vw, 68rem);
         max-height: min(46vh, 28rem);
@@ -1529,17 +1603,17 @@
 
       .cost-proof__grid {
         grid-template-columns: 1fr;
-        gap: 1rem;
+        gap: clamp(1rem, 3vw, 1.5rem);
       }
 
       .cost-proof__video {
-        display: none;
+        display: flex;
+        order: -1;
       }
 
       .cost-video-stage {
-        height: min(42vh, 24rem);
-        width: auto;
-        max-width: min(92vw, 22rem);
+        max-height: min(40vh, 18rem);
+        max-width: min(92vw, 36rem);
         margin: 0 auto;
       }
 
@@ -1625,29 +1699,36 @@
     <section class="stack-section stack-section--showcase showcase" id="showcase" data-section="showcase">
       <div class="section-content section-content--showcase">
         <div class="showcase__layout">
-          <div class="showcase__stage">
-            <h2 class="showcase__heading">Why we started AAG</h2>
-            <div class="showcase-video">
-              <div class="showcase-video__placeholder" aria-hidden="true"></div>
-              <video
-                class="showcase-video__player"
-                playsinline
-                preload="auto"
-                aria-label="Jackson explainer video"
-              >
-                <source src="/assets/video/Jackson Explainer Video.mp4" type="video/mp4" />
-              </video>
+          <div class="showcase__media">
+            <div class="showcase__stage">
+              <h2 class="showcase__heading">Why we started AAG</h2>
+              <div class="showcase-video">
+                <div class="showcase-video__placeholder" aria-hidden="true"></div>
+                <div class="showcase-video__loader" aria-hidden="true">
+                  <span class="showcase-video__loader-ring"></span>
+                </div>
+                <video
+                  class="showcase-video__player"
+                  playsinline
+                  preload="auto"
+                  fetchpriority="high"
+                  poster="/assets/images/jackson-explainer-poster.jpg"
+                  aria-label="Jackson explainer video"
+                >
+                  <source src="/assets/video/Jackson Explainer Video.mp4" type="video/mp4" />
+                </video>
+              </div>
             </div>
+            <a href="/contact/" class="showcase-connect">
+              <span class="showcase-connect__inner">
+                <video class="showcase-connect__video" muted loop playsinline autoplay preload="auto" aria-hidden="true">
+                  <source src="/assets/video/11925567_2160_3840_25fps.mp4" type="video/mp4" />
+                </video>
+                <span class="showcase-connect__scrim" aria-hidden="true"></span>
+                <span class="showcase-connect__label">Connect</span>
+              </span>
+            </a>
           </div>
-          <a href="/contact/" class="showcase-connect">
-            <span class="showcase-connect__inner">
-              <video class="showcase-connect__video" muted loop playsinline autoplay preload="auto" aria-hidden="true">
-                <source src="/assets/video/11925567_2160_3840_25fps.mp4" type="video/mp4" />
-              </video>
-              <span class="showcase-connect__scrim" aria-hidden="true"></span>
-              <span class="showcase-connect__label">Connect</span>
-            </span>
-          </a>
         </div>
       </div>
     </section>
@@ -1818,11 +1899,18 @@
         <div class="inner cost-proof__grid">
           <div class="cost-proof__video anim-el">
             <div class="cost-video-stage">
-              <img
+              <div class="cost-video-stage__loader" aria-hidden="true">
+                <span class="cost-video-stage__loader-ring"></span>
+              </div>
+              <video
                 class="cost-video-stage__player"
-                src="/assets/images/cost-breakdown.png"
-                alt="Cost breakdown showing the time and expense of managing back-office work without AAG"
-              />
+                playsinline
+                preload="metadata"
+                poster="/assets/images/jacob-testimonial-poster.jpg"
+                aria-label="Jacob testimonial video"
+              >
+                <source src="/assets/video/Jacob Testimonial_2.web.mp4" type="video/mp4" />
+              </video>
             </div>
           </div>
 
@@ -2108,26 +2196,425 @@
           window.addEventListener("resize", updateNav);
         })(document.getElementById("mediaCarousel"));
 
-        /* --- Showcase video: play when section scrolls into view --- */
+        /* --- Showcase video: preload early, play when ready on scroll --- */
         (function initShowcaseVideo() {
           const section = document.getElementById("showcase");
+          const container = section ? section.querySelector(".showcase-video") : null;
           const video = section ? section.querySelector(".showcase-video__player") : null;
-          if (!section || !video) return;
+          if (!section || !container || !video) return;
 
-          const observer = new IntersectionObserver(
+          let isVisible = false;
+          let pendingPlay = false;
+          let loaderTimeout = null;
+
+          function setLoading(isLoading) {
+            container.classList.toggle("is-loading", isLoading);
+          }
+
+          function clearLoaderDelay() {
+            if (loaderTimeout) {
+              clearTimeout(loaderTimeout);
+              loaderTimeout = null;
+            }
+          }
+
+          function showLoaderSoon() {
+            clearLoaderDelay();
+            loaderTimeout = setTimeout(function () {
+              if (isVisible && (video.paused || video.readyState < HTMLMediaElement.HAVE_FUTURE_DATA)) {
+                setLoading(true);
+              }
+            }, 120);
+          }
+
+          function hideLoader() {
+            clearLoaderDelay();
+            setLoading(false);
+          }
+
+          function tryPlay() {
+            if (!isVisible) return Promise.resolve();
+            pendingPlay = true;
+            showLoaderSoon();
+            return video.play().catch(function () {
+              pendingPlay = false;
+            }).then(function () {
+              pendingPlay = false;
+            });
+          }
+
+          function playWhenReady() {
+            if (video.readyState >= HTMLMediaElement.HAVE_CURRENT_DATA) {
+              hideLoader();
+              return tryPlay();
+            }
+
+            function onCanPlay() {
+              video.removeEventListener("canplay", onCanPlay);
+              hideLoader();
+              if (isVisible) tryPlay();
+            }
+
+            showLoaderSoon();
+            video.addEventListener("canplay", onCanPlay);
+          }
+
+          function onVisible() {
+            isVisible = true;
+            if (video.readyState === HTMLMediaElement.HAVE_NOTHING) {
+              video.load();
+            }
+            playWhenReady();
+          }
+
+          function onHidden() {
+            isVisible = false;
+            pendingPlay = false;
+            clearLoaderDelay();
+            hideLoader();
+            video.pause();
+          }
+
+          function warmVideo() {
+            video.preload = "auto";
+            if (video.readyState === HTMLMediaElement.HAVE_NOTHING) {
+              video.load();
+            }
+          }
+
+          const playObserver = new IntersectionObserver(
             function (entries) {
               entries.forEach(function (entry) {
-                if (entry.isIntersecting) {
-                  video.play().catch(function () {});
-                } else {
-                  video.pause();
-                }
+                if (entry.isIntersecting) onVisible();
+                else onHidden();
               });
             },
-            { threshold: 0.35 }
+            { threshold: 0.15, rootMargin: "200px 0px" }
           );
 
-          observer.observe(section);
+          const preloadObserver = new IntersectionObserver(
+            function (entries) {
+              entries.forEach(function (entry) {
+                if (!entry.isIntersecting) return;
+                warmVideo();
+                preloadObserver.disconnect();
+              });
+            },
+            { rootMargin: "100% 0px" }
+          );
+
+          function unlockAfterInteraction() {
+            warmVideo();
+            if (isVisible && video.paused) {
+              tryPlay();
+            }
+          }
+
+          ["pointerdown", "keydown"].forEach(function (type) {
+            document.addEventListener(type, unlockAfterInteraction, {
+              once: true,
+              passive: true,
+            });
+          });
+
+          video.addEventListener("loadstart", showLoaderSoon);
+          video.addEventListener("waiting", showLoaderSoon);
+          video.addEventListener("stalled", showLoaderSoon);
+          video.addEventListener("loadeddata", function () {
+            if (video.readyState >= HTMLMediaElement.HAVE_CURRENT_DATA) {
+              hideLoader();
+            }
+            if (isVisible && video.paused && !pendingPlay) {
+              tryPlay();
+            }
+          });
+          video.addEventListener("playing", hideLoader);
+          video.addEventListener("canplaythrough", hideLoader);
+          video.addEventListener("error", hideLoader);
+
+          warmVideo();
+          preloadObserver.observe(section);
+          playObserver.observe(section);
+
+          const hero = document.querySelector(".stack-section--hero");
+          if (hero) {
+            const heroObserver = new IntersectionObserver(
+              function (entries) {
+                entries.forEach(function (entry) {
+                  if (!entry.isIntersecting) {
+                    warmVideo();
+                    heroObserver.disconnect();
+                  }
+                });
+              },
+              { threshold: 0.2 }
+            );
+            heroObserver.observe(hero);
+          }
+        })();
+
+        /* --- Cost section video: play when scrolled into view --- */
+        (function initCostVideo() {
+          const section = document.getElementById("cost");
+          const stage = section ? section.querySelector(".cost-video-stage") : null;
+          const video = section ? section.querySelector(".cost-video-stage__player") : null;
+          if (!section || !stage || !video) return;
+
+          let isVisible = false;
+          let pendingPlay = false;
+          let loaderTimeout = null;
+
+          function setLoading(isLoading) {
+            stage.classList.toggle("is-loading", isLoading);
+          }
+
+          function clearLoaderDelay() {
+            if (loaderTimeout) {
+              clearTimeout(loaderTimeout);
+              loaderTimeout = null;
+            }
+          }
+
+          function showLoaderSoon() {
+            clearLoaderDelay();
+            loaderTimeout = setTimeout(function () {
+              if (isVisible && (video.paused || video.readyState < HTMLMediaElement.HAVE_FUTURE_DATA)) {
+                setLoading(true);
+              }
+            }, 120);
+          }
+
+          function hideLoader() {
+            clearLoaderDelay();
+            setLoading(false);
+          }
+
+          function warmVideo() {
+            video.preload = "auto";
+            if (video.readyState === HTMLMediaElement.HAVE_NOTHING) {
+              video.load();
+            }
+          }
+
+          function tryPlay() {
+            if (!isVisible) return Promise.resolve();
+            pendingPlay = true;
+            showLoaderSoon();
+            return video.play().catch(function () {
+              pendingPlay = false;
+            }).then(function () {
+              pendingPlay = false;
+            });
+          }
+
+          function playWhenReady() {
+            if (video.readyState >= HTMLMediaElement.HAVE_CURRENT_DATA) {
+              hideLoader();
+              return tryPlay();
+            }
+
+            function onCanPlay() {
+              video.removeEventListener("canplay", onCanPlay);
+              hideLoader();
+              if (isVisible) tryPlay();
+            }
+
+            showLoaderSoon();
+            video.addEventListener("canplay", onCanPlay);
+          }
+
+          function onVisible() {
+            isVisible = true;
+            warmVideo();
+            playWhenReady();
+          }
+
+          function onHidden() {
+            isVisible = false;
+            pendingPlay = false;
+            clearLoaderDelay();
+            hideLoader();
+            video.pause();
+          }
+
+          const playObserver = new IntersectionObserver(
+            function (entries) {
+              entries.forEach(function (entry) {
+                if (entry.isIntersecting) onVisible();
+                else onHidden();
+              });
+            },
+            { threshold: 0.25, rootMargin: "120px 0px" }
+          );
+
+          const preloadObserver = new IntersectionObserver(
+            function (entries) {
+              entries.forEach(function (entry) {
+                if (!entry.isIntersecting) return;
+                warmVideo();
+                preloadObserver.disconnect();
+              });
+            },
+            { rootMargin: "80% 0px" }
+          );
+
+          function unlockAfterInteraction() {
+            warmVideo();
+            if (isVisible && video.paused) tryPlay();
+          }
+
+          ["pointerdown", "keydown"].forEach(function (type) {
+            document.addEventListener(type, unlockAfterInteraction, {
+              once: true,
+              passive: true,
+            });
+          });
+
+          video.addEventListener("loadstart", showLoaderSoon);
+          video.addEventListener("waiting", showLoaderSoon);
+          video.addEventListener("stalled", showLoaderSoon);
+          video.addEventListener("loadeddata", function () {
+            if (video.readyState >= HTMLMediaElement.HAVE_CURRENT_DATA) hideLoader();
+            if (isVisible && video.paused && !pendingPlay) tryPlay();
+          });
+          video.addEventListener("playing", hideLoader);
+          video.addEventListener("canplaythrough", hideLoader);
+          video.addEventListener("error", hideLoader);
+
+          preloadObserver.observe(section);
+          playObserver.observe(section);
+        })();
+
+        /* --- Cost section video: play when scrolled into view --- */
+        (function initCostVideo() {
+          const section = document.getElementById("cost");
+          const stage = section ? section.querySelector(".cost-video-stage") : null;
+          const video = section ? section.querySelector(".cost-video-stage__player") : null;
+          if (!section || !stage || !video) return;
+
+          let isVisible = false;
+          let pendingPlay = false;
+          let loaderTimeout = null;
+
+          function setLoading(isLoading) {
+            stage.classList.toggle("is-loading", isLoading);
+          }
+
+          function clearLoaderDelay() {
+            if (loaderTimeout) {
+              clearTimeout(loaderTimeout);
+              loaderTimeout = null;
+            }
+          }
+
+          function showLoaderSoon() {
+            clearLoaderDelay();
+            loaderTimeout = setTimeout(function () {
+              if (isVisible && (video.paused || video.readyState < HTMLMediaElement.HAVE_FUTURE_DATA)) {
+                setLoading(true);
+              }
+            }, 120);
+          }
+
+          function hideLoader() {
+            clearLoaderDelay();
+            setLoading(false);
+          }
+
+          function warmVideo() {
+            video.preload = "auto";
+            if (video.readyState === HTMLMediaElement.HAVE_NOTHING) {
+              video.load();
+            }
+          }
+
+          function tryPlay() {
+            if (!isVisible) return Promise.resolve();
+            pendingPlay = true;
+            showLoaderSoon();
+            return video.play().catch(function () {
+              pendingPlay = false;
+            }).then(function () {
+              pendingPlay = false;
+            });
+          }
+
+          function playWhenReady() {
+            if (video.readyState >= HTMLMediaElement.HAVE_CURRENT_DATA) {
+              hideLoader();
+              return tryPlay();
+            }
+
+            function onCanPlay() {
+              video.removeEventListener("canplay", onCanPlay);
+              hideLoader();
+              if (isVisible) tryPlay();
+            }
+
+            showLoaderSoon();
+            video.addEventListener("canplay", onCanPlay);
+          }
+
+          function onVisible() {
+            isVisible = true;
+            warmVideo();
+            playWhenReady();
+          }
+
+          function onHidden() {
+            isVisible = false;
+            pendingPlay = false;
+            clearLoaderDelay();
+            hideLoader();
+            video.pause();
+          }
+
+          const playObserver = new IntersectionObserver(
+            function (entries) {
+              entries.forEach(function (entry) {
+                if (entry.isIntersecting) onVisible();
+                else onHidden();
+              });
+            },
+            { threshold: 0.25, rootMargin: "120px 0px" }
+          );
+
+          const preloadObserver = new IntersectionObserver(
+            function (entries) {
+              entries.forEach(function (entry) {
+                if (!entry.isIntersecting) return;
+                warmVideo();
+                preloadObserver.disconnect();
+              });
+            },
+            { rootMargin: "80% 0px" }
+          );
+
+          function unlockAfterInteraction() {
+            warmVideo();
+            if (isVisible && video.paused) tryPlay();
+          }
+
+          ["pointerdown", "keydown"].forEach(function (type) {
+            document.addEventListener(type, unlockAfterInteraction, {
+              once: true,
+              passive: true,
+            });
+          });
+
+          video.addEventListener("loadstart", showLoaderSoon);
+          video.addEventListener("waiting", showLoaderSoon);
+          video.addEventListener("stalled", showLoaderSoon);
+          video.addEventListener("loadeddata", function () {
+            if (video.readyState >= HTMLMediaElement.HAVE_CURRENT_DATA) hideLoader();
+            if (isVisible && video.paused && !pendingPlay) tryPlay();
+          });
+          video.addEventListener("playing", hideLoader);
+          video.addEventListener("canplaythrough", hideLoader);
+          video.addEventListener("error", hideLoader);
+
+          preloadObserver.observe(section);
+          playObserver.observe(section);
         })();
 
         /* --- Custom cursor: CSS transition on transform gives slight lag --- */
