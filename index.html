@@ -10,8 +10,7 @@
   <link rel="icon" type="image/png" href="/icons/favicon.png" />
   <link rel="apple-touch-icon" href="/icons/favicon.png" />
   <link rel="manifest" href="/site.webmanifest" />
-  <link rel="preload" as="video" href="/assets/video/Jackson%20Explainer%20Video.mp4" type="video/mp4" />
-  <link rel="preload" as="image" href="/assets/images/jackson-explainer-poster.jpg" />
+  <link rel="preconnect" href="https://www.youtube-nocookie.com" />
   <style>
     /* --- CSS variables (palette) --- */
     :root {
@@ -562,8 +561,8 @@
       inset: 0;
       width: 100%;
       height: 100%;
-      object-fit: cover;
-      background: transparent;
+      border: 0;
+      background: #0d0d0d;
       z-index: 1;
     }
 
@@ -1113,8 +1112,7 @@
       inset: 0;
       width: 100%;
       height: 100%;
-      object-fit: cover;
-      object-position: center top;
+      border: 0;
       background: #0d1410;
       z-index: 2;
     }
@@ -1707,16 +1705,13 @@
                 <div class="showcase-video__loader" aria-hidden="true">
                   <span class="showcase-video__loader-ring"></span>
                 </div>
-                <video
+                <iframe
                   class="showcase-video__player"
-                  playsinline
-                  preload="auto"
-                  fetchpriority="high"
-                  poster="/assets/images/jackson-explainer-poster.jpg"
-                  aria-label="Jackson explainer video"
-                >
-                  <source src="/assets/video/Jackson Explainer Video.mp4" type="video/mp4" />
-                </video>
+                  title="Jackson explainer video"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  allowfullscreen
+                  loading="lazy"
+                ></iframe>
               </div>
             </div>
             <a href="/contact/" class="showcase-connect">
@@ -1902,15 +1897,13 @@
               <div class="cost-video-stage__loader" aria-hidden="true">
                 <span class="cost-video-stage__loader-ring"></span>
               </div>
-              <video
+              <iframe
                 class="cost-video-stage__player"
-                playsinline
-                preload="metadata"
-                poster="/assets/images/jacob-testimonial-poster.jpg"
-                aria-label="Jacob testimonial video"
-              >
-                <source src="/assets/video/Jacob Testimonial_2.web.mp4" type="video/mp4" />
-              </video>
+                title="Jacob testimonial video"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                allowfullscreen
+                loading="lazy"
+              ></iframe>
             </div>
           </div>
 
@@ -2196,425 +2189,94 @@
           window.addEventListener("resize", updateNav);
         })(document.getElementById("mediaCarousel"));
 
-        /* --- Showcase video: preload early, play when ready on scroll --- */
+        /* --- Showcase: lazy YouTube embed autoplays on scroll --- */
         (function initShowcaseVideo() {
           const section = document.getElementById("showcase");
           const container = section ? section.querySelector(".showcase-video") : null;
-          const video = section ? section.querySelector(".showcase-video__player") : null;
-          if (!section || !container || !video) return;
+          const iframe = section ? section.querySelector(".showcase-video__player") : null;
+          if (!section || !container || !iframe) return;
 
-          let isVisible = false;
-          let pendingPlay = false;
-          let loaderTimeout = null;
+          const embedUrl =
+            "https://www.youtube-nocookie.com/embed/98pxRNl5D_M?autoplay=1&mute=1&playsinline=1&rel=0&modestbranding=1&controls=1";
 
           function setLoading(isLoading) {
             container.classList.toggle("is-loading", isLoading);
           }
 
-          function clearLoaderDelay() {
-            if (loaderTimeout) {
-              clearTimeout(loaderTimeout);
-              loaderTimeout = null;
-            }
+          function loadEmbed() {
+            if (iframe.dataset.loaded === "true") return;
+            setLoading(true);
+            iframe.src = embedUrl;
+            iframe.dataset.loaded = "true";
           }
 
-          function showLoaderSoon() {
-            clearLoaderDelay();
-            loaderTimeout = setTimeout(function () {
-              if (isVisible && (video.paused || video.readyState < HTMLMediaElement.HAVE_FUTURE_DATA)) {
-                setLoading(true);
-              }
-            }, 120);
-          }
-
-          function hideLoader() {
-            clearLoaderDelay();
+          function unloadEmbed() {
+            if (iframe.dataset.loaded !== "true") return;
+            iframe.removeAttribute("src");
+            delete iframe.dataset.loaded;
             setLoading(false);
           }
 
-          function tryPlay() {
-            if (!isVisible) return Promise.resolve();
-            pendingPlay = true;
-            showLoaderSoon();
-            return video.play().catch(function () {
-              pendingPlay = false;
-            }).then(function () {
-              pendingPlay = false;
-            });
-          }
-
-          function playWhenReady() {
-            if (video.readyState >= HTMLMediaElement.HAVE_CURRENT_DATA) {
-              hideLoader();
-              return tryPlay();
-            }
-
-            function onCanPlay() {
-              video.removeEventListener("canplay", onCanPlay);
-              hideLoader();
-              if (isVisible) tryPlay();
-            }
-
-            showLoaderSoon();
-            video.addEventListener("canplay", onCanPlay);
-          }
-
-          function onVisible() {
-            isVisible = true;
-            if (video.readyState === HTMLMediaElement.HAVE_NOTHING) {
-              video.load();
-            }
-            playWhenReady();
-          }
-
-          function onHidden() {
-            isVisible = false;
-            pendingPlay = false;
-            clearLoaderDelay();
-            hideLoader();
-            video.pause();
-          }
-
-          function warmVideo() {
-            video.preload = "auto";
-            if (video.readyState === HTMLMediaElement.HAVE_NOTHING) {
-              video.load();
-            }
-          }
-
-          const playObserver = new IntersectionObserver(
-            function (entries) {
-              entries.forEach(function (entry) {
-                if (entry.isIntersecting) onVisible();
-                else onHidden();
-              });
-            },
-            { threshold: 0.15, rootMargin: "200px 0px" }
-          );
-
-          const preloadObserver = new IntersectionObserver(
-            function (entries) {
-              entries.forEach(function (entry) {
-                if (!entry.isIntersecting) return;
-                warmVideo();
-                preloadObserver.disconnect();
-              });
-            },
-            { rootMargin: "100% 0px" }
-          );
-
-          function unlockAfterInteraction() {
-            warmVideo();
-            if (isVisible && video.paused) {
-              tryPlay();
-            }
-          }
-
-          ["pointerdown", "keydown"].forEach(function (type) {
-            document.addEventListener(type, unlockAfterInteraction, {
-              once: true,
-              passive: true,
-            });
+          iframe.addEventListener("load", function () {
+            if (iframe.dataset.loaded === "true") setLoading(false);
           });
 
-          video.addEventListener("loadstart", showLoaderSoon);
-          video.addEventListener("waiting", showLoaderSoon);
-          video.addEventListener("stalled", showLoaderSoon);
-          video.addEventListener("loadeddata", function () {
-            if (video.readyState >= HTMLMediaElement.HAVE_CURRENT_DATA) {
-              hideLoader();
-            }
-            if (isVisible && video.paused && !pendingPlay) {
-              tryPlay();
-            }
-          });
-          video.addEventListener("playing", hideLoader);
-          video.addEventListener("canplaythrough", hideLoader);
-          video.addEventListener("error", hideLoader);
+          const observer = new IntersectionObserver(
+            function (entries) {
+              entries.forEach(function (entry) {
+                if (entry.isIntersecting) loadEmbed();
+                else unloadEmbed();
+              });
+            },
+            { threshold: 0.2, rootMargin: "200px 0px" }
+          );
 
-          warmVideo();
-          preloadObserver.observe(section);
-          playObserver.observe(section);
-
-          const hero = document.querySelector(".stack-section--hero");
-          if (hero) {
-            const heroObserver = new IntersectionObserver(
-              function (entries) {
-                entries.forEach(function (entry) {
-                  if (!entry.isIntersecting) {
-                    warmVideo();
-                    heroObserver.disconnect();
-                  }
-                });
-              },
-              { threshold: 0.2 }
-            );
-            heroObserver.observe(hero);
-          }
+          observer.observe(section);
         })();
 
-        /* --- Cost section video: play when scrolled into view --- */
+        /* --- Cost section: lazy YouTube embed autoplays on scroll --- */
         (function initCostVideo() {
           const section = document.getElementById("cost");
           const stage = section ? section.querySelector(".cost-video-stage") : null;
-          const video = section ? section.querySelector(".cost-video-stage__player") : null;
-          if (!section || !stage || !video) return;
+          const iframe = section ? section.querySelector(".cost-video-stage__player") : null;
+          if (!section || !stage || !iframe) return;
 
-          let isVisible = false;
-          let pendingPlay = false;
-          let loaderTimeout = null;
+          const embedUrl =
+            "https://www.youtube-nocookie.com/embed/KmUy6F0VU24?autoplay=1&mute=1&playsinline=1&rel=0&modestbranding=1&controls=1";
 
           function setLoading(isLoading) {
             stage.classList.toggle("is-loading", isLoading);
           }
 
-          function clearLoaderDelay() {
-            if (loaderTimeout) {
-              clearTimeout(loaderTimeout);
-              loaderTimeout = null;
-            }
+          function loadEmbed() {
+            if (iframe.dataset.loaded === "true") return;
+            setLoading(true);
+            iframe.src = embedUrl;
+            iframe.dataset.loaded = "true";
           }
 
-          function showLoaderSoon() {
-            clearLoaderDelay();
-            loaderTimeout = setTimeout(function () {
-              if (isVisible && (video.paused || video.readyState < HTMLMediaElement.HAVE_FUTURE_DATA)) {
-                setLoading(true);
-              }
-            }, 120);
-          }
-
-          function hideLoader() {
-            clearLoaderDelay();
+          function unloadEmbed() {
+            if (iframe.dataset.loaded !== "true") return;
+            iframe.removeAttribute("src");
+            delete iframe.dataset.loaded;
             setLoading(false);
           }
 
-          function warmVideo() {
-            video.preload = "auto";
-            if (video.readyState === HTMLMediaElement.HAVE_NOTHING) {
-              video.load();
-            }
-          }
+          iframe.addEventListener("load", function () {
+            if (iframe.dataset.loaded === "true") setLoading(false);
+          });
 
-          function tryPlay() {
-            if (!isVisible) return Promise.resolve();
-            pendingPlay = true;
-            showLoaderSoon();
-            return video.play().catch(function () {
-              pendingPlay = false;
-            }).then(function () {
-              pendingPlay = false;
-            });
-          }
-
-          function playWhenReady() {
-            if (video.readyState >= HTMLMediaElement.HAVE_CURRENT_DATA) {
-              hideLoader();
-              return tryPlay();
-            }
-
-            function onCanPlay() {
-              video.removeEventListener("canplay", onCanPlay);
-              hideLoader();
-              if (isVisible) tryPlay();
-            }
-
-            showLoaderSoon();
-            video.addEventListener("canplay", onCanPlay);
-          }
-
-          function onVisible() {
-            isVisible = true;
-            warmVideo();
-            playWhenReady();
-          }
-
-          function onHidden() {
-            isVisible = false;
-            pendingPlay = false;
-            clearLoaderDelay();
-            hideLoader();
-            video.pause();
-          }
-
-          const playObserver = new IntersectionObserver(
+          const observer = new IntersectionObserver(
             function (entries) {
               entries.forEach(function (entry) {
-                if (entry.isIntersecting) onVisible();
-                else onHidden();
+                if (entry.isIntersecting) loadEmbed();
+                else unloadEmbed();
               });
             },
             { threshold: 0.25, rootMargin: "120px 0px" }
           );
 
-          const preloadObserver = new IntersectionObserver(
-            function (entries) {
-              entries.forEach(function (entry) {
-                if (!entry.isIntersecting) return;
-                warmVideo();
-                preloadObserver.disconnect();
-              });
-            },
-            { rootMargin: "80% 0px" }
-          );
-
-          function unlockAfterInteraction() {
-            warmVideo();
-            if (isVisible && video.paused) tryPlay();
-          }
-
-          ["pointerdown", "keydown"].forEach(function (type) {
-            document.addEventListener(type, unlockAfterInteraction, {
-              once: true,
-              passive: true,
-            });
-          });
-
-          video.addEventListener("loadstart", showLoaderSoon);
-          video.addEventListener("waiting", showLoaderSoon);
-          video.addEventListener("stalled", showLoaderSoon);
-          video.addEventListener("loadeddata", function () {
-            if (video.readyState >= HTMLMediaElement.HAVE_CURRENT_DATA) hideLoader();
-            if (isVisible && video.paused && !pendingPlay) tryPlay();
-          });
-          video.addEventListener("playing", hideLoader);
-          video.addEventListener("canplaythrough", hideLoader);
-          video.addEventListener("error", hideLoader);
-
-          preloadObserver.observe(section);
-          playObserver.observe(section);
-        })();
-
-        /* --- Cost section video: play when scrolled into view --- */
-        (function initCostVideo() {
-          const section = document.getElementById("cost");
-          const stage = section ? section.querySelector(".cost-video-stage") : null;
-          const video = section ? section.querySelector(".cost-video-stage__player") : null;
-          if (!section || !stage || !video) return;
-
-          let isVisible = false;
-          let pendingPlay = false;
-          let loaderTimeout = null;
-
-          function setLoading(isLoading) {
-            stage.classList.toggle("is-loading", isLoading);
-          }
-
-          function clearLoaderDelay() {
-            if (loaderTimeout) {
-              clearTimeout(loaderTimeout);
-              loaderTimeout = null;
-            }
-          }
-
-          function showLoaderSoon() {
-            clearLoaderDelay();
-            loaderTimeout = setTimeout(function () {
-              if (isVisible && (video.paused || video.readyState < HTMLMediaElement.HAVE_FUTURE_DATA)) {
-                setLoading(true);
-              }
-            }, 120);
-          }
-
-          function hideLoader() {
-            clearLoaderDelay();
-            setLoading(false);
-          }
-
-          function warmVideo() {
-            video.preload = "auto";
-            if (video.readyState === HTMLMediaElement.HAVE_NOTHING) {
-              video.load();
-            }
-          }
-
-          function tryPlay() {
-            if (!isVisible) return Promise.resolve();
-            pendingPlay = true;
-            showLoaderSoon();
-            return video.play().catch(function () {
-              pendingPlay = false;
-            }).then(function () {
-              pendingPlay = false;
-            });
-          }
-
-          function playWhenReady() {
-            if (video.readyState >= HTMLMediaElement.HAVE_CURRENT_DATA) {
-              hideLoader();
-              return tryPlay();
-            }
-
-            function onCanPlay() {
-              video.removeEventListener("canplay", onCanPlay);
-              hideLoader();
-              if (isVisible) tryPlay();
-            }
-
-            showLoaderSoon();
-            video.addEventListener("canplay", onCanPlay);
-          }
-
-          function onVisible() {
-            isVisible = true;
-            warmVideo();
-            playWhenReady();
-          }
-
-          function onHidden() {
-            isVisible = false;
-            pendingPlay = false;
-            clearLoaderDelay();
-            hideLoader();
-            video.pause();
-          }
-
-          const playObserver = new IntersectionObserver(
-            function (entries) {
-              entries.forEach(function (entry) {
-                if (entry.isIntersecting) onVisible();
-                else onHidden();
-              });
-            },
-            { threshold: 0.25, rootMargin: "120px 0px" }
-          );
-
-          const preloadObserver = new IntersectionObserver(
-            function (entries) {
-              entries.forEach(function (entry) {
-                if (!entry.isIntersecting) return;
-                warmVideo();
-                preloadObserver.disconnect();
-              });
-            },
-            { rootMargin: "80% 0px" }
-          );
-
-          function unlockAfterInteraction() {
-            warmVideo();
-            if (isVisible && video.paused) tryPlay();
-          }
-
-          ["pointerdown", "keydown"].forEach(function (type) {
-            document.addEventListener(type, unlockAfterInteraction, {
-              once: true,
-              passive: true,
-            });
-          });
-
-          video.addEventListener("loadstart", showLoaderSoon);
-          video.addEventListener("waiting", showLoaderSoon);
-          video.addEventListener("stalled", showLoaderSoon);
-          video.addEventListener("loadeddata", function () {
-            if (video.readyState >= HTMLMediaElement.HAVE_CURRENT_DATA) hideLoader();
-            if (isVisible && video.paused && !pendingPlay) tryPlay();
-          });
-          video.addEventListener("playing", hideLoader);
-          video.addEventListener("canplaythrough", hideLoader);
-          video.addEventListener("error", hideLoader);
-
-          preloadObserver.observe(section);
-          playObserver.observe(section);
+          observer.observe(section);
         })();
 
         /* --- Custom cursor: CSS transition on transform gives slight lag --- */
