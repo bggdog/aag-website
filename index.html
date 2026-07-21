@@ -488,7 +488,7 @@
       position: absolute;
       left: 50%;
       bottom: 100%;
-      transform: translateX(-50%) translateY(10%);
+      transform: translateX(-50%) translateY(var(--showcase-heading-y, 35%));
       width: 100vw;
       margin: 0;
       padding: 0 clamp(1rem, 4vw, 3rem);
@@ -501,6 +501,7 @@
       text-align: center;
       z-index: 1;
       pointer-events: none;
+      will-change: transform;
     }
 
     .showcase-video {
@@ -2189,6 +2190,54 @@
           window.addEventListener("resize", updateNav);
         })(document.getElementById("mediaCarousel"));
 
+        /* --- Showcase heading: move upward as the section scrolls into view --- */
+        (function initShowcaseHeadingScroll() {
+          const section = document.getElementById("showcase");
+          const heading = section ? section.querySelector(".showcase__heading") : null;
+          if (!section || !heading) return;
+
+          const startY = 35;
+          const endY = -6;
+          const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+          function clamp(value, min, max) {
+            return Math.min(max, Math.max(min, value));
+          }
+
+          function easeOut(progress) {
+            return 1 - Math.pow(1 - progress, 2.5);
+          }
+
+          function update() {
+            const viewportHeight = window.innerHeight;
+            const sectionTop = section.getBoundingClientRect().top;
+            const rawProgress = clamp((viewportHeight - sectionTop) / viewportHeight, 0, 1);
+            const progress = easeOut(rawProgress);
+            const translateY = startY + (endY - startY) * progress;
+            heading.style.setProperty("--showcase-heading-y", translateY + "%");
+          }
+
+          if (reducedMotion) {
+            heading.style.setProperty("--showcase-heading-y", endY + "%");
+            return;
+          }
+
+          let ticking = false;
+
+          function onScroll() {
+            if (ticking) return;
+            ticking = true;
+            window.requestAnimationFrame(function () {
+              update();
+              ticking = false;
+            });
+          }
+
+          window.addEventListener("scroll", onScroll, { passive: true });
+          window.addEventListener("resize", onScroll, { passive: true });
+          update();
+        })();
+
         /* --- Showcase: lazy YouTube embed autoplays on scroll --- */
         (function initShowcaseVideo() {
           const section = document.getElementById("showcase");
@@ -2242,7 +2291,7 @@
           if (!section || !stage || !iframe) return;
 
           const embedUrl =
-            "https://www.youtube-nocookie.com/embed/KmUy6F0VU24?autoplay=1&mute=0&playsinline=1&rel=0&modestbranding=1&controls=1";
+            "https://www.youtube-nocookie.com/embed/uQSRWUz1TlA?autoplay=1&mute=0&playsinline=1&rel=0&modestbranding=1&controls=1";
 
           function setLoading(isLoading) {
             stage.classList.toggle("is-loading", isLoading);
