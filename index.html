@@ -1055,7 +1055,7 @@
     /* --- Cost of not using AAG (forest section) --- */
     .cost-proof__grid {
       display: grid;
-      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.8fr);
       gap: clamp(1.5rem, 4vw, 3rem);
       align-items: center;
       width: 100%;
@@ -1073,7 +1073,7 @@
       width: 100%;
       max-width: 100%;
       aspect-ratio: 16 / 9;
-      max-height: min(calc(100vh - 9rem), 32rem);
+      max-height: min(calc(100vh - 7rem), 44rem);
       border-radius: clamp(1rem, 2vw, 1.5rem);
       overflow: hidden;
       background: linear-gradient(165deg, #243528 0%, #141f17 48%, #0d1410 100%);
@@ -1610,8 +1610,8 @@
       }
 
       .cost-video-stage {
-        max-height: min(40vh, 18rem);
-        max-width: min(92vw, 36rem);
+        max-height: min(52vh, 26rem);
+        max-width: min(94vw, 42rem);
         margin: 0 auto;
       }
 
@@ -2197,7 +2197,7 @@
           if (!section || !container || !iframe) return;
 
           const embedUrl =
-            "https://www.youtube-nocookie.com/embed/98pxRNl5D_M?autoplay=1&mute=1&playsinline=1&rel=0&modestbranding=1&controls=1";
+            "https://www.youtube-nocookie.com/embed/98pxRNl5D_M?autoplay=1&mute=0&playsinline=1&rel=0&modestbranding=1&controls=1";
 
           function setLoading(isLoading) {
             container.classList.toggle("is-loading", isLoading);
@@ -2242,7 +2242,7 @@
           if (!section || !stage || !iframe) return;
 
           const embedUrl =
-            "https://www.youtube-nocookie.com/embed/KmUy6F0VU24?autoplay=1&mute=1&playsinline=1&rel=0&modestbranding=1&controls=1";
+            "https://www.youtube-nocookie.com/embed/KmUy6F0VU24?autoplay=1&mute=0&playsinline=1&rel=0&modestbranding=1&controls=1";
 
           function setLoading(isLoading) {
             stage.classList.toggle("is-loading", isLoading);
