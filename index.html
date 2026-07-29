@@ -287,8 +287,17 @@
       color: #f0ebe3;
     }
 
-    .stack-section--bento {
+    .stack-section--clients {
       z-index: 4;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      background: #fff0d1;
+      color: #f0ebe3;
+    }
+
+    .stack-section--bento {
+      z-index: 5;
       background:
         radial-gradient(circle at 80% 10%, rgba(200, 169, 110, 0.12), transparent 38%),
         #11120f;
@@ -296,13 +305,13 @@
     }
 
     .stack-section--cost {
-      z-index: 5;
+      z-index: 6;
       background: var(--color-forest);
       color: #f0ebe3;
     }
 
     .stack-section--footer {
-      z-index: 6;
+      z-index: 7;
       background: var(--color-dark);
       color: #f0ebe3;
     }
@@ -1864,6 +1873,32 @@
       </div>
     </section>
 
+    <!-- ========== 4. Clients testimonial video ========== -->
+    <section class="stack-section stack-section--clients showcase" id="clients" data-section="clients">
+      <div class="section-content section-content--showcase">
+        <div class="showcase__layout">
+          <div class="showcase__media">
+            <div class="showcase__stage">
+              <h2 class="showcase__heading">What Clients Say</h2>
+              <div class="showcase-video">
+                <div class="showcase-video__placeholder" aria-hidden="true"></div>
+                <div class="showcase-video__loader" aria-hidden="true">
+                  <span class="showcase-video__loader-ring"></span>
+                </div>
+                <iframe
+                  class="showcase-video__player"
+                  title="Jacob testimonial video"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  allowfullscreen
+                  loading="lazy"
+                ></iframe>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
   <section class="stack-section stack-section--bento services-bento" data-section="services-bento">
     <h2 class="services-bento__title anim-el">Built for growth-stage operators</h2>
     <div class="bento">
@@ -2296,6 +2331,99 @@
           observer.observe(section);
         })();
 
+        /* --- Clients heading: move upward as the section scrolls into view --- */
+        (function initClientsHeadingScroll() {
+          const section = document.getElementById("clients");
+          const heading = section ? section.querySelector(".showcase__heading") : null;
+          if (!section || !heading) return;
+
+          const startY = 35;
+          const endY = -6;
+          const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+          function clamp(value, min, max) {
+            return Math.min(max, Math.max(min, value));
+          }
+
+          function easeOut(progress) {
+            return 1 - Math.pow(1 - progress, 2.5);
+          }
+
+          function update() {
+            const viewportHeight = window.innerHeight;
+            const sectionTop = section.getBoundingClientRect().top;
+            const rawProgress = clamp((viewportHeight - sectionTop) / viewportHeight, 0, 1);
+            const progress = easeOut(rawProgress);
+            const translateY = startY + (endY - startY) * progress;
+            heading.style.setProperty("--showcase-heading-y", translateY + "%");
+          }
+
+          if (reducedMotion) {
+            heading.style.setProperty("--showcase-heading-y", endY + "%");
+            return;
+          }
+
+          let ticking = false;
+
+          function onScroll() {
+            if (ticking) return;
+            ticking = true;
+            window.requestAnimationFrame(function () {
+              update();
+              ticking = false;
+            });
+          }
+
+          window.addEventListener("scroll", onScroll, { passive: true });
+          window.addEventListener("resize", onScroll, { passive: true });
+          update();
+        })();
+
+        /* --- Clients: lazy YouTube embed autoplays on scroll --- */
+        (function initClientsVideo() {
+          const section = document.getElementById("clients");
+          const container = section ? section.querySelector(".showcase-video") : null;
+          const iframe = section ? section.querySelector(".showcase-video__player") : null;
+          if (!section || !container || !iframe) return;
+
+          const embedUrl =
+            "https://www.youtube-nocookie.com/embed/RccUlWrMH1E?autoplay=1&mute=0&playsinline=1&rel=0&modestbranding=1&controls=1";
+
+          function setLoading(isLoading) {
+            container.classList.toggle("is-loading", isLoading);
+          }
+
+          function loadEmbed() {
+            if (iframe.dataset.loaded === "true") return;
+            setLoading(true);
+            iframe.src = embedUrl;
+            iframe.dataset.loaded = "true";
+          }
+
+          function unloadEmbed() {
+            if (iframe.dataset.loaded !== "true") return;
+            iframe.removeAttribute("src");
+            delete iframe.dataset.loaded;
+            setLoading(false);
+          }
+
+          iframe.addEventListener("load", function () {
+            if (iframe.dataset.loaded === "true") setLoading(false);
+          });
+
+          const observer = new IntersectionObserver(
+            function (entries) {
+              entries.forEach(function (entry) {
+                if (entry.isIntersecting) loadEmbed();
+                else unloadEmbed();
+              });
+            },
+            { threshold: 0.2, rootMargin: "200px 0px" }
+          );
+
+          observer.observe(section);
+        })();
+
         /* --- Cost section: lazy YouTube embed autoplays on scroll --- */
         (function initCostVideo() {
           const section = document.getElementById("cost");
@@ -2304,7 +2432,7 @@
           if (!section || !stage || !iframe) return;
 
           const embedUrl =
-            "https://www.youtube-nocookie.com/embed/uQSRWUz1TlA?autoplay=1&mute=0&playsinline=1&rel=0&modestbranding=1&controls=1";
+            "https://www.youtube-nocookie.com/embed/RccUlWrMH1E?autoplay=1&mute=0&playsinline=1&rel=0&modestbranding=1&controls=1";
 
           function setLoading(isLoading) {
             stage.classList.toggle("is-loading", isLoading);
