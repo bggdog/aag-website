@@ -306,9 +306,6 @@
 
     .stack-section--cost {
       z-index: 6;
-      height: auto;
-      min-height: 100vh;
-      overflow: visible;
       background: var(--color-forest);
       color: #f0ebe3;
     }
@@ -321,12 +318,18 @@
 
     .stack-section--cost .section-content--cost {
       display: flex;
-      align-items: flex-start;
+      align-items: stretch;
       justify-content: flex-start;
-      min-height: 100vh;
-      height: auto;
-      padding-top: calc(clamp(3.5rem, 8vw, 4.25rem) + clamp(1rem, 2vh, 2rem));
-      padding-bottom: clamp(1rem, 3vw, 2rem);
+      height: 100%;
+      min-height: 0;
+      padding-top: calc(clamp(3.5rem, 8vw, 4.25rem) + clamp(0.75rem, 1.5vh, 1.25rem));
+      padding-bottom: clamp(0.75rem, 2vh, 1.5rem);
+      overflow: hidden;
+    }
+
+    .stack-section--cost .section-content--cost > .inner {
+      height: 100%;
+      min-height: 0;
     }
 
     .stack-section--footer .site-footer {
@@ -1069,16 +1072,20 @@
     .cost-proof__grid {
       display: grid;
       grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-      gap: clamp(1.5rem, 4vw, 3rem);
-      align-items: start;
+      gap: clamp(1rem, 3vw, 2rem);
+      align-items: stretch;
       width: 100%;
+      height: 100%;
+      min-height: 0;
     }
 
     .cost-proof__intro {
       display: flex;
       flex-direction: column;
-      gap: clamp(1rem, 2.5vh, 1.5rem);
+      gap: clamp(0.65rem, 1.5vh, 1rem);
       min-width: 0;
+      min-height: 0;
+      height: 100%;
     }
 
     .cost-proof__video {
@@ -1087,6 +1094,7 @@
       align-items: center;
       min-height: 0;
       width: 100%;
+      flex: 0 1 auto;
     }
 
     .cost-video-stage {
@@ -1094,7 +1102,7 @@
       width: 100%;
       max-width: 100%;
       aspect-ratio: 16 / 9;
-      max-height: min(38vh, 22rem);
+      max-height: min(30vh, 16rem);
       border-radius: clamp(1rem, 2vw, 1.5rem);
       overflow: hidden;
       background: linear-gradient(165deg, #243528 0%, #141f17 48%, #0d1410 100%);
@@ -1144,38 +1152,47 @@
       letter-spacing: 0.12em;
       text-transform: uppercase;
       color: var(--color-accent);
-      margin: 0 0 0.75rem;
+      margin: 0 0 0.5rem;
     }
 
     .cost-proof__heading {
       font-family: var(--font-heading);
-      font-size: clamp(1.75rem, 4.2vw, 2.75rem);
+      font-size: clamp(1.5rem, 3.5vw, 2.35rem);
       line-height: 1.08;
-      margin: 0 0 0.85rem;
+      margin: 0 0 0.65rem;
       max-width: 16ch;
     }
 
     .cost-proof__lead {
-      margin: 0 0 clamp(1rem, 2.5vw, 1.35rem);
-      font-size: clamp(0.95rem, 1.8vw, 1.05rem);
-      line-height: 1.6;
+      margin: 0 0 clamp(0.65rem, 1.5vh, 1rem);
+      font-size: clamp(0.88rem, 1.5vw, 1rem);
+      line-height: 1.5;
       opacity: 0.85;
       max-width: 42ch;
+    }
+
+    .cost-proof__copy {
+      flex: 0 1 auto;
+      min-height: 0;
     }
 
     .cost-proof__panels {
       display: flex;
       flex-direction: column;
-      gap: clamp(0.85rem, 2vw, 1.1rem);
+      gap: clamp(0.65rem, 1.5vh, 0.9rem);
       min-height: 0;
       min-width: 0;
+      height: 100%;
     }
 
     .cost-panel {
       border-radius: 1rem;
-      padding: clamp(1rem, 2.5vw, 1.35rem);
+      padding: clamp(0.75rem, 1.8vw, 1.1rem);
       border: 1px solid rgba(240, 235, 227, 0.1);
       background: rgba(0, 0, 0, 0.18);
+      flex: 1 1 0;
+      min-height: 0;
+      overflow: auto;
     }
 
     .cost-panel__label {
@@ -1196,7 +1213,7 @@
 
     .cost-panel__num {
       font-family: var(--font-heading);
-      font-size: clamp(1.75rem, 4vw, 2.5rem);
+      font-size: clamp(1.5rem, 3.2vw, 2.15rem);
       line-height: 1;
       color: var(--color-accent);
     }
@@ -1227,7 +1244,7 @@
     }
 
     .cost-panel__items {
-      margin-top: 0.85rem;
+      margin-top: 0.55rem;
       border-top: 1px solid rgba(240, 235, 227, 0.08);
     }
 
@@ -1236,9 +1253,9 @@
       justify-content: space-between;
       align-items: baseline;
       gap: 1rem;
-      padding: 0.55rem 0;
+      padding: 0.35rem 0;
       border-bottom: 1px solid rgba(240, 235, 227, 0.06);
-      font-size: 0.85rem;
+      font-size: 0.8rem;
     }
 
     .cost-panel__row:last-child {
@@ -1259,9 +1276,9 @@
       display: flex;
       align-items: flex-start;
       gap: 0.65rem;
-      margin: clamp(1rem, 2.5vw, 1.35rem) 0 0;
-      font-size: 0.88rem;
-      line-height: 1.55;
+      margin: 0;
+      font-size: 0.82rem;
+      line-height: 1.45;
       opacity: 0.78;
     }
 
@@ -1624,29 +1641,43 @@
 
       .cost-proof__grid {
         grid-template-columns: 1fr;
-        gap: clamp(1rem, 3vw, 1.5rem);
+        gap: clamp(0.75rem, 2vw, 1rem);
+        overflow: auto;
+      }
+
+      .cost-proof__intro {
+        height: auto;
+      }
+
+      .cost-proof__panels {
+        height: auto;
+      }
+
+      .cost-panel {
+        flex: 0 0 auto;
+        overflow: visible;
       }
 
       .cost-video-stage {
-        max-height: min(40vh, 18rem);
+        max-height: min(28vh, 12rem);
         max-width: min(94vw, 42rem);
         margin: 0 auto;
       }
 
       .cost-proof__heading {
-        font-size: clamp(1.65rem, 9vw, 2.25rem);
+        font-size: clamp(1.45rem, 7vw, 2rem);
         max-width: none;
       }
 
       .cost-proof__lead,
       .cost-panel__text,
       .cost-proof__footnote {
-        font-size: 0.82rem;
-        line-height: 1.4;
+        font-size: 0.8rem;
+        line-height: 1.35;
       }
 
       .cost-panel {
-        padding: 0.85rem;
+        padding: 0.75rem;
       }
 
       .site-footer__main {
