@@ -306,6 +306,9 @@
 
     .stack-section--cost {
       z-index: 6;
+      height: auto;
+      min-height: 100vh;
+      overflow: visible;
       background: var(--color-forest);
       color: #f0ebe3;
     }
@@ -318,10 +321,10 @@
 
     .stack-section--cost .section-content--cost {
       display: flex;
-      align-items: center;
+      align-items: flex-start;
       justify-content: flex-start;
-      min-height: 100%;
-      height: 100%;
+      min-height: 100vh;
+      height: auto;
       padding-top: calc(clamp(3.5rem, 8vw, 4.25rem) + clamp(1rem, 2vh, 2rem));
       padding-bottom: clamp(1rem, 3vw, 2rem);
     }
@@ -1065,17 +1068,25 @@
     /* --- Cost of not using AAG (forest section) --- */
     .cost-proof__grid {
       display: grid;
-      grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.8fr);
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
       gap: clamp(1.5rem, 4vw, 3rem);
-      align-items: center;
+      align-items: start;
       width: 100%;
+    }
+
+    .cost-proof__intro {
+      display: flex;
+      flex-direction: column;
+      gap: clamp(1rem, 2.5vh, 1.5rem);
+      min-width: 0;
     }
 
     .cost-proof__video {
       display: flex;
-      justify-content: center;
+      justify-content: flex-start;
       align-items: center;
       min-height: 0;
+      width: 100%;
     }
 
     .cost-video-stage {
@@ -1083,7 +1094,7 @@
       width: 100%;
       max-width: 100%;
       aspect-ratio: 16 / 9;
-      max-height: min(calc(100vh - 7rem), 44rem);
+      max-height: min(38vh, 22rem);
       border-radius: clamp(1rem, 2vw, 1.5rem);
       overflow: hidden;
       background: linear-gradient(165deg, #243528 0%, #141f17 48%, #0d1410 100%);
@@ -1145,7 +1156,7 @@
     }
 
     .cost-proof__lead {
-      margin: 0 0 clamp(1.25rem, 3vw, 1.75rem);
+      margin: 0 0 clamp(1rem, 2.5vw, 1.35rem);
       font-size: clamp(0.95rem, 1.8vw, 1.05rem);
       line-height: 1.6;
       opacity: 0.85;
@@ -1156,6 +1167,8 @@
       display: flex;
       flex-direction: column;
       gap: clamp(0.85rem, 2vw, 1.1rem);
+      min-height: 0;
+      min-width: 0;
     }
 
     .cost-panel {
@@ -1614,32 +1627,15 @@
         gap: clamp(1rem, 3vw, 1.5rem);
       }
 
-      .stack-section--cost {
-        position: relative;
-        height: auto;
-        min-height: 100vh;
-        overflow: visible;
-      }
-
-      .stack-section--cost .section-content--cost {
-        align-items: flex-start;
-        height: auto;
-        min-height: 100vh;
-      }
-
-      .cost-proof__video {
-        display: flex;
-        order: -1;
-      }
-
       .cost-video-stage {
-        max-height: min(52vh, 26rem);
+        max-height: min(40vh, 18rem);
         max-width: min(94vw, 42rem);
         margin: 0 auto;
       }
 
       .cost-proof__heading {
         font-size: clamp(1.65rem, 9vw, 2.25rem);
+        max-width: none;
       }
 
       .cost-proof__lead,
@@ -1651,10 +1647,6 @@
 
       .cost-panel {
         padding: 0.85rem;
-      }
-
-      .cost-proof__heading {
-        max-width: none;
       }
 
       .site-footer__main {
@@ -1941,74 +1933,75 @@
   <section class="stack-section stack-section--cost cost-proof" data-section="cost" id="cost">
       <div class="section-content section-content--cost">
         <div class="inner cost-proof__grid">
-          <div class="cost-proof__video anim-el">
-            <div class="cost-video-stage">
-              <div class="cost-video-stage__loader" aria-hidden="true">
-                <span class="cost-video-stage__loader-ring"></span>
+          <div class="cost-proof__intro">
+            <div class="cost-proof__video anim-el">
+              <div class="cost-video-stage">
+                <div class="cost-video-stage__loader" aria-hidden="true">
+                  <span class="cost-video-stage__loader-ring"></span>
+                </div>
+                <iframe
+                  class="cost-video-stage__player"
+                  title="Jacob testimonial video"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  allowfullscreen
+                  loading="lazy"
+                ></iframe>
               </div>
-              <iframe
-                class="cost-video-stage__player"
-                title="Jacob testimonial video"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                allowfullscreen
-                loading="lazy"
-              ></iframe>
+            </div>
+
+            <div class="cost-proof__copy">
+              <p class="cost-proof__eyebrow anim-el">The cost of waiting</p>
+              <h2 class="cost-proof__heading anim-el">What it actually costs to go without.</h2>
+              <p class="cost-proof__lead anim-el">Hire in-house, or keep doing it yourself. Either way, the back office takes more than you think.</p>
+              <p class="cost-proof__footnote anim-el">
+                <span class="cost-proof__footnote-dot" aria-hidden="true"></span>
+                AAG covers billing, compliance, accounting, credentialing, and more &mdash; at a fraction of the hire, with none of the DIY time tax.
+              </p>
             </div>
           </div>
 
-          <div class="cost-proof__content">
-            <p class="cost-proof__eyebrow anim-el">The cost of waiting</p>
-            <h2 class="cost-proof__heading anim-el">What it actually costs to go without.</h2>
-            <p class="cost-proof__lead anim-el">Hire in-house, or keep doing it yourself. Either way, the back office takes more than you think.</p>
+          <div class="cost-proof__panels">
+            <article class="cost-panel cost-panel--time anim-el">
+              <p class="cost-panel__label">Option one &mdash; do it yourself</p>
+              <div class="cost-panel__headline">
+                <span class="cost-panel__num">30+ <span class="cost-panel__num-suffix">hrs</span></span>
+                <h3 class="cost-panel__title">Lost every week to admin</h3>
+              </div>
+              <p class="cost-panel__text">That&rsquo;s two full working days per week on billing, compliance, reporting, and paperwork &mdash; instead of work that grows the business.</p>
+              <p class="cost-panel__source">ServiceNow State of Work Report</p>
+            </article>
 
-            <div class="cost-proof__panels">
-              <article class="cost-panel cost-panel--time anim-el">
-                <p class="cost-panel__label">Option one &mdash; do it yourself</p>
-                <div class="cost-panel__headline">
-                  <span class="cost-panel__num">30+ <span class="cost-panel__num-suffix">hrs</span></span>
-                  <h3 class="cost-panel__title">Lost every week to admin</h3>
+            <article class="cost-panel cost-panel--hire anim-el">
+              <p class="cost-panel__label">Option two &mdash; hire in-house</p>
+              <div class="cost-panel__headline">
+                <span class="cost-panel__num">$85k<span class="cost-panel__num-suffix">+</span></span>
+                <h3 class="cost-panel__title">Per year for one back-office hire</h3>
+              </div>
+              <p class="cost-panel__text">Salary, benefits, payroll tax, onboarding, turnover &mdash; and one person still rarely covers all eight areas you need.</p>
+              <div class="cost-panel__items">
+                <div class="cost-panel__row">
+                  <span class="cost-panel__row-label">Base salary</span>
+                  <span class="cost-panel__row-val">$55k&ndash;$65k</span>
                 </div>
-                <p class="cost-panel__text">That&rsquo;s two full working days per week on billing, compliance, reporting, and paperwork &mdash; instead of work that grows the business.</p>
-                <p class="cost-panel__source">ServiceNow State of Work Report</p>
-              </article>
-
-              <article class="cost-panel cost-panel--hire anim-el">
-                <p class="cost-panel__label">Option two &mdash; hire in-house</p>
-                <div class="cost-panel__headline">
-                  <span class="cost-panel__num">$85k<span class="cost-panel__num-suffix">+</span></span>
-                  <h3 class="cost-panel__title">Per year for one back-office hire</h3>
+                <div class="cost-panel__row">
+                  <span class="cost-panel__row-label">Benefits &amp; health insurance</span>
+                  <span class="cost-panel__row-val">$12k&ndash;$18k</span>
                 </div>
-                <p class="cost-panel__text">Salary, benefits, payroll tax, onboarding, turnover &mdash; and one person still rarely covers all eight areas you need.</p>
-                <div class="cost-panel__items">
-                  <div class="cost-panel__row">
-                    <span class="cost-panel__row-label">Base salary</span>
-                    <span class="cost-panel__row-val">$55k&ndash;$65k</span>
-                  </div>
-                  <div class="cost-panel__row">
-                    <span class="cost-panel__row-label">Benefits &amp; health insurance</span>
-                    <span class="cost-panel__row-val">$12k&ndash;$18k</span>
-                  </div>
-                  <div class="cost-panel__row">
-                    <span class="cost-panel__row-label">Payroll taxes &amp; overhead</span>
-                    <span class="cost-panel__row-val">$6k&ndash;$8k</span>
-                  </div>
-                  <div class="cost-panel__row">
-                    <span class="cost-panel__row-label">Training &amp; onboarding</span>
-                    <span class="cost-panel__row-val">$3k&ndash;$5k</span>
-                  </div>
-                  <div class="cost-panel__row">
-                    <span class="cost-panel__row-label">Full coverage across 8 service areas</span>
-                    <span class="cost-panel__row-val">Unlikely</span>
-                  </div>
+                <div class="cost-panel__row">
+                  <span class="cost-panel__row-label">Payroll taxes &amp; overhead</span>
+                  <span class="cost-panel__row-val">$6k&ndash;$8k</span>
                 </div>
-                <p class="cost-panel__source">Society for Human Resource Management</p>
-              </article>
-            </div>
-
-            <p class="cost-proof__footnote anim-el">
-              <span class="cost-proof__footnote-dot" aria-hidden="true"></span>
-              AAG covers billing, compliance, accounting, credentialing, and more &mdash; at a fraction of the hire, with none of the DIY time tax.
-            </p>
+                <div class="cost-panel__row">
+                  <span class="cost-panel__row-label">Training &amp; onboarding</span>
+                  <span class="cost-panel__row-val">$3k&ndash;$5k</span>
+                </div>
+                <div class="cost-panel__row">
+                  <span class="cost-panel__row-label">Full coverage across 8 service areas</span>
+                  <span class="cost-panel__row-val">Unlikely</span>
+                </div>
+              </div>
+              <p class="cost-panel__source">Society for Human Resource Management</p>
+            </article>
           </div>
         </div>
       </div>
