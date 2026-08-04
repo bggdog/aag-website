@@ -283,34 +283,6 @@
       letter-spacing: 0.02em;
     }
 
-    /* ── 5. Forvis Mazars ─────────────────────────── */
-    .forvis { background: var(--color-dark); }
-    .forvis__block {
-      border: 1px solid rgba(200,169,110,0.3);
-      border-radius: 1.5rem;
-      padding: clamp(2rem, 5vw, 3.5rem);
-      background: rgba(200,169,110,0.05);
-      display: grid;
-      grid-template-columns: 1fr 1.5fr;
-      gap: clamp(2rem, 5vw, 4rem);
-      align-items: center;
-    }
-    .forvis__label {
-      font-size: 0.72rem; font-weight: 500;
-      letter-spacing: 0.14em; text-transform: uppercase;
-      color: var(--color-accent); margin: 0 0 0.85rem;
-    }
-    .forvis__heading {
-      font-family: var(--font-heading);
-      font-size: clamp(1.5rem, 3.5vw, 2.25rem);
-      line-height: 1.15; margin: 0;
-    }
-    .forvis__body p {
-      font-size: clamp(0.92rem, 1.7vw, 1rem);
-      line-height: 1.7; opacity: 0.78; margin: 0 0 1rem;
-    }
-    .forvis__body p:last-child { margin-bottom: 0; }
-
     /* ── 6. CTA strip ─────────────────────────────── */
     .cta-strip {
       background: var(--color-forest);
@@ -370,14 +342,6 @@
       text-decoration: none; transition: color 0.2s ease;
     }
     .site-footer__link:hover { color: var(--color-accent); }
-    .site-footer__partner {
-      display: flex; align-items: flex-start; gap: 0.5rem;
-      margin-top: 1.25rem; font-size: 0.8rem; opacity: 0.5; line-height: 1.45;
-    }
-    .site-footer__partner-dot {
-      width: 6px; height: 6px; border-radius: 50%;
-      background: var(--color-accent); flex-shrink: 0; margin-top: 0.35rem;
-    }
     .site-footer__bottom {
       display: flex; flex-wrap: wrap;
       justify-content: space-between; align-items: center;
@@ -397,7 +361,6 @@
     @media (max-width: 900px) {
       .story__grid { grid-template-columns: 1fr; }
       .story__pull { position: static; }
-      .forvis__block { grid-template-columns: 1fr; }
     }
 
     @media (max-width: 767px) {
@@ -508,8 +471,8 @@
               <div class="why__card-icon">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>
               </div>
-              <p class="why__card-title">Forvis Mazars&ndash;backed accounting</p>
-              <p class="why__card-desc">Our accounting practice operates in partnership with Forvis Mazars, bringing institutional-grade rigor to clients who don&rsquo;t need a Big Four retainer.</p>
+              <p class="why__card-title">Accounting you can stand behind</p>
+              <p class="why__card-desc">Institutional-grade books and financials without Big Four overhead &mdash; clear, reliable accounting your practice can stand behind.</p>
             </div>
           </div>
         </div>
@@ -568,29 +531,6 @@
         </div>
       </section>
 
-      <!-- ── 5. Forvis Mazars Partnership ────────────────────────────── -->
-      <section class="forvis" id="forvis">
-        <div class="inner">
-          <div class="forvis__block">
-            <div>
-              <p class="forvis__label">Partnership</p>
-              <h2 class="forvis__heading">Accounting backed by Forvis Mazars.</h2>
-            </div>
-            <div class="forvis__body">
-              <!--
-                TODO: Fill in the specifics of the Forvis Mazars partnership.
-                Questions to answer:
-                  - How does the partnership work in practice?
-                  - What does it mean for clients day-to-day?
-                  - What makes this different from a standard outsourced accounting arrangement?
-              -->
-              <p>AAG&rsquo;s accounting services are delivered in partnership with Forvis Mazars, one of the top 10 largest public accounting and advisory firms in the United States. The partnership brings institutional-grade accounting infrastructure to growth-stage clients &mdash; without the cost and overhead of a Big Four engagement.</p>
-              <p>For AAG clients, this means your books aren&rsquo;t just maintained by a competent team &mdash; they&rsquo;re backed by a firm with the depth and credibility that lenders, investors, and boards recognize.</p>
-            </div>
-          </div>
-        </div>
-      </section>
-
       <!-- ── 6. CTA strip ────────────────────────────────────────────── -->
       <section class="cta-strip">
         <div class="inner">
@@ -631,7 +571,6 @@
             <a href="/about/" class="site-footer__link">About AAG</a>
             <a href="/services/" class="site-footer__link">Who we work with</a>
             <a href="/about/#why" class="site-footer__link">Why AAG</a>
-            <a href="/about/#forvis" class="site-footer__link">Forvis Mazars partnership</a>
           </nav>
         </div>
         <div>
@@ -641,10 +580,6 @@
             <a href="/contact/#message" class="site-footer__link">Send us a message</a>
             <a href="mailto:hello@auroraadvisory.com" class="site-footer__link">hello@auroraadvisory.com</a>
           </nav>
-          <p class="site-footer__partner">
-            <span class="site-footer__partner-dot" aria-hidden="true"></span>
-            Accounting in partnership with Forvis Mazars
-          </p>
         </div>
       </div>
       <div class="site-footer__bottom">
