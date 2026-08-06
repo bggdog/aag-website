@@ -676,9 +676,9 @@
             </span>
           </div>
 
-          <a href="mailto:hello@auroraadvisory.com" class="contact-email">
+          <a href="mailto:inquiries@auroraadvisory.net" class="contact-email">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
-            hello@auroraadvisory.com
+            inquiries@auroraadvisory.net
           </a>
         </div>
 
@@ -688,6 +688,7 @@
           <p class="contact-form__sub">Takes about 90 seconds to fill out.</p>
 
           <form id="contactForm" novalidate>
+            <input type="hidden" name="to_email" value="inquiries@auroraadvisory.net" />
             <div class="form-row">
               <div class="form-field">
                 <label for="from_name">Full name <span class="req" aria-hidden="true">*</span></label>
@@ -748,7 +749,7 @@
           <div class="form-error" id="formError" role="alert">
             <span class="form-error__title">Something went wrong.</span>
             Your request didn&rsquo;t go through. Please try again or email us directly at
-            <a href="mailto:hello@auroraadvisory.com" style="color:inherit;">hello@auroraadvisory.com</a>.
+            <a href="mailto:inquiries@auroraadvisory.net" style="color:inherit;">inquiries@auroraadvisory.net</a>.
           </div>
         </div>
 
@@ -794,7 +795,7 @@
           <nav class="site-footer__links" aria-label="Contact">
             <a href="/contact/" class="site-footer__link">Schedule a consultation</a>
             <a href="/contact/#message" class="site-footer__link">Send us a message</a>
-            <a href="mailto:hello@auroraadvisory.com" class="site-footer__link">hello@auroraadvisory.com</a>
+            <a href="mailto:inquiries@auroraadvisory.net" class="site-footer__link">inquiries@auroraadvisory.net</a>
           </nav>
         </div>
       </div>
@@ -818,8 +819,8 @@
   ║                                                                    ║
   ║  In your EmailJS template (Dashboard → Email Templates):           ║
   ║                                                                    ║
-  ║  · To email   → YOUR email address (hardcode it in the template,  ║
-  ║                  e.g. hello@auroraadvisory.com)                    ║
+  ║  · To email   → inquiries@auroraadvisory.net                       ║
+  ║                  (or {{to_email}} to use the form's hidden field)  ║
   ║  · From name  → {{from_name}}  (shows who submitted)              ║
   ║  · Reply-To   → {{from_email}} (optional — lets you reply to them ║
   ║                  directly from your inbox)                         ║
@@ -827,6 +828,7 @@
   ║  Template body variables:                                          ║
   ║    {{from_name}}    {{from_email}}    {{company}}                  ║
   ║    {{phone}}        {{service}}       {{message_body}}             ║
+  ║    {{to_email}}                                                    ║
   ╚══════════════════════════════════════════════════════════════════════╝
   -->
   <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
@@ -838,6 +840,7 @@
       var EMAILJS_PUBLIC_KEY  = "BcfPH-6-VmYfuY1OA";   // replace me
       var EMAILJS_SERVICE_ID  = "service_xr0yiva";   // replace me
       var EMAILJS_TEMPLATE_ID = "template_4w2vj4p";  // replace me
+      var FORM_TO_EMAIL       = "inquiries@auroraadvisory.net";
       /* ─────────────────────────────────────────────────────────────── */
 
       emailjs.init(EMAILJS_PUBLIC_KEY);
@@ -880,6 +883,8 @@
       var submitBtn = document.getElementById("submitBtn");
       var successEl = document.getElementById("formSuccess");
       var errorEl   = document.getElementById("formError");
+      var toEmailField = form.querySelector('input[name="to_email"]');
+      if (toEmailField) toEmailField.value = FORM_TO_EMAIL;
 
       form.addEventListener("submit", function (e) {
         e.preventDefault();
