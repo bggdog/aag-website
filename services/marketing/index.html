@@ -322,11 +322,18 @@
 
     /* ── 4. How it works ──────────────────────────── */
     .how { background: rgba(255,255,255,0.02); }
+    .how__cycle-wrap {
+      position: relative;
+      margin-top: 2.5rem;
+      padding: 1.35rem clamp(1.25rem, 3vw, 2rem) 2.75rem;
+    }
     .how__steps {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
       gap: 1.5rem;
-      margin-top: 2.5rem;
+      margin-top: 0;
+      position: relative;
+      z-index: 1;
     }
     .how__step {
       position: relative;
@@ -350,34 +357,43 @@
       margin: 0; line-height: 1.55;
     }
     .how__cycle-loop {
-      display: flex;
-      justify-content: center;
-      margin: 1.75rem auto 0;
+      position: absolute;
+      inset: 0;
+      margin: 0;
+      pointer-events: none;
+      z-index: 0;
     }
     .how__cycle-loop svg {
-      width: clamp(3.5rem, 8vw, 4.5rem);
-      height: auto;
+      width: 100%;
+      height: 100%;
       display: block;
       overflow: visible;
     }
     .how__cycle-path {
       fill: none;
       stroke: var(--color-accent);
-      stroke-width: 2.4;
+      stroke-width: 2.5;
       stroke-linecap: round;
       stroke-linejoin: round;
-      opacity: 0.75;
+      opacity: 0.72;
+      vector-effect: non-scaling-stroke;
     }
     .how__cycle-loop marker path {
       fill: var(--color-accent);
-      opacity: 0.85;
+      opacity: 0.9;
     }
     .how__cycle-caption {
       text-align: center;
       font-size: 0.82rem;
       opacity: 0.55;
-      margin: 0.65rem 0 0;
+      margin: 0.85rem 0 0;
       font-style: italic;
+      position: relative;
+      z-index: 1;
+    }
+    @media (max-width: 767px) {
+      .how__cycle-wrap { padding: 0 0 0.5rem; }
+      .how__cycle-loop { display: none; }
     }
 
     /* ── 5. CTA strip ─────────────────────────────── */
@@ -538,7 +554,7 @@
             <li aria-current="page">Creative Marketing</li>
           </ol>
           <p class="hero__tag">/ Creative Marketing</p>
-          <h1 class="hero__heading">Brand, content, and digital marketing built for your stage of growth &mdash; without building an internal team.</h1>
+          <h1 class="hero__heading">Representing and growing your practice authentically.</h1>
           <p class="hero__desc">So you can stay focused on the work only you can do, while a dedicated team handles positioning, content, and growth marketing end-to-end.</p>
           <div class="btn-row">
             <a href="/contact/" class="btn">Schedule a consultation</a>
@@ -587,14 +603,7 @@
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
               </div>
               <p class="included__card-title">Live analytics</p>
-              <p class="included__card-desc">A live analytics dashboard tracking traffic, engagement, and lead flow in real time — no waiting on a report to know what&rsquo;s working.</p>
-            </div>
-            <div class="included__card">
-              <div class="included__card-icon">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
-              </div>
-              <p class="included__card-title">Performance reporting</p>
-              <p class="included__card-desc">Live reporting on traffic, engagement, and leads &mdash; so you know what&rsquo;s working and where to double down, updated in real time.</p>
+              <p class="included__card-desc">A live analytics dashboard tracking traffic, engagement, and brand salience in real time — no waiting on a report to know what&rsquo;s working.</p>
             </div>
           </div>
         </div>
@@ -606,10 +615,10 @@
           <div class="why__grid">
             <div class="why__body">
               <span class="eyebrow">Why it matters</span>
-              <h2 class="section-heading">Inconsistent marketing is the growth you&rsquo;re not tracking.</h2>
-              <p>Most growth-stage businesses don&rsquo;t have a marketing problem &mdash; they have a consistency problem. Posts go out when someone has time. The website goes stale. Inbound slows, and nobody can say why.</p>
-              <p>The gap widens when marketing is handled by whoever has capacity that week. You don&rsquo;t always notice the missed opportunities &mdash; they just never show up.</p>
-              <p>AAG handles marketing as a dedicated function — consistent brand voice, regular content, and a clear strategy for the channels where your ideal clients actually spend time. We own the execution so you don’t have to.</p>
+              <h2 class="section-heading">Subpar marketing is a waste of time.</h2>
+              <p>If your marketing is going to be subpar and amateur, you might as well not waste your time doing it. Half-finished posts, a stale website, and content that doesn&rsquo;t sound like you don&rsquo;t just underperform &mdash; they quietly chip away at the credibility of your practice.</p>
+              <p>Your patients and clients notice the difference. When the brand representation doesn&rsquo;t match the quality of the care or service you deliver, the gap shows.</p>
+              <p>Let creative professionals represent your practice with the excellence it deserves. AAG brings the strategy, voice, and execution so your brand shows up as sharp, consistent, and unmistakably you.</p>
             </div>
             <div>
               <div class="why__stat-block">
@@ -626,6 +635,7 @@
         <div class="inner">
           <span class="eyebrow">How it works</span>
           <h2 class="section-heading">From first click to booked client.</h2>
+          <div class="how__cycle-wrap">
           <div class="how__steps">
             <div class="how__step">
               <span class="how__step-num">01</span>
@@ -649,24 +659,25 @@
             </div>
           </div>
           <div class="how__cycle-loop" aria-hidden="true">
-            <svg viewBox="0 0 100 100" fill="none">
+            <svg viewBox="0 0 1000 360" preserveAspectRatio="none" fill="none">
               <defs>
-                <marker id="cycleArrowHead" markerWidth="6" markerHeight="6" refX="4.5" refY="3" orient="auto" markerUnits="strokeWidth">
-                  <path d="M0.5 0.4 L5.5 3 L0.5 5.6 Z" />
+                <marker id="cycleArrowHead" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto" markerUnits="userSpaceOnUse">
+                  <path d="M1 1 L9 5 L1 9 Z" fill="var(--color-accent)" />
                 </marker>
               </defs>
               <path
                 class="how__cycle-path"
                 marker-end="url(#cycleArrowHead)"
-                d="M 68 22
-                   C 84 28, 93 44, 92 60
-                   C 91 80, 74 93, 54 93
-                   C 32 93, 17 77, 17 55
-                   C 17 34, 32 19, 53 18
-                   C 62 17.5, 70 19, 76 24"
+                d="M 910 95
+                   C 965 115, 985 175, 970 230
+                   C 950 300, 820 340, 500 345
+                   C 180 350, 45 300, 28 210
+                   C 12 120, 70 45, 160 32
+                   C 210 24, 250 28, 280 48"
               />
             </svg>
           </div>
+        </div>
           <p class="how__cycle-caption">Marketing isn&rsquo;t a one-time push &mdash; this cycle repeats continuously as campaigns are refined.</p>
         </div>
       </section>

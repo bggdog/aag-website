@@ -322,11 +322,18 @@
 
     /* ── 4. How it works ──────────────────────────── */
     .how { background: rgba(255,255,255,0.02); }
+    .how__cycle-wrap {
+      position: relative;
+      margin-top: 2.5rem;
+      padding: 1.35rem clamp(1.25rem, 3vw, 2rem) 2.75rem;
+    }
     .how__steps {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
       gap: 1.5rem;
-      margin-top: 2.5rem;
+      margin-top: 0;
+      position: relative;
+      z-index: 1;
     }
     .how__step {
       position: relative;
@@ -350,34 +357,43 @@
       margin: 0; line-height: 1.55;
     }
     .how__cycle-loop {
-      display: flex;
-      justify-content: center;
-      margin: 1.75rem auto 0;
+      position: absolute;
+      inset: 0;
+      margin: 0;
+      pointer-events: none;
+      z-index: 0;
     }
     .how__cycle-loop svg {
-      width: clamp(3.5rem, 8vw, 4.5rem);
-      height: auto;
+      width: 100%;
+      height: 100%;
       display: block;
       overflow: visible;
     }
     .how__cycle-path {
       fill: none;
       stroke: var(--color-accent);
-      stroke-width: 2.4;
+      stroke-width: 2.5;
       stroke-linecap: round;
       stroke-linejoin: round;
-      opacity: 0.75;
+      opacity: 0.72;
+      vector-effect: non-scaling-stroke;
     }
     .how__cycle-loop marker path {
       fill: var(--color-accent);
-      opacity: 0.85;
+      opacity: 0.9;
     }
     .how__cycle-caption {
       text-align: center;
       font-size: 0.82rem;
       opacity: 0.55;
-      margin: 0.65rem 0 0;
+      margin: 0.85rem 0 0;
       font-style: italic;
+      position: relative;
+      z-index: 1;
+    }
+    @media (max-width: 767px) {
+      .how__cycle-wrap { padding: 0 0 0.5rem; }
+      .how__cycle-loop { display: none; }
     }
 
     /* ── 5. CTA strip ─────────────────────────────── */
@@ -607,8 +623,8 @@
             <div class="why__body">
               <span class="eyebrow">Why it matters</span>
               <h2 class="section-heading">Your rate is a fee schedule tier, not a fixed number.</h2>
-              <p>Most payers don&rsquo;t hand new practices the top of their fee schedule on day one. Contracts often start at a lower tier and step up as you prove consistent volume and quality — a climb that can take months or years if nobody is actively managing it.</p>
-              <p>AAG makes that climb transparent. We track where you sit on each payer&rsquo;s fee schedule, flag when you&rsquo;ve hit the volume thresholds to renegotiate, and walk the process alongside you until you&rsquo;re earning at the top of what your contract allows.</p>
+              <p>Most payers don&rsquo;t hand new practices the top of their fee schedule on day one. Contracts often start at a lower tier and step up as you prove consistent volume and quality — a climb that can seem endless if nobody is actively managing it.</p>
+              <p>AAG makes that climb transparent. We track where you sit on each payer&rsquo;s fee schedule, flag when you&rsquo;ve hit the volume thresholds to renegotiate, and walk the process alongside you until you&rsquo;re earning what you&rsquo;re worth.</p>
               <p>AAG approaches contracting analytically — benchmarking your rates, identifying the strongest leverage points, and leading or supporting negotiations with a clear strategy. We’ve seen what payers will move on and what they won’t.</p>
             </div>
             <div>
@@ -626,6 +642,7 @@
         <div class="inner">
           <span class="eyebrow">How it works</span>
           <h2 class="section-heading">From analysis to executed contract.</h2>
+          <div class="how__cycle-wrap">
           <div class="how__steps">
             <div class="how__step">
               <span class="how__step-num">01</span>
@@ -649,24 +666,25 @@
             </div>
           </div>
           <div class="how__cycle-loop" aria-hidden="true">
-            <svg viewBox="0 0 100 100" fill="none">
+            <svg viewBox="0 0 1000 360" preserveAspectRatio="none" fill="none">
               <defs>
-                <marker id="cycleArrowHead" markerWidth="6" markerHeight="6" refX="4.5" refY="3" orient="auto" markerUnits="strokeWidth">
-                  <path d="M0.5 0.4 L5.5 3 L0.5 5.6 Z" />
+                <marker id="cycleArrowHead" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto" markerUnits="userSpaceOnUse">
+                  <path d="M1 1 L9 5 L1 9 Z" fill="var(--color-accent)" />
                 </marker>
               </defs>
               <path
                 class="how__cycle-path"
                 marker-end="url(#cycleArrowHead)"
-                d="M 68 22
-                   C 84 28, 93 44, 92 60
-                   C 91 80, 74 93, 54 93
-                   C 32 93, 17 77, 17 55
-                   C 17 34, 32 19, 53 18
-                   C 62 17.5, 70 19, 76 24"
+                d="M 910 95
+                   C 965 115, 985 175, 970 230
+                   C 950 300, 820 340, 500 345
+                   C 180 350, 45 300, 28 210
+                   C 12 120, 70 45, 160 32
+                   C 210 24, 250 28, 280 48"
               />
             </svg>
           </div>
+        </div>
           <p class="how__cycle-caption">Contracts aren&rsquo;t set-and-forget &mdash; this cycle repeats every renewal period to keep rates current.</p>
         </div>
       </section>
