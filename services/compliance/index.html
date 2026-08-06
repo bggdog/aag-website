@@ -350,27 +350,33 @@
       margin: 0; line-height: 1.55;
     }
     .how__cycle-loop {
-      max-width: 640px;
-      margin: 0.75rem auto 0;
+      display: flex;
+      justify-content: center;
+      margin: 1.75rem auto 0;
     }
     .how__cycle-loop svg {
-      width: 100%;
-      height: 2.25rem;
+      width: clamp(3.5rem, 8vw, 4.5rem);
+      height: auto;
       display: block;
       overflow: visible;
     }
     .how__cycle-path {
       fill: none;
-      stroke: rgba(200,169,110,0.55);
-      stroke-width: 1.5;
-      stroke-dasharray: 3 5;
+      stroke: var(--color-accent);
+      stroke-width: 2.4;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      opacity: 0.75;
     }
-    .how__cycle-loop marker path { fill: rgba(200,169,110,0.55); }
+    .how__cycle-loop marker path {
+      fill: var(--color-accent);
+      opacity: 0.85;
+    }
     .how__cycle-caption {
       text-align: center;
       font-size: 0.82rem;
       opacity: 0.55;
-      margin: 0.5rem 0 0;
+      margin: 0.65rem 0 0;
       font-style: italic;
     }
 
@@ -601,7 +607,7 @@
             <div class="why__body">
               <span class="eyebrow">Why it matters</span>
               <h2 class="section-heading">Compliance issues don&rsquo;t just cost money, they shut down businesses.</h2>
-              <p>When an auditor calls, it doesn&rsquo;t have to be a fire drill. For a practice with a well-run compliance program, an audit is simply the moment everything you&rsquo;ve already built gets validated — the culmination of a good process, not a threat to survive.</p>
+              <p>When an auditor calls, it doesn&rsquo;t have to be a fire drill. For a practice with a well-run compliance program, an audit is simply the moment everything you&rsquo;ve already built gets validated — the culmination of a good process, not a threat to survival.</p>
               <p>We don&rsquo;t believe hope is a strategy. Hoping an audit never comes, or hoping your documentation holds up if it does, isn&rsquo;t a plan. AAG builds a proven, repeatable compliance process long before a regulator ever asks for it — so when the call comes, we&rsquo;re not intimidated by it. We welcome it.</p>
               <p>AAG builds and maintains the compliance infrastructure so your program isn’t dependent on one person remembering to update a policy. It’s documented, trained, and monitored — continuously.</p>
             </div>
@@ -643,13 +649,22 @@
             </div>
           </div>
           <div class="how__cycle-loop" aria-hidden="true">
-            <svg viewBox="0 0 100 34" preserveAspectRatio="none">
+            <svg viewBox="0 0 100 100" fill="none">
               <defs>
-                <marker id="cycleArrowHead" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto">
-                  <path d="M0,0 L8,4 L0,8 Z" />
+                <marker id="cycleArrowHead" markerWidth="6" markerHeight="6" refX="4.5" refY="3" orient="auto" markerUnits="strokeWidth">
+                  <path d="M0.5 0.4 L5.5 3 L0.5 5.6 Z" />
                 </marker>
               </defs>
-              <path class="how__cycle-path" d="M92 4 C 92 26, 8 26, 8 8" marker-end="url(#cycleArrowHead)" />
+              <path
+                class="how__cycle-path"
+                marker-end="url(#cycleArrowHead)"
+                d="M 68 22
+                   C 84 28, 93 44, 92 60
+                   C 91 80, 74 93, 54 93
+                   C 32 93, 17 77, 17 55
+                   C 17 34, 32 19, 53 18
+                   C 62 17.5, 70 19, 76 24"
+              />
             </svg>
           </div>
           <p class="how__cycle-caption">This isn&rsquo;t a one-time checklist &mdash; the cycle repeats continuously, quarter after quarter.</p>
