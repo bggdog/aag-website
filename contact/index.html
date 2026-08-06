@@ -114,6 +114,18 @@
     }
 
     .site-nav__logo span { color: var(--color-accent); }
+    .site-nav__logo {
+      display: inline-flex;
+      align-items: center;
+      background: #fff;
+      padding: 0.35rem 0.6rem;
+      border-radius: 0.6rem;
+    }
+    .site-nav__logo img {
+      height: clamp(1.5rem, 3.5vw, 1.9rem);
+      width: auto;
+      display: block;
+    }
 
     .site-nav__links {
       display: flex;
@@ -472,6 +484,18 @@
     }
 
     .site-footer__logo span { color: var(--color-accent); }
+    .site-footer__logo {
+      display: inline-flex;
+      align-items: center;
+      background: #fff;
+      padding: 0.4rem 0.75rem;
+      border-radius: 0.6rem;
+    }
+    .site-footer__logo img {
+      height: 2rem;
+      width: auto;
+      display: block;
+    }
 
     .site-footer__tagline {
       margin: 0 0 1.5rem;
@@ -621,7 +645,7 @@
   <div class="custom-cursor" id="customCursor" aria-hidden="true"></div>
 
   <header class="site-nav" id="siteNav">
-    <a href="/" class="site-nav__logo">Aurora<span>.</span></a>
+    <a href="/" class="site-nav__logo"><img src="/icons/favicon.png" alt="AAG" /></a>
     <button type="button" class="site-nav__toggle" id="siteNavToggle" aria-expanded="false" aria-controls="siteNavMenu" aria-label="Open menu">
       <svg class="icon-menu" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
       <svg class="icon-close" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
@@ -741,7 +765,7 @@
     <footer class="site-footer">
       <div class="site-footer__main">
         <div>
-          <div class="site-footer__logo">Aurora<span>.</span></div>
+          <div class="site-footer__logo"><img src="/icons/favicon.png" alt="AAG" /></div>
           <p class="site-footer__tagline">Back-office support for businesses in the growth stage. We do what no one wants to do &mdash; so you can do what you were meant to.</p>
           <div class="site-footer__socials">
             <a href="#" class="site-footer__social" aria-label="LinkedIn">
