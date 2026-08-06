@@ -88,6 +88,9 @@
     .site-nav__logo {
       display: inline-flex;
       align-items: center;
+      background: #fff;
+      padding: 0.35rem 0.6rem;
+      border-radius: 0.6rem;
     }
     .site-nav__logo img {
       height: clamp(1.5rem, 3.5vw, 1.9rem);
@@ -831,6 +834,34 @@
       scroll-snap-align: start;
       scroll-snap-stop: always;
       user-select: none;
+      transition: box-shadow 0.45s ease, transform 0.45s ease;
+      box-shadow: 0 8px 28px rgba(0, 0, 0, 0.25);
+    }
+
+    .media-card:hover {
+      transform: translateY(-6px);
+      box-shadow:
+        0 0 0 1px rgba(154, 216, 218, 0.45),
+        0 0 28px rgba(136, 211, 191, 0.4),
+        0 0 64px rgba(87, 147, 143, 0.35),
+        0 24px 48px rgba(0, 0, 0, 0.4);
+    }
+
+    .media-card::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      pointer-events: none;
+      z-index: 3;
+      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+      transition: box-shadow 0.45s ease;
+    }
+
+    .media-card:hover::after {
+      box-shadow:
+        inset 0 0 0 1px rgba(154, 216, 218, 0.55),
+        inset 0 0 40px rgba(136, 211, 191, 0.18);
     }
 
     .stack-section--services .section-content--carousel {
@@ -1046,7 +1077,7 @@
     .media-card__content {
       position: absolute;
       left: clamp(1.25rem, 3vw, 2rem);
-      right: clamp(4.5rem, 8vw, 6rem);
+      right: clamp(1.25rem, 3vw, 2rem);
       bottom: clamp(1.25rem, 3vw, 2rem);
       z-index: 2;
     }
@@ -1065,34 +1096,6 @@
       line-height: 1.5;
       opacity: 0.92;
       max-width: 36ch;
-    }
-
-    .media-card__action {
-      position: absolute;
-      right: clamp(1.25rem, 3vw, 2rem);
-      bottom: clamp(1.25rem, 3vw, 2rem);
-      z-index: 2;
-      width: 52px;
-      height: 52px;
-      border-radius: 50%;
-      border: 1px solid rgba(255, 255, 255, 0.55);
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      color: #fff;
-      pointer-events: none;
-      transition: border-color 0.25s ease, background 0.25s ease, transform 0.25s ease;
-    }
-
-    .media-card:hover .media-card__action {
-      border-color: var(--color-accent);
-      background: rgba(200, 169, 110, 0.2);
-      transform: scale(1.06);
-    }
-
-    .media-card__action svg {
-      width: 18px;
-      height: 18px;
     }
 
     /* --- Cost of not using AAG (forest section) --- */
@@ -1373,6 +1376,9 @@
     .site-footer__logo {
       display: inline-flex;
       align-items: center;
+      background: #fff;
+      padding: 0.4rem 0.75rem;
+      border-radius: 0.6rem;
     }
     .site-footer__logo img {
       height: 2rem;
@@ -1699,8 +1705,8 @@
       </div>
       <div class="section-content">
         <div class="inner">
-          <h1 class="anim-el">You didn&rsquo;t build this to manage the back office.</h1>
-          <p class="subline anim-el">AAG steps in at the exact moment when doing it yourself isn&rsquo;t working anymore &mdash; but bringing someone on full-time isn&rsquo;t the right move yet. We handle the operational side so you can focus on the work that actually matters.</p>
+          <h1 class="anim-el">The Back Office Partner for Providers</h1>
+          <p class="subline anim-el">You didn&rsquo;t build this to manage the back office. AAG steps in at the exact moment when doing it yourself isn&rsquo;t working anymore &mdash; but bringing someone on full-time isn&rsquo;t the right move yet. We handle the operational side so you can focus on the work that actually matters.</p>
           <div class="hero-ctas anim-el">
             <a href="/contact/" class="btn">Schedule a free consultation</a>
             <a href="#services" class="btn btn--outline">See what we do</a>
@@ -1751,7 +1757,7 @@
           <header class="media-carousel__header">
             <div class="media-carousel__copy">
               <h2 class="media-carousel__title">Our Services</h2>
-              <p class="media-carousel__intro anim-el">From billing and credentialing to compliance and contracting &mdash; we take the operational weight off your plate entirely. One team. Seven service areas. No long-term contracts.</p>
+              <p class="media-carousel__intro anim-el">From billing and credentialing to compliance and contracting &mdash; we take the operational weight off your plate entirely. One team. Eight service areas. No long-term contracts.</p>
             </div>
             <div class="media-carousel__nav anim-el">
               <button type="button" class="carousel-nav" data-carousel-prev aria-label="Previous slide">
@@ -1765,88 +1771,76 @@
           <div class="media-carousel__viewport">
             <div class="media-carousel__track">
               <a href="/services/billing-rcm/" class="media-card anim-el" aria-label="Learn about Billing &amp; RCM">
-                <div class="media-card__bg" style="--card-bg: linear-gradient(135deg, #2a2418 0%, #5c4a2e 45%, #1a1510 100%);"></div>
+                <div class="media-card__bg" style="--card-bg: linear-gradient(135deg, #0a242c 0%, #143d49 45%, #071820 100%);"></div>
                 <div class="media-card__scrim" aria-hidden="true"></div>
                 <span class="media-card__tag">/ Billing &amp; RCM</span>
                 <div class="media-card__content">
                   <h3 class="media-card__title">Billing &amp; revenue cycle</h3>
                   <p class="media-card__desc">Claims, denials, and collections handled end-to-end so revenue doesn&rsquo;t slip through the cracks.</p>
                 </div>
-                <span class="media-card__action" aria-hidden="true">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-                </span>
               </a>
               <a href="/services/compliance/" class="media-card anim-el" aria-label="Learn about Compliance">
-                <div class="media-card__bg" style="--card-bg: linear-gradient(135deg, #1a2820 0%, #2d4a38 50%, #0f1812 100%);"></div>
+                <div class="media-card__bg" style="--card-bg: linear-gradient(135deg, #2a4a48 0%, #57938f 50%, #1a3230 100%);"></div>
                 <div class="media-card__scrim" aria-hidden="true"></div>
                 <span class="media-card__tag">/ Compliance</span>
                 <div class="media-card__content">
                   <h3 class="media-card__title">Compliance</h3>
                   <p class="media-card__desc">Policies, audits, and regulatory readiness kept current &mdash; without pulling your team off mission-critical work.</p>
                 </div>
-                <span class="media-card__action" aria-hidden="true">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-                </span>
               </a>
-              <a href="/services/credentialing/" class="media-card anim-el" aria-label="Learn about Credentialing">
-                <div class="media-card__bg" style="--card-bg: linear-gradient(135deg, #1e2430 0%, #3d4f6a 48%, #121820 100%);"></div>
+              <a href="/services/marketing/" class="media-card anim-el" aria-label="Learn about Creative Marketing">
+                <div class="media-card__bg" style="--card-bg: linear-gradient(135deg, #3a3a3a 0%, #d1d0d0 48%, #143d49 100%);"></div>
                 <div class="media-card__scrim" aria-hidden="true"></div>
-                <span class="media-card__tag">/ Credentialing</span>
+                <span class="media-card__tag">/ Creative marketing</span>
                 <div class="media-card__content">
-                  <h3 class="media-card__title">Credentialing &amp; enrollment</h3>
-                  <p class="media-card__desc">Provider enrollment and payer credentialing managed with clear timelines and fewer surprises.</p>
+                  <h3 class="media-card__title">Creative marketing</h3>
+                  <p class="media-card__desc">Brand, content, and digital marketing built to attract the right clients without an internal marketing team.</p>
                 </div>
-                <span class="media-card__action" aria-hidden="true">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-                </span>
-              </a>
-              <a href="/services/financial-reporting/" class="media-card anim-el" aria-label="Learn about Financial reporting">
-                <div class="media-card__bg" style="--card-bg: linear-gradient(135deg, #252018 0%, #4a3d2e 50%, #14100c 100%);"></div>
-                <div class="media-card__scrim" aria-hidden="true"></div>
-                <span class="media-card__tag">/ Financial reporting</span>
-                <div class="media-card__content">
-                  <h3 class="media-card__title">Financial reporting</h3>
-                  <p class="media-card__desc">Dashboards and board-ready reporting that show where the business stands &mdash; without spreadsheet chaos.</p>
-                </div>
-                <span class="media-card__action" aria-hidden="true">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-                </span>
               </a>
               <a href="/services/contracting/" class="media-card anim-el" aria-label="Learn about Contracting &amp; Negotiation">
-                <div class="media-card__bg" style="--card-bg: linear-gradient(135deg, #1e2818 0%, #3a5230 48%, #111a0d 100%);"></div>
+                <div class="media-card__bg" style="--card-bg: linear-gradient(135deg, #143d49 0%, #88d3bf 50%, #0f2e36 100%);"></div>
                 <div class="media-card__scrim" aria-hidden="true"></div>
                 <span class="media-card__tag">/ Contracting</span>
                 <div class="media-card__content">
                   <h3 class="media-card__title">Contracting &amp; negotiation</h3>
                   <p class="media-card__desc">Payer contracts reviewed, benchmarked, and negotiated so your rates reflect the actual value of your services.</p>
                 </div>
-                <span class="media-card__action" aria-hidden="true">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-                </span>
+              </a>
+              <a href="/services/credentialing/" class="media-card anim-el" aria-label="Learn about Credentialing">
+                <div class="media-card__bg" style="--card-bg: linear-gradient(135deg, #2a4550 0%, #538898 48%, #152830 100%);"></div>
+                <div class="media-card__scrim" aria-hidden="true"></div>
+                <span class="media-card__tag">/ Credentialing</span>
+                <div class="media-card__content">
+                  <h3 class="media-card__title">Credentialing &amp; enrollment</h3>
+                  <p class="media-card__desc">Provider enrollment and payer credentialing managed with clear timelines and fewer surprises.</p>
+                </div>
+              </a>
+              <a href="/services/financial-reporting/" class="media-card anim-el" aria-label="Learn about Financial reporting">
+                <div class="media-card__bg" style="--card-bg: linear-gradient(135deg, #1f1008 0%, #3d1700 42%, #c2b19c 100%);"></div>
+                <div class="media-card__scrim" aria-hidden="true"></div>
+                <span class="media-card__tag">/ Financial reporting</span>
+                <div class="media-card__content">
+                  <h3 class="media-card__title">Financial reporting</h3>
+                  <p class="media-card__desc">Dashboards and board-ready reporting that show where the business stands &mdash; without spreadsheet chaos.</p>
+                </div>
               </a>
               <a href="/services/eligibility/" class="media-card anim-el" aria-label="Learn about Eligibility Verification">
-                <div class="media-card__bg" style="--card-bg: linear-gradient(135deg, #182428 0%, #315466 48%, #0d171a 100%);"></div>
+                <div class="media-card__bg" style="--card-bg: linear-gradient(135deg, #2a5558 0%, #9ad8da 48%, #143d49 100%);"></div>
                 <div class="media-card__scrim" aria-hidden="true"></div>
                 <span class="media-card__tag">/ Eligibility</span>
                 <div class="media-card__content">
                   <h3 class="media-card__title">Eligibility verification</h3>
                   <p class="media-card__desc">Benefits and coverage checked before service so coverage gaps are caught early, not after a claim is denied.</p>
                 </div>
-                <span class="media-card__action" aria-hidden="true">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-                </span>
               </a>
               <a href="/services/workflow/" class="media-card anim-el" aria-label="Learn about Workflow Optimization">
-                <div class="media-card__bg" style="--card-bg: linear-gradient(135deg, #21182a 0%, #4d3868 48%, #120d18 100%);"></div>
+                <div class="media-card__bg" style="--card-bg: linear-gradient(135deg, #3d1700 0%, #c2b19c 48%, #1f1008 100%);"></div>
                 <div class="media-card__scrim" aria-hidden="true"></div>
                 <span class="media-card__tag">/ Workflow</span>
                 <div class="media-card__content">
                   <h3 class="media-card__title">Workflow optimization</h3>
                   <p class="media-card__desc">Intake, admin, and back-office workflows mapped and improved so work moves cleanly without constant rework.</p>
                 </div>
-                <span class="media-card__action" aria-hidden="true">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-                </span>
               </a>
             </div>
           </div>
@@ -1908,7 +1902,7 @@
       <article class="bento__item bento__item--compact anim-el">
         <span class="bento__label">Cost</span>
         <p class="bento__stat">$85k+</p>
-        <p class="bento__text">True annual cost of one in-house back-office hire &mdash; we cover all seven areas for a fraction of that.</p>
+        <p class="bento__text">True annual cost of one in-house back-office hire &mdash; we cover all eight areas for a fraction of that.</p>
       </article>
       <article class="bento__item bento__item--compact anim-el">
         <span class="bento__label">Time back</span>
@@ -1959,7 +1953,7 @@
                 <span class="cost-panel__num">$85k<span class="cost-panel__num-suffix">+</span></span>
                 <h3 class="cost-panel__title">Per year for one back-office hire</h3>
               </div>
-              <p class="cost-panel__text">Salary, benefits, payroll tax, onboarding, turnover &mdash; and one person still rarely covers all seven areas you need.</p>
+              <p class="cost-panel__text">Salary, benefits, payroll tax, onboarding, turnover &mdash; and one person still rarely covers all eight areas you need.</p>
               <p class="cost-panel__source">Society for Human Resource Management</p>
             </article>
           </div>

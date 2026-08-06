@@ -349,6 +349,11 @@
       font-size: 0.88rem; opacity: 0.65;
       margin: 0; line-height: 1.55;
     }
+    .how__intro {
+      font-size: clamp(1rem, 1.8vw, 1.1rem);
+      opacity: 0.75; max-width: 52ch; margin: 0.75rem 0 0;
+      line-height: 1.65;
+    }
 
     /* ── 5. CTA strip ─────────────────────────────── */
     .cta-strip {
@@ -595,7 +600,8 @@
       <section class="how">
         <div class="inner">
           <span class="eyebrow">How it works</span>
-          <h2 class="section-heading">A process that runs itself.</h2>
+          <h2 class="section-heading">A process run by experts.</h2>
+          <p class="how__intro">From claim open to claim close, we own the process.</p>
           <div class="how__steps">
             <div class="how__step">
               <span class="how__step-num">01</span>
@@ -609,7 +615,7 @@
             </div>
             <div class="how__step">
               <span class="how__step-num">03</span>
-              <p class="how__step-title">Follow up</p>
+              <p class="how__step-title">Follow up &amp; follow through</p>
               <p class="how__step-desc">Denials are appealed. Underpayments are flagged. Aging balances get systematic follow-up until resolved.</p>
             </div>
             <div class="how__step">
