@@ -307,7 +307,14 @@
 
     .stack-section--cost {
       z-index: 6;
-      background: var(--color-forest);
+      background:
+        linear-gradient(
+          to bottom,
+          rgba(13, 13, 13, 0.95) 0%,
+          rgba(13, 13, 13, 0.88) 50%,
+          rgba(13, 13, 13, 0.95) 100%
+        ),
+        var(--color-dark);
       color: #f0ebe3;
     }
 
