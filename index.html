@@ -19,6 +19,7 @@
       --color-sand: #e8e0d0;
       --color-forest: #1c2b1e;
       --color-accent: #c8a96e;
+      --color-button: #143d49;
       --radius-section: 24px;
       --font-heading: "Playfair Display", Georgia, serif;
       --font-body: "DM Sans", system-ui, sans-serif;
@@ -120,15 +121,15 @@
       letter-spacing: 0.06em;
       text-transform: uppercase;
       text-decoration: none;
-      color: var(--color-dark);
-      background: var(--color-accent);
+      color: #f0ebe3;
+      background: var(--color-button);
       transition: transform 0.2s ease, box-shadow 0.2s ease;
     }
 
     .site-nav__cta:hover {
-      color: var(--color-dark);
+      color: #f0ebe3;
       transform: translateY(-1px);
-      box-shadow: 0 8px 24px rgba(200, 169, 110, 0.3);
+      box-shadow: 0 8px 24px rgba(20, 61, 73, 0.35);
     }
 
     .site-nav__toggle {
@@ -431,8 +432,8 @@
       letter-spacing: 0.06em;
       text-transform: uppercase;
       text-decoration: none;
-      color: var(--color-dark);
-      background: var(--color-accent);
+      color: #f0ebe3;
+      background: var(--color-button);
       border: none;
       padding: 1rem 1.75rem;
       border-radius: 999px;
@@ -442,20 +443,21 @@
 
     .btn:hover {
       transform: translateY(-2px);
-      box-shadow: 0 12px 32px rgba(200, 169, 110, 0.35);
+      box-shadow: 0 12px 32px rgba(20, 61, 73, 0.4);
     }
 
     /* Secondary CTA on dark hero */
     .btn--outline {
       background: transparent;
       color: #f0ebe3;
-      border: 1px solid rgba(200, 169, 110, 0.55);
+      border: 1px solid rgba(240, 235, 227, 0.45);
       box-shadow: none;
     }
 
     .btn--outline:hover {
-      border-color: var(--color-accent);
-      color: var(--color-accent);
+      background: var(--color-button);
+      border-color: var(--color-button);
+      color: #f0ebe3;
       box-shadow: none;
     }
 
