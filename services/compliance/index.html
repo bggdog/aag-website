@@ -91,9 +91,6 @@
     .site-nav__logo {
       display: inline-flex;
       align-items: center;
-      background: #fff;
-      padding: 0.35rem 0.6rem;
-      border-radius: 0.6rem;
     }
     .site-nav__logo img {
       height: clamp(1.5rem, 3.5vw, 1.9rem);
@@ -352,6 +349,30 @@
       font-size: 0.88rem; opacity: 0.65;
       margin: 0; line-height: 1.55;
     }
+    .how__cycle-loop {
+      max-width: 640px;
+      margin: 0.75rem auto 0;
+    }
+    .how__cycle-loop svg {
+      width: 100%;
+      height: 2.25rem;
+      display: block;
+      overflow: visible;
+    }
+    .how__cycle-path {
+      fill: none;
+      stroke: rgba(200,169,110,0.55);
+      stroke-width: 1.5;
+      stroke-dasharray: 3 5;
+    }
+    .how__cycle-loop marker path { fill: rgba(200,169,110,0.55); }
+    .how__cycle-caption {
+      text-align: center;
+      font-size: 0.82rem;
+      opacity: 0.55;
+      margin: 0.5rem 0 0;
+      font-style: italic;
+    }
 
     /* ── 5. CTA strip ─────────────────────────────── */
     .cta-strip {
@@ -392,9 +413,6 @@
     .site-footer__logo {
       display: inline-flex;
       align-items: center;
-      background: #fff;
-      padding: 0.4rem 0.75rem;
-      border-radius: 0.6rem;
     }
     .site-footer__logo img {
       height: 2rem;
@@ -482,7 +500,7 @@
   <div class="custom-cursor" id="customCursor" aria-hidden="true"></div>
 
   <header class="site-nav" id="siteNav">
-    <a href="/" class="site-nav__logo"><img src="/icons/favicon.png" alt="AAG" /></a>
+    <a href="/" class="site-nav__logo"><img src="/icons/aag-logo-white.png" alt="AAG" /></a>
     <button type="button" class="site-nav__toggle" id="siteNavToggle" aria-expanded="false" aria-controls="siteNavMenu" aria-label="Open menu">
       <svg class="icon-menu" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
       <svg class="icon-close" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
@@ -582,9 +600,9 @@
           <div class="why__grid">
             <div class="why__body">
               <span class="eyebrow">Why it matters</span>
-              <h2 class="section-heading">Billing errors are the most expensive thing you&rsquo;re not tracking.</h2>
-              <p>Most practices lose 5–15% of collectible revenue to billing problems — denials that don&rsquo;t get appealed, claims that never went out clean, and follow-ups that fall through the cracks when your team is stretched thin.</p>
-              <p>The problem compounds when billing is handled internally by staff who have ten other jobs. You don&rsquo;t always know money is being left on the table — it just quietly disappears.</p>
+              <h2 class="section-heading">An audit shouldn&rsquo;t feel like an ambush.</h2>
+              <p>When an auditor calls, it doesn&rsquo;t have to be a fire drill. For a practice with a well-run compliance program, an audit is simply the moment everything you&rsquo;ve already built gets validated — the culmination of a good process, not a threat to survive.</p>
+              <p>We don&rsquo;t believe hope is a strategy. Hoping an audit never comes, or hoping your documentation holds up if it does, isn&rsquo;t a plan. AAG builds a proven, repeatable compliance process long before a regulator ever asks for it — so when the call comes, we&rsquo;re not intimidated by it. We welcome it.</p>
               <p>AAG builds and maintains the compliance infrastructure so your program isn’t dependent on one person remembering to update a policy. It’s documented, trained, and monitored — continuously.</p>
             </div>
             <div>
@@ -624,6 +642,17 @@
               <p class="how__step-desc">Ongoing regulatory monitoring and quarterly reviews keep your program current as requirements change.</p>
             </div>
           </div>
+          <div class="how__cycle-loop" aria-hidden="true">
+            <svg viewBox="0 0 100 34" preserveAspectRatio="none">
+              <defs>
+                <marker id="cycleArrowHead" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto">
+                  <path d="M0,0 L8,4 L0,8 Z" />
+                </marker>
+              </defs>
+              <path class="how__cycle-path" d="M92 4 C 92 26, 8 26, 8 8" marker-end="url(#cycleArrowHead)" />
+            </svg>
+          </div>
+          <p class="how__cycle-caption">This isn&rsquo;t a one-time checklist &mdash; the cycle repeats continuously, quarter after quarter.</p>
         </div>
       </section>
 
@@ -642,7 +671,7 @@
     <footer class="site-footer">
       <div class="site-footer__main">
         <div>
-          <div class="site-footer__logo"><img src="/icons/favicon.png" alt="AAG" /></div>
+          <div class="site-footer__logo"><img src="/icons/aag-logo-white.png" alt="AAG" /></div>
           <p class="site-footer__tagline">Back-office support for businesses in the growth stage. We do what no one wants to do &mdash; so you can do what you were meant to.</p>
           <div class="site-footer__socials">
             <a href="#" class="site-footer__social" aria-label="LinkedIn"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2z"/><circle cx="4" cy="4" r="2"/></svg></a>
@@ -657,7 +686,6 @@
             <a href="/services/billing-rcm/" class="site-footer__link">Billing &amp; RCM</a>
             <a href="/services/compliance/" class="site-footer__link">Compliance</a>
             <a href="/services/financial-reporting/" class="site-footer__link">Financial reporting</a>
-            <a href="/services/accounting/" class="site-footer__link">Accounting</a>
             <a href="/services/marketing/" class="site-footer__link">Creative marketing</a>
           </nav>
         </div>

@@ -91,9 +91,6 @@
     .site-nav__logo {
       display: inline-flex;
       align-items: center;
-      background: #fff;
-      padding: 0.35rem 0.6rem;
-      border-radius: 0.6rem;
     }
     .site-nav__logo img {
       height: clamp(1.5rem, 3.5vw, 1.9rem);
@@ -352,6 +349,30 @@
       font-size: 0.88rem; opacity: 0.65;
       margin: 0; line-height: 1.55;
     }
+    .how__cycle-loop {
+      max-width: 640px;
+      margin: 0.75rem auto 0;
+    }
+    .how__cycle-loop svg {
+      width: 100%;
+      height: 2.25rem;
+      display: block;
+      overflow: visible;
+    }
+    .how__cycle-path {
+      fill: none;
+      stroke: rgba(200,169,110,0.55);
+      stroke-width: 1.5;
+      stroke-dasharray: 3 5;
+    }
+    .how__cycle-loop marker path { fill: rgba(200,169,110,0.55); }
+    .how__cycle-caption {
+      text-align: center;
+      font-size: 0.82rem;
+      opacity: 0.55;
+      margin: 0.5rem 0 0;
+      font-style: italic;
+    }
 
     /* ── 5. CTA strip ─────────────────────────────── */
     .cta-strip {
@@ -392,9 +413,6 @@
     .site-footer__logo {
       display: inline-flex;
       align-items: center;
-      background: #fff;
-      padding: 0.4rem 0.75rem;
-      border-radius: 0.6rem;
     }
     .site-footer__logo img {
       height: 2rem;
@@ -482,7 +500,7 @@
   <div class="custom-cursor" id="customCursor" aria-hidden="true"></div>
 
   <header class="site-nav" id="siteNav">
-    <a href="/" class="site-nav__logo"><img src="/icons/favicon.png" alt="AAG" /></a>
+    <a href="/" class="site-nav__logo"><img src="/icons/aag-logo-white.png" alt="AAG" /></a>
     <button type="button" class="site-nav__toggle" id="siteNavToggle" aria-expanded="false" aria-controls="siteNavMenu" aria-label="Open menu">
       <svg class="icon-menu" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
       <svg class="icon-close" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
@@ -514,8 +532,8 @@
             <li aria-current="page">Creative Marketing</li>
           </ol>
           <p class="hero__tag">/ Creative Marketing</p>
-          <h1 class="hero__heading">Growth you can see.</h1>
-          <p class="hero__desc">Brand, content, and digital marketing built for growth-stage businesses &mdash; so you attract the right clients without building an internal marketing team.</p>
+          <h1 class="hero__heading">Brand, content, and digital marketing built for your stage of growth &mdash; without building an internal team.</h1>
+          <p class="hero__desc">So you can stay focused on the work only you can do, while a dedicated team handles positioning, content, and growth marketing end-to-end.</p>
           <div class="btn-row">
             <a href="/contact/" class="btn">Schedule a consultation</a>
             <a href="/services/" class="btn btn--outline">All services</a>
@@ -548,29 +566,29 @@
               <div class="included__card-icon">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"/></svg>
               </div>
-              <p class="included__card-title">Content creation</p>
-              <p class="included__card-desc">Blog posts, case studies, and social content written and produced on a consistent schedule.</p>
+              <p class="included__card-title">SEO &amp; content creation</p>
+              <p class="included__card-desc">Search-optimized content, case studies, and social posts written and produced on a consistent schedule to keep you found and top of mind.</p>
             </div>
             <div class="included__card">
               <div class="included__card-icon">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
               </div>
               <p class="included__card-title">Social media management</p>
-              <p class="included__card-desc">LinkedIn and other platforms managed with content that builds credibility and drives inbound interest.</p>
+              <p class="included__card-desc">Content managed across all platforms — building credibility and driving inbound interest everywhere your audience shows up.</p>
             </div>
             <div class="included__card">
               <div class="included__card-icon">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
               </div>
-              <p class="included__card-title">Email marketing</p>
-              <p class="included__card-desc">Nurture sequences and newsletters that keep your audience engaged and move leads toward a conversation.</p>
+              <p class="included__card-title">Live analytics</p>
+              <p class="included__card-desc">A live analytics dashboard tracking traffic, engagement, and lead flow in real time — no waiting on a report to know what&rsquo;s working.</p>
             </div>
             <div class="included__card">
               <div class="included__card-icon">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
               </div>
               <p class="included__card-title">Performance reporting</p>
-              <p class="included__card-desc">Monthly reporting on traffic, engagement, and leads &mdash; so you know what&rsquo;s working and where to double down.</p>
+              <p class="included__card-desc">Live reporting on traffic, engagement, and leads &mdash; so you know what&rsquo;s working and where to double down, updated in real time.</p>
             </div>
           </div>
         </div>
@@ -601,29 +619,40 @@
       <section class="how">
         <div class="inner">
           <span class="eyebrow">How it works</span>
-          <h2 class="section-heading">From brand to inbound leads.</h2>
+          <h2 class="section-heading">From first click to booked client.</h2>
           <div class="how__steps">
             <div class="how__step">
               <span class="how__step-num">01</span>
-              <p class="how__step-title">Brand</p>
-              <p class="how__step-desc">We start with positioning and voice — who you’re for, what makes you different, and how to say it.</p>
+              <p class="how__step-title">Attract</p>
+              <p class="how__step-desc">Use SEO, social media, paid ads, and content to bring the right people to your site or profile.</p>
             </div>
             <div class="how__step">
               <span class="how__step-num">02</span>
-              <p class="how__step-title">Create</p>
-              <p class="how__step-desc">Content calendar built and executed — posts, articles, emails — on a schedule that doesn’t depend on your availability.</p>
+              <p class="how__step-title">Convert</p>
+              <p class="how__step-desc">Turn visitors into leads with clear calls to action, landing pages, lead magnets, and simple contact forms.</p>
             </div>
             <div class="how__step">
               <span class="how__step-num">03</span>
-              <p class="how__step-title">Publish</p>
-              <p class="how__step-desc">Content distributed across your channels — website, social, email — consistently and on-brand every time.</p>
+              <p class="how__step-title">Nurture</p>
+              <p class="how__step-desc">Follow up with email, retargeting, useful content, and trust-building messages until they are ready to buy or book.</p>
             </div>
             <div class="how__step">
               <span class="how__step-num">04</span>
-              <p class="how__step-title">Optimize</p>
-              <p class="how__step-desc">Monthly performance review to double down on what’s working and adjust what isn’t.</p>
+              <p class="how__step-title">Measure &amp; improve</p>
+              <p class="how__step-desc">Review data like traffic, conversion rate, cost per lead, and ROI, then adjust your campaigns and repeat the cycle.</p>
             </div>
           </div>
+          <div class="how__cycle-loop" aria-hidden="true">
+            <svg viewBox="0 0 100 34" preserveAspectRatio="none">
+              <defs>
+                <marker id="cycleArrowHead" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto">
+                  <path d="M0,0 L8,4 L0,8 Z" />
+                </marker>
+              </defs>
+              <path class="how__cycle-path" d="M92 4 C 92 26, 8 26, 8 8" marker-end="url(#cycleArrowHead)" />
+            </svg>
+          </div>
+          <p class="how__cycle-caption">Marketing isn&rsquo;t a one-time push &mdash; this cycle repeats continuously as campaigns are refined.</p>
         </div>
       </section>
 
@@ -642,7 +671,7 @@
     <footer class="site-footer">
       <div class="site-footer__main">
         <div>
-          <div class="site-footer__logo"><img src="/icons/favicon.png" alt="AAG" /></div>
+          <div class="site-footer__logo"><img src="/icons/aag-logo-white.png" alt="AAG" /></div>
           <p class="site-footer__tagline">Back-office support for businesses in the growth stage. We do what no one wants to do &mdash; so you can do what you were meant to.</p>
           <div class="site-footer__socials">
             <a href="#" class="site-footer__social" aria-label="LinkedIn"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2z"/><circle cx="4" cy="4" r="2"/></svg></a>
@@ -657,7 +686,6 @@
             <a href="/services/billing-rcm/" class="site-footer__link">Billing &amp; RCM</a>
             <a href="/services/compliance/" class="site-footer__link">Compliance</a>
             <a href="/services/financial-reporting/" class="site-footer__link">Financial reporting</a>
-            <a href="/services/accounting/" class="site-footer__link">Accounting</a>
             <a href="/services/marketing/" class="site-footer__link">Creative marketing</a>
           </nav>
         </div>
