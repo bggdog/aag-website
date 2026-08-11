@@ -18,7 +18,7 @@
       --color-cream:  #f5f0e8;
       --color-sand:   #e8e0d0;
       --color-forest: #1c2b1e;
-      --color-accent: #c8a96e;
+      --color-accent: #9ad8da;
       --color-button: #143d49;
       --radius-section: 24px;
       --font-heading: "Playfair Display", Georgia, serif;
@@ -267,7 +267,7 @@
       font-size: 0.9rem;
       color: var(--color-accent);
       text-decoration: none;
-      border-bottom: 1px solid rgba(200, 169, 110, 0.35);
+      border-bottom: 1px solid rgba(154, 216, 218, 0.35);
       padding-bottom: 0.2rem;
       transition: border-color 0.2s ease, opacity 0.2s ease;
       opacity: 0.88;
@@ -345,7 +345,7 @@
     }
 
     .form-field select {
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23c8a96e' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%239ad8da' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
       background-repeat: no-repeat;
       background-position: right 1rem center;
       padding-right: 2.5rem;
@@ -364,7 +364,7 @@
     .form-field input:focus,
     .form-field select:focus,
     .form-field textarea:focus {
-      border-color: rgba(200,169,110,0.6);
+      border-color: rgba(154,216,218,0.6);
       background: rgba(255,255,255,0.09);
     }
 
@@ -516,7 +516,7 @@
 
     .site-footer__social:hover {
       border-color: var(--color-accent);
-      background: rgba(200,169,110,0.12);
+      background: rgba(154,216,218,0.12);
     }
 
     .site-footer__social svg { width: 14px; height: 14px; }
@@ -716,14 +716,10 @@
               <label for="service">Service area</label>
               <select id="service" name="service">
                 <option value="" disabled selected>Select an area of interest&hellip;</option>
-                <option value="Billing &amp; RCM">Billing &amp; RCM</option>
+                <option value="Billing">Billing</option>
                 <option value="Compliance">Compliance</option>
-                <option value="Credentialing &amp; Enrollment">Credentialing &amp; Enrollment</option>
-                <option value="Accounting">Accounting</option>
-                <option value="Financial Reporting">Financial Reporting</option>
+                <option value="Credentialing">Credentialing</option>
                 <option value="Contracting &amp; Negotiation">Contracting &amp; Negotiation</option>
-                <option value="Eligibility Verification">Eligibility Verification</option>
-                <option value="Workflow Optimization">Workflow Optimization</option>
                 <option value="Creative Marketing">Creative Marketing</option>
                 <option value="Not sure yet">Not sure yet &mdash; let&rsquo;s talk</option>
               </select>
@@ -768,12 +764,12 @@
         </div>
         <div>
           <p class="site-footer__col-title">Services</p>
-          <nav class="site-footer__links" aria-label="Services">
-            <a href="/services/credentialing/" class="site-footer__link">Credentialing &amp; enrollment</a>
-            <a href="/services/contracting/" class="site-footer__link">Contracting &amp; negotiation</a>
-            <a href="/services/billing-rcm/" class="site-footer__link">Billing &amp; RCM</a>
+                                                                                                    <nav class="site-footer__links" aria-label="Services">
+            <a href="/services/billing-rcm/" class="site-footer__link">Billing</a>
             <a href="/services/compliance/" class="site-footer__link">Compliance</a>
-            <a href="/services/marketing/" class="site-footer__link">Creative marketing</a>
+            <a href="/services/marketing/" class="site-footer__link">Creative Marketing</a>
+            <a href="/services/contracting/" class="site-footer__link">Contracting &amp; Negotiation</a>
+            <a href="/services/credentialing/" class="site-footer__link">Credentialing</a>
           </nav>
         </div>
         <div>
