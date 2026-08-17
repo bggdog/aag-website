@@ -288,6 +288,42 @@
       margin: 0; line-height: 1.55;
     }
 
+    .specialty { background: var(--color-dark); }
+    .specialty-card {
+      position: relative;
+      display: block;
+      overflow: hidden;
+      min-height: 230px;
+      padding: clamp(1.75rem, 4vw, 2.5rem);
+      border: 1px solid rgba(154,216,218,0.2);
+      border-radius: 1.25rem;
+      color: #f0ebe3;
+      text-decoration: none;
+      background: linear-gradient(135deg, #0a242c 0%, #143d49 52%, #071820 100%);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .specialty-card:hover,
+    .specialty-card:focus-visible {
+      transform: translateY(-4px);
+      box-shadow: 0 20px 48px rgba(0,0,0,0.4), 0 0 0 1px rgba(154,216,218,0.45);
+    }
+    .specialty-card__body { position: relative; z-index: 1; max-width: 38rem; }
+    .specialty-card__tag {
+      display: block;
+      margin-bottom: 0.65rem;
+      color: var(--color-accent);
+      font-size: 0.7rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+    .specialty-card__title {
+      margin: 0 0 0.5rem;
+      font-family: var(--font-heading);
+      font-size: clamp(1.75rem, 4vw, 2.5rem);
+    }
+    .specialty-card__desc { margin: 0; max-width: 48ch; opacity: 0.75; }
+
     /* ── 3. Why it matters ────────────────────────── */
     .why { background: var(--color-dark); }
     .why__grid {
@@ -474,6 +510,20 @@
     @media (max-width: 480px) {
       .site-footer__main { grid-template-columns: 1fr; }
     }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after {
+        animation: none !important;
+        transition: none !important;
+      }
+      .btn:hover,
+      .site-nav__cta:hover,
+      .specialty-card:hover,
+      .specialty-card:focus-visible {
+        transform: none;
+      }
+    }
   </style>
 </head>
 <body>
@@ -572,6 +622,19 @@
               <p class="included__card-desc">We track contract terms and flag underpayments so you get reimbursed at the rate you&rsquo;re actually owed.</p>
             </div>
           </div>
+        </div>
+      </section>
+
+      <section class="specialty">
+        <div class="inner">
+          <span class="eyebrow">Specialized billing</span>
+          <a href="/services/billing-rcm/pediatrics/" class="specialty-card">
+            <div class="specialty-card__body">
+              <span class="specialty-card__tag">/ Texas pediatric therapy</span>
+              <h2 class="specialty-card__title">Pediatrics</h2>
+              <p class="specialty-card__desc">Billing and RCM for Texas pediatric PT, OT, and speech therapy practices.</p>
+            </div>
+          </a>
         </div>
       </section>
 
