@@ -567,6 +567,9 @@
       line-height: 1.65;
       opacity: 0.75;
     }
+    .faq.is-enhanced .faq__item:has(.faq__trigger[aria-expanded="false"]) .faq__answer {
+      display: none;
+    }
 
     .cta-strip {
       background: #143d49;
@@ -893,56 +896,66 @@
           <div class="faq__list">
             <article class="faq__item">
               <h3 class="faq__heading">
-                <button class="faq__trigger" type="button">
+                <button class="faq__trigger" type="button"
+                  id="faq-trigger-1" aria-expanded="true" aria-controls="faq-answer-1">
                   <span>Do you bill Texas Medicaid and STAR Kids for pediatric therapy?</span>
                   <span class="faq__icon" aria-hidden="true"></span>
                 </button>
               </h3>
-              <div class="faq__answer">
+              <div class="faq__answer" id="faq-answer-1"
+                role="region" aria-labelledby="faq-trigger-1">
                 <p>Yes. We handle claims and authorization workflows for Texas Medicaid fee-for-service, STAR and STAR Kids managed care, and CHIP, alongside commercial payers like BCBS of Texas, Aetna, Cigna, and UnitedHealthcare.</p>
               </div>
             </article>
             <article class="faq__item">
               <h3 class="faq__heading">
-                <button class="faq__trigger" type="button">
+                <button class="faq__trigger" type="button"
+                  id="faq-trigger-2" aria-expanded="false" aria-controls="faq-answer-2">
                   <span>Which pediatric therapy disciplines do you work with?</span>
                   <span class="faq__icon" aria-hidden="true"></span>
                 </button>
               </h3>
-              <div class="faq__answer">
+              <div class="faq__answer" id="faq-answer-2"
+                role="region" aria-labelledby="faq-trigger-2">
                 <p>We support pediatric physical therapy, occupational therapy, and speech-language pathology practices, including multi-disciplinary clinics that bill across several specialties under one roof.</p>
               </div>
             </article>
             <article class="faq__item">
               <h3 class="faq__heading">
-                <button class="faq__trigger" type="button">
+                <button class="faq__trigger" type="button"
+                  id="faq-trigger-3" aria-expanded="false" aria-controls="faq-answer-3">
                   <span>Can you get my practice credentialed with Texas payers?</span>
                   <span class="faq__icon" aria-hidden="true"></span>
                 </button>
               </h3>
-              <div class="faq__answer">
+              <div class="faq__answer" id="faq-answer-3"
+                role="region" aria-labelledby="faq-trigger-3">
                 <p>Yes. We manage payer enrollment and CAQH upkeep from application through in-network approval, including Medicaid MCO panels, so new providers and new locations can start billing sooner.</p>
               </div>
             </article>
             <article class="faq__item">
               <h3 class="faq__heading">
-                <button class="faq__trigger" type="button">
+                <button class="faq__trigger" type="button"
+                  id="faq-trigger-4" aria-expanded="false" aria-controls="faq-answer-4">
                   <span>How do you handle prior authorizations for pediatric therapy?</span>
                   <span class="faq__icon" aria-hidden="true"></span>
                 </button>
               </h3>
-              <div class="faq__answer">
+              <div class="faq__answer" id="faq-answer-4"
+                role="region" aria-labelledby="faq-trigger-4">
                 <p>We track authorization windows and re-authorization deadlines by payer, submit documentation ahead of expiration, and flag units-remaining so sessions never get delivered without active coverage.</p>
               </div>
             </article>
             <article class="faq__item">
               <h3 class="faq__heading">
-                <button class="faq__trigger" type="button">
+                <button class="faq__trigger" type="button"
+                  id="faq-trigger-5" aria-expanded="false" aria-controls="faq-answer-5">
                   <span>Do you work with practices outside major Texas metros?</span>
                   <span class="faq__icon" aria-hidden="true"></span>
                 </button>
               </h3>
-              <div class="faq__answer">
+              <div class="faq__answer" id="faq-answer-5"
+                role="region" aria-labelledby="faq-trigger-5">
                 <p>Yes. Because billing is handled remotely, we support pediatric therapy practices anywhere in Texas, from Dallas-Fort Worth and Houston to Austin, San Antonio, and smaller markets.</p>
               </div>
             </article>
@@ -1038,6 +1051,17 @@
           var open = siteNav.classList.toggle("is-open");
           navToggle.setAttribute("aria-expanded", open ? "true" : "false");
           navToggle.setAttribute("aria-label", open ? "Close menu" : "Open menu");
+        });
+      }
+
+      var faq = document.querySelector(".faq");
+      if (faq) {
+        faq.classList.add("is-enhanced");
+        faq.querySelectorAll(".faq__trigger").forEach(function (trigger) {
+          trigger.addEventListener("click", function () {
+            var expanded = trigger.getAttribute("aria-expanded") === "true";
+            trigger.setAttribute("aria-expanded", expanded ? "false" : "true");
+          });
         });
       }
     })();
