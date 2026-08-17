@@ -43,7 +43,7 @@
     "provider": {
       "@type": "ProfessionalService",
       "name": "Aurora Advisory Group",
-      "url": "https://www.auroraadvisorygroup.com",
+      "url": "https://www.auroraadvisorygroup.com/",
       "areaServed": {
         "@type": "State",
         "name": "Texas"
@@ -119,7 +119,7 @@
       { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.auroraadvisorygroup.com/" },
       { "@type": "ListItem", "position": 2, "name": "Services", "item": "https://www.auroraadvisorygroup.com/services/" },
       { "@type": "ListItem", "position": 3, "name": "Billing & RCM", "item": "https://www.auroraadvisorygroup.com/services/billing-rcm/" },
-      { "@type": "ListItem", "position": 4, "name": "Texas Pediatric Therapy Billing", "item": "https://www.auroraadvisorygroup.com/services/billing-rcm/pediatrics/" }
+      { "@type": "ListItem", "position": 4, "name": "Pediatric Therapy Billing — Texas", "item": "https://www.auroraadvisorygroup.com/services/billing-rcm/pediatrics/" }
     ]
   }
   </script>
@@ -392,11 +392,6 @@
     }
 
     .included { background: rgba(255,255,255,0.02); }
-    .included__intro {
-      font-size: clamp(1rem, 1.8vw, 1.1rem);
-      opacity: 0.75; max-width: 52ch; margin: 0 0 2.5rem;
-      line-height: 1.65;
-    }
     .included__grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
@@ -557,6 +552,10 @@
       border-right: 2px solid var(--color-accent);
       border-bottom: 2px solid var(--color-accent);
       transform: rotate(45deg);
+      transition: transform 0.2s ease;
+    }
+    .faq__trigger[aria-expanded="true"] .faq__icon {
+      transform: rotate(-135deg);
     }
     .faq__answer {
       padding: 0 1.25rem 1.2rem;
@@ -566,9 +565,6 @@
       font-size: 0.95rem;
       line-height: 1.65;
       opacity: 0.75;
-    }
-    .faq.is-enhanced .faq__item:has(.faq__trigger[aria-expanded="false"]) .faq__answer {
-      display: none;
     }
 
     .cta-strip {
@@ -676,6 +672,10 @@
       .site-nav__link, .site-nav__cta { display: block; padding: 0.85rem 0; text-align: left; }
       .site-nav__cta { width: 100%; text-align: center; }
 
+      .site-footer__main { grid-template-columns: 1fr 1fr; }
+    }
+
+    @media (max-width: 900px) {
       .payers__path {
         grid-template-columns: 1fr;
         gap: 2rem;
@@ -690,8 +690,6 @@
         transform: translateY(50%);
         box-shadow: 0 0 0 3px var(--color-dark);
       }
-
-      .site-footer__main { grid-template-columns: 1fr 1fr; }
     }
 
     @media (max-width: 480px) {
@@ -738,15 +736,17 @@
           <div class="hero-bg__overlay"></div>
         </div>
         <div class="inner">
-          <ol class="breadcrumb" aria-label="Breadcrumb">
-            <li><a href="/">Home</a></li>
-            <li aria-hidden="true" class="breadcrumb__sep">/</li>
-            <li><a href="/services/">Services</a></li>
-            <li aria-hidden="true" class="breadcrumb__sep">/</li>
-            <li><a href="/services/billing-rcm/">Billing &amp; RCM</a></li>
-            <li aria-hidden="true" class="breadcrumb__sep">/</li>
-            <li aria-current="page">Pediatric Therapy Billing — Texas</li>
-          </ol>
+          <nav aria-label="Breadcrumb">
+            <ol class="breadcrumb">
+              <li><a href="/">Home</a></li>
+              <li aria-hidden="true" class="breadcrumb__sep">/</li>
+              <li><a href="/services/">Services</a></li>
+              <li aria-hidden="true" class="breadcrumb__sep">/</li>
+              <li><a href="/services/billing-rcm/">Billing &amp; RCM</a></li>
+              <li aria-hidden="true" class="breadcrumb__sep">/</li>
+              <li aria-current="page">Pediatric Therapy Billing — Texas</li>
+            </ol>
+          </nav>
           <p class="hero__tag">Billing &amp; RCM for Pediatric Therapy</p>
           <h1 class="hero__heading">Texas Pediatric Therapy Billing Company for PT, OT &amp; ST Practices</h1>
           <p class="hero__desc">Aurora Advisory Group runs billing and revenue cycle management built specifically for Texas pediatric therapy clinics — Medicaid, STAR Kids, CHIP, and commercial payers, handled by a team that already knows the rules, the MCOs, and the deadlines.</p>
@@ -774,7 +774,7 @@
       <section class="included" id="services">
         <div class="inner">
           <span class="eyebrow">What&rsquo;s included</span>
-          <h2 class="section-heading">What&rsquo;s included</h2>
+          <h2 class="section-heading">Everything a Texas pediatric therapy practice needs billed</h2>
           <div class="included__grid">
             <article class="included__card">
               <div class="included__card-icon">
@@ -846,7 +846,7 @@
       <section class="who">
         <div class="inner">
           <span class="eyebrow">Who this is for</span>
-          <h2 class="section-heading">Who this is for</h2>
+          <h2 class="section-heading">Built for pediatric PT, OT, and speech practices</h2>
           <ul class="who__checklist">
             <li>Pediatric physical therapy practices</li>
             <li>Pediatric occupational therapy practices</li>
@@ -860,7 +860,7 @@
       <section class="how" id="how-it-works">
         <div class="inner">
           <span class="eyebrow">How it works</span>
-          <h2 class="section-heading">How it works</h2>
+          <h2 class="section-heading">From consultation to steady collections</h2>
           <div class="how__steps">
             <article class="how__step">
               <span class="how__step-num">01</span>
@@ -1058,9 +1058,16 @@
       if (faq) {
         faq.classList.add("is-enhanced");
         faq.querySelectorAll(".faq__trigger").forEach(function (trigger) {
+          var answer = document.getElementById(trigger.getAttribute("aria-controls"));
+          if (answer) {
+            answer.hidden = trigger.getAttribute("aria-expanded") !== "true";
+          }
           trigger.addEventListener("click", function () {
             var expanded = trigger.getAttribute("aria-expanded") === "true";
             trigger.setAttribute("aria-expanded", expanded ? "false" : "true");
+            if (answer) {
+              answer.hidden = expanded;
+            }
           });
         });
       }
