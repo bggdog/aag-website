@@ -299,9 +299,10 @@
     }
     .hero-bg {
       position: absolute;
-      inset: 0;
+      inset: -8%;
       display: flex;
       z-index: 0;
+      will-change: transform;
     }
     .hero-bg__video {
       position: absolute;
@@ -335,6 +336,7 @@
       z-index: 1;
       padding-top: clamp(3rem, 7vw, 5rem);
       padding-bottom: clamp(3rem, 7vw, 5rem);
+      will-change: transform;
     }
     .hero__tag {
       font-size: 0.72rem; font-weight: 500;
@@ -402,6 +404,7 @@
       border: 1px solid rgba(240,235,227,0.1);
       border-radius: 1rem;
       padding: 1.5rem;
+      transition: transform 0.35s ease, box-shadow 0.35s ease, border-color 0.35s ease;
     }
     .included__card-icon {
       width: 36px; height: 36px;
@@ -434,6 +437,7 @@
       border: 1px solid rgba(154,216,218,0.22);
       border-radius: 1rem;
       padding: 1.6rem 1.45rem;
+      transition: transform 0.35s ease, box-shadow 0.35s ease, border-color 0.35s ease;
     }
     .payers__item:not(:last-child)::after {
       content: "";
@@ -444,7 +448,15 @@
       height: 2px;
       background: var(--color-accent);
       transform: translate(50%, -50%);
+      transform-origin: left center;
       box-shadow: 0 0 0 3px var(--color-dark);
+    }
+    html.is-motion-ready .payers__item:not(:last-child)::after {
+      transform: translate(50%, -50%) scaleX(0);
+      transition: transform 0.55s ease 0.28s;
+    }
+    html.is-motion-ready .payers__item.is-visible:not(:last-child)::after {
+      transform: translate(50%, -50%) scaleX(1);
     }
     .payers__title {
       font-family: var(--font-heading);
@@ -501,12 +513,17 @@
       background: rgba(255,255,255,0.04);
       border: 1px solid rgba(240,235,227,0.1);
       border-radius: 1rem;
+      transition: transform 0.35s ease, box-shadow 0.35s ease, border-color 0.35s ease;
     }
     .how__step-num {
       font-family: var(--font-heading);
       font-size: 2.5rem; line-height: 1;
       color: rgba(154,216,218,0.25);
       margin-bottom: 0.75rem; display: block;
+      transition: color 0.6s ease;
+    }
+    html.is-motion-ready .how__step.is-visible .how__step-num {
+      color: var(--color-accent);
     }
     .how__step-title {
       font-weight: 500; font-size: 1rem;
@@ -568,20 +585,86 @@
     }
 
     .cta-strip {
+      position: relative;
+      overflow: hidden;
       background: #143d49;
       padding: clamp(4rem, 8vw, 6rem) 0;
       text-align: center;
     }
+    .cta-strip::after {
+      content: "";
+      position: absolute;
+      left: 50%;
+      top: 45%;
+      width: min(42rem, 90%);
+      height: 16rem;
+      background: radial-gradient(ellipse, rgba(154,216,218,0.22), transparent 68%);
+      transform: translate(-50%, -50%) scale(0.72);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.85s ease, transform 0.85s ease;
+    }
+    html.is-motion-ready .cta-strip.is-visible::after {
+      opacity: 1;
+      transform: translate(-50%, -50%) scale(1);
+    }
     .cta-strip__heading {
+      position: relative;
+      z-index: 1;
       font-family: var(--font-heading);
       font-size: clamp(2rem, 5vw, 3.25rem);
       line-height: 1.08; margin: 0 0 1rem;
     }
-    .cta-strip .btn { background: #000; }
+    .cta-strip .btn { position: relative; z-index: 1; background: #000; }
     .cta-strip__sub {
+      position: relative;
+      z-index: 1;
       font-size: clamp(1rem, 2vw, 1.1rem);
       opacity: 0.75; margin: 0 auto 2rem;
       max-width: 40ch; line-height: 1.6;
+    }
+
+    html.is-motion-ready .reveal {
+      opacity: 0;
+      transform: translate3d(0, 22px, 0);
+      filter: blur(8px);
+    }
+    html.is-motion-ready .reveal.is-visible {
+      opacity: 1;
+      transform: translate3d(0, 0, 0);
+      filter: none;
+      transition:
+        opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1) var(--reveal-delay, 0s),
+        transform 0.7s cubic-bezier(0.22, 1, 0.36, 1) var(--reveal-delay, 0s),
+        filter 0.7s cubic-bezier(0.22, 1, 0.36, 1) var(--reveal-delay, 0s),
+        box-shadow 0.35s ease,
+        border-color 0.35s ease,
+        color 0.6s ease;
+    }
+    html.is-motion-ready .who__checklist li.reveal:nth-child(odd) {
+      transform: translate3d(-14px, 16px, 0);
+    }
+    html.is-motion-ready .who__checklist li.reveal:nth-child(even) {
+      transform: translate3d(14px, 16px, 0);
+    }
+    html.is-motion-ready .who__checklist li.reveal.is-visible {
+      transform: translate3d(0, 0, 0);
+    }
+
+    @media (hover: hover) and (pointer: fine) {
+      .included__card:hover,
+      .payers__item:hover,
+      .how__step:hover {
+        transform: translate3d(0, -5px, 0);
+        border-color: rgba(154,216,218,0.38);
+        box-shadow: 0 18px 36px rgba(0, 0, 0, 0.28);
+      }
+      html.is-motion-ready .included__card.reveal:not(.is-visible):hover,
+      html.is-motion-ready .payers__item.reveal:not(.is-visible):hover,
+      html.is-motion-ready .how__step.reveal:not(.is-visible):hover {
+        transform: translate3d(0, 22px, 0);
+        box-shadow: none;
+      }
     }
 
     .site-footer {
@@ -688,7 +771,22 @@
         width: 2px;
         height: 2rem;
         transform: translateY(50%);
+        transform-origin: center top;
         box-shadow: 0 0 0 3px var(--color-dark);
+      }
+      html.is-motion-ready .payers__item:not(:last-child)::after {
+        transform: translateY(50%) scaleY(0);
+      }
+      html.is-motion-ready .payers__item.is-visible:not(:last-child)::after {
+        transform: translateY(50%) scaleY(1);
+      }
+    }
+
+    @media (max-width: 767px), (hover: none), (pointer: coarse) {
+      .hero-bg,
+      .hero .inner {
+        will-change: auto;
+        transform: none !important;
       }
     }
 
@@ -698,13 +796,43 @@
 
     @media (prefers-reduced-motion: reduce) {
       html { scroll-behavior: auto; }
+      html.is-motion-ready .reveal,
+      html.is-motion-ready .who__checklist li.reveal:nth-child(odd),
+      html.is-motion-ready .who__checklist li.reveal:nth-child(even) {
+        opacity: 1;
+        transform: none;
+        filter: none;
+      }
+      html.is-motion-ready .payers__item:not(:last-child)::after,
+      html.is-motion-ready .payers__item.is-visible:not(:last-child)::after {
+        transform: translate(50%, -50%) scaleX(1);
+      }
+      html.is-motion-ready .cta-strip::after,
+      html.is-motion-ready .cta-strip.is-visible::after {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+      }
+      .hero-bg,
+      .hero .inner {
+        will-change: auto;
+        transform: none !important;
+      }
       *, *::before, *::after {
         animation: none !important;
         transition: none !important;
       }
       .btn:hover,
-      .site-nav__cta:hover {
+      .site-nav__cta:hover,
+      .included__card:hover,
+      .payers__item:hover,
+      .how__step:hover {
         transform: none;
+      }
+    }
+    @media (prefers-reduced-motion: reduce) and (max-width: 900px) {
+      html.is-motion-ready .payers__item:not(:last-child)::after,
+      html.is-motion-ready .payers__item.is-visible:not(:last-child)::after {
+        transform: translateY(50%) scaleY(1);
       }
     }
   </style>
@@ -736,7 +864,7 @@
           <div class="hero-bg__overlay"></div>
         </div>
         <div class="inner">
-          <nav aria-label="Breadcrumb">
+          <nav class="reveal" aria-label="Breadcrumb" style="--reveal-delay: 0s;">
             <ol class="breadcrumb">
               <li><a href="/">Home</a></li>
               <li aria-hidden="true" class="breadcrumb__sep">/</li>
@@ -747,71 +875,71 @@
               <li aria-current="page">Pediatric Therapy Billing — Texas</li>
             </ol>
           </nav>
-          <p class="hero__tag">Billing &amp; RCM for Pediatric Therapy</p>
-          <h1 class="hero__heading">Texas Pediatric Therapy Billing Company for PT, OT &amp; ST Practices</h1>
-          <p class="hero__desc">Aurora Advisory Group runs billing and revenue cycle management built specifically for Texas pediatric therapy clinics — Medicaid, STAR Kids, CHIP, and commercial payers, handled by a team that already knows the rules, the MCOs, and the deadlines.</p>
-          <div class="btn-row">
+          <p class="hero__tag reveal" style="--reveal-delay: 0.08s;">Billing &amp; RCM for Pediatric Therapy</p>
+          <h1 class="hero__heading reveal" style="--reveal-delay: 0.16s;">Texas Pediatric Therapy Billing Company for PT, OT &amp; ST Practices</h1>
+          <p class="hero__desc reveal" style="--reveal-delay: 0.24s;">Aurora Advisory Group runs billing and revenue cycle management built specifically for Texas pediatric therapy clinics — Medicaid, STAR Kids, CHIP, and commercial payers, handled by a team that already knows the rules, the MCOs, and the deadlines.</p>
+          <div class="btn-row reveal" style="--reveal-delay: 0.32s;">
             <a href="/contact/" class="btn">Get a free consultation</a>
             <a href="#how-it-works" class="btn btn--outline">See how it works</a>
           </div>
           <ul class="hero__trust-row">
-            <li>Texas Medicaid &amp; STAR Kids</li>
-            <li>CHIP</li>
-            <li>Commercial payers</li>
-            <li>Multi-discipline clinics</li>
+            <li class="reveal" style="--reveal-delay: 0.4s;">Texas Medicaid &amp; STAR Kids</li>
+            <li class="reveal" style="--reveal-delay: 0.46s;">CHIP</li>
+            <li class="reveal" style="--reveal-delay: 0.52s;">Commercial payers</li>
+            <li class="reveal" style="--reveal-delay: 0.58s;">Multi-discipline clinics</li>
           </ul>
         </div>
       </section>
 
       <section class="context">
         <div class="inner">
-          <span class="eyebrow">Texas pediatric billing</span>
-          <h2 class="section-heading">Pediatric therapy billing in Texas isn&rsquo;t generic medical billing</h2>
-          <p class="context__copy">Between Texas Medicaid fee-for-service, STAR and STAR Kids managed care organizations, CHIP, and a long list of commercial payers, pediatric PT, OT, and speech practices are working against a patchwork of authorization rules, re-auth windows, and timely-filing deadlines that generic billing companies weren&rsquo;t built to track. One missed re-authorization or one denied claim isn&rsquo;t just an error — it&rsquo;s care your practice delivered for free.</p>
+          <span class="eyebrow reveal">Texas pediatric billing</span>
+          <h2 class="section-heading reveal" style="--reveal-delay: 0.08s;">Pediatric therapy billing in Texas isn&rsquo;t generic medical billing</h2>
+          <p class="context__copy reveal" style="--reveal-delay: 0.16s;">Between Texas Medicaid fee-for-service, STAR and STAR Kids managed care organizations, CHIP, and a long list of commercial payers, pediatric PT, OT, and speech practices are working against a patchwork of authorization rules, re-auth windows, and timely-filing deadlines that generic billing companies weren&rsquo;t built to track. One missed re-authorization or one denied claim isn&rsquo;t just an error — it&rsquo;s care your practice delivered for free.</p>
         </div>
       </section>
 
       <section class="included" id="services">
         <div class="inner">
-          <span class="eyebrow">What&rsquo;s included</span>
-          <h2 class="section-heading">Everything a Texas pediatric therapy practice needs billed</h2>
+          <span class="eyebrow reveal">What&rsquo;s included</span>
+          <h2 class="section-heading reveal" style="--reveal-delay: 0.08s;">Everything a Texas pediatric therapy practice needs billed</h2>
           <div class="included__grid">
-            <article class="included__card">
+            <article class="included__card reveal" style="--reveal-delay: 0s;">
               <div class="included__card-icon">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
               </div>
               <h3 class="included__card-title">Credentialing &amp; payer enrollment</h3>
               <p class="included__card-desc">CAQH setup and upkeep, Medicaid MCO panel applications, and commercial payer enrollment for every provider and every location, tracked through to approval.</p>
             </article>
-            <article class="included__card">
+            <article class="included__card reveal" style="--reveal-delay: 0.07s;">
               <div class="included__card-icon">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
               </div>
               <h3 class="included__card-title">Eligibility &amp; benefits verification</h3>
               <p class="included__card-desc">Real-time coverage checks before each visit — copays, session limits, and plan-specific requirements confirmed so nothing gets delivered uncovered.</p>
             </article>
-            <article class="included__card">
+            <article class="included__card reveal" style="--reveal-delay: 0.14s;">
               <div class="included__card-icon">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
               </div>
               <h3 class="included__card-title">Prior authorization tracking</h3>
               <p class="included__card-desc">Authorization windows and re-auth deadlines monitored by payer, with documentation submitted ahead of expiration and units-remaining flagged in advance.</p>
             </article>
-            <article class="included__card">
+            <article class="included__card reveal" style="--reveal-delay: 0.21s;">
               <div class="included__card-icon">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
               </div>
               <h3 class="included__card-title">Claims &amp; charge entry</h3>
               <p class="included__card-desc">Accurate, same-day charge capture with correct CPT, modifier, and unit rules applied for PT, OT, and speech billing codes.</p>
             </article>
-            <article class="included__card">
+            <article class="included__card reveal" style="--reveal-delay: 0.28s;">
               <div class="included__card-icon">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
               </div>
               <h3 class="included__card-title">Denial management &amp; appeals</h3>
               <p class="included__card-desc">Every denial triaged, corrected, and appealed with supporting documentation — then tracked back to a root cause so it stops recurring.</p>
             </article>
-            <article class="included__card">
+            <article class="included__card reveal" style="--reveal-delay: 0.35s;">
               <div class="included__card-icon">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
               </div>
@@ -824,18 +952,18 @@
 
       <section class="payers">
         <div class="inner">
-          <span class="eyebrow">Texas payer expertise</span>
-          <h2 class="section-heading">Built around the payers Texas pediatric practices actually bill</h2>
+          <span class="eyebrow reveal">Texas payer expertise</span>
+          <h2 class="section-heading reveal" style="--reveal-delay: 0.08s;">Built around the payers Texas pediatric practices actually bill</h2>
           <div class="payers__path">
-            <article class="payers__item">
+            <article class="payers__item reveal" style="--reveal-delay: 0s;">
               <h3 class="payers__title">Texas Medicaid &amp; STAR / STAR Kids</h3>
               <p class="payers__desc">Fee-for-service and managed care claims, MCO-specific rate and auth rules, and timely-filing deadlines tracked per plan.</p>
             </article>
-            <article class="payers__item">
+            <article class="payers__item reveal" style="--reveal-delay: 0.12s;">
               <h3 class="payers__title">CHIP</h3>
               <p class="payers__desc">Coverage and billing rules handled alongside Medicaid for families moving between programs.</p>
             </article>
-            <article class="payers__item">
+            <article class="payers__item reveal" style="--reveal-delay: 0.24s;">
               <h3 class="payers__title">Commercial payers</h3>
               <p class="payers__desc">BCBS of Texas, Aetna, Cigna, UnitedHealthcare, and other commercial plans, including auth requirements routed through third-party reviewers.</p>
             </article>
@@ -845,45 +973,45 @@
 
       <section class="who">
         <div class="inner">
-          <span class="eyebrow">Who this is for</span>
-          <h2 class="section-heading">Built for pediatric PT, OT, and speech practices</h2>
+          <span class="eyebrow reveal">Who this is for</span>
+          <h2 class="section-heading reveal" style="--reveal-delay: 0.08s;">Built for pediatric PT, OT, and speech practices</h2>
           <ul class="who__checklist">
-            <li>Pediatric physical therapy practices</li>
-            <li>Pediatric occupational therapy practices</li>
-            <li>Pediatric speech-language pathology practices</li>
-            <li>Multi-disciplinary pediatric therapy clinics billing across specialties</li>
-            <li>Practices anywhere in Texas — Dallas-Fort Worth, Houston, Austin, San Antonio, and beyond</li>
+            <li class="reveal" style="--reveal-delay: 0s;">Pediatric physical therapy practices</li>
+            <li class="reveal" style="--reveal-delay: 0.07s;">Pediatric occupational therapy practices</li>
+            <li class="reveal" style="--reveal-delay: 0.14s;">Pediatric speech-language pathology practices</li>
+            <li class="reveal" style="--reveal-delay: 0.21s;">Multi-disciplinary pediatric therapy clinics billing across specialties</li>
+            <li class="reveal" style="--reveal-delay: 0.28s;">Practices anywhere in Texas — Dallas-Fort Worth, Houston, Austin, San Antonio, and beyond</li>
           </ul>
         </div>
       </section>
 
       <section class="how" id="how-it-works">
         <div class="inner">
-          <span class="eyebrow">How it works</span>
-          <h2 class="section-heading">From consultation to steady collections</h2>
+          <span class="eyebrow reveal">How it works</span>
+          <h2 class="section-heading reveal" style="--reveal-delay: 0.08s;">From consultation to steady collections</h2>
           <div class="how__steps">
-            <article class="how__step">
+            <article class="how__step reveal" style="--reveal-delay: 0s;">
               <span class="how__step-num">01</span>
               <h3 class="how__step-title">Free consultation</h3>
               <p class="how__step-desc">We review your current claims, denial rate, and payer mix to show exactly where revenue is being lost.</p>
             </article>
-            <article class="how__step">
+            <article class="how__step reveal" style="--reveal-delay: 0.1s;">
               <span class="how__step-num">02</span>
               <h3 class="how__step-title">Onboarding &amp; credentialing check</h3>
               <p class="how__step-desc">We confirm every provider&rsquo;s payer enrollment status and fix any gaps before billing starts.</p>
             </article>
-            <article class="how__step">
+            <article class="how__step reveal" style="--reveal-delay: 0.2s;">
               <span class="how__step-num">03</span>
               <h3 class="how__step-title">Billing takes over</h3>
               <p class="how__step-desc">Eligibility checks, charge entry, claims submission, and denial follow-up run on a fixed schedule.</p>
             </article>
-            <article class="how__step">
+            <article class="how__step reveal" style="--reveal-delay: 0.3s;">
               <span class="how__step-num">04</span>
               <h3 class="how__step-title">Ongoing reporting</h3>
               <p class="how__step-desc">You get regular visibility into collections, A/R, and denial trends — no guessing.</p>
             </article>
           </div>
-          <div class="how__cta btn-row">
+          <div class="how__cta btn-row reveal" style="--reveal-delay: 0.38s;">
             <a href="/contact/" class="btn">Schedule a free consultation</a>
           </div>
         </div>
@@ -891,10 +1019,10 @@
 
       <section class="faq" id="faq">
         <div class="inner">
-          <span class="eyebrow">FAQ</span>
-          <h2 class="section-heading">Frequently asked questions</h2>
+          <span class="eyebrow reveal">FAQ</span>
+          <h2 class="section-heading reveal" style="--reveal-delay: 0.08s;">Frequently asked questions</h2>
           <div class="faq__list">
-            <article class="faq__item">
+            <article class="faq__item reveal" style="--reveal-delay: 0s;">
               <h3 class="faq__heading">
                 <button class="faq__trigger" type="button"
                   id="faq-trigger-1" aria-expanded="true" aria-controls="faq-answer-1">
@@ -907,7 +1035,7 @@
                 <p>Yes. We handle claims and authorization workflows for Texas Medicaid fee-for-service, STAR and STAR Kids managed care, and CHIP, alongside commercial payers like BCBS of Texas, Aetna, Cigna, and UnitedHealthcare.</p>
               </div>
             </article>
-            <article class="faq__item">
+            <article class="faq__item reveal" style="--reveal-delay: 0.07s;">
               <h3 class="faq__heading">
                 <button class="faq__trigger" type="button"
                   id="faq-trigger-2" aria-expanded="false" aria-controls="faq-answer-2">
@@ -920,7 +1048,7 @@
                 <p>We support pediatric physical therapy, occupational therapy, and speech-language pathology practices, including multi-disciplinary clinics that bill across several specialties under one roof.</p>
               </div>
             </article>
-            <article class="faq__item">
+            <article class="faq__item reveal" style="--reveal-delay: 0.14s;">
               <h3 class="faq__heading">
                 <button class="faq__trigger" type="button"
                   id="faq-trigger-3" aria-expanded="false" aria-controls="faq-answer-3">
@@ -933,7 +1061,7 @@
                 <p>Yes. We manage payer enrollment and CAQH upkeep from application through in-network approval, including Medicaid MCO panels, so new providers and new locations can start billing sooner.</p>
               </div>
             </article>
-            <article class="faq__item">
+            <article class="faq__item reveal" style="--reveal-delay: 0.21s;">
               <h3 class="faq__heading">
                 <button class="faq__trigger" type="button"
                   id="faq-trigger-4" aria-expanded="false" aria-controls="faq-answer-4">
@@ -946,7 +1074,7 @@
                 <p>We track authorization windows and re-authorization deadlines by payer, submit documentation ahead of expiration, and flag units-remaining so sessions never get delivered without active coverage.</p>
               </div>
             </article>
-            <article class="faq__item">
+            <article class="faq__item reveal" style="--reveal-delay: 0.28s;">
               <h3 class="faq__heading">
                 <button class="faq__trigger" type="button"
                   id="faq-trigger-5" aria-expanded="false" aria-controls="faq-answer-5">
@@ -963,11 +1091,11 @@
         </div>
       </section>
 
-      <section class="cta-strip">
+      <section class="cta-strip reveal">
         <div class="inner">
-          <h2 class="cta-strip__heading">See what your practice is losing to billing errors</h2>
-          <p class="cta-strip__sub">A free consultation shows your denial rate, aging claims, and payer-specific gaps — no commitment required.</p>
-          <a href="/contact/" class="btn">Get a free consultation</a>
+          <h2 class="cta-strip__heading reveal" style="--reveal-delay: 0.08s;">See what your practice is losing to billing errors</h2>
+          <p class="cta-strip__sub reveal" style="--reveal-delay: 0.16s;">A free consultation shows your denial rate, aging claims, and payer-specific gaps — no commitment required.</p>
+          <a href="/contact/" class="btn reveal" style="--reveal-delay: 0.24s;">Get a free consultation</a>
         </div>
       </section>
     </main>
@@ -1069,6 +1197,112 @@
               answer.hidden = expanded;
             }
           });
+        });
+      }
+
+      var motionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+      var coarseQuery = window.matchMedia("(hover: none), (pointer: coarse)");
+      var hero = document.querySelector(".hero");
+      var heroBg = document.querySelector(".hero-bg");
+      var heroInner = hero ? hero.querySelector(".inner") : null;
+      var parallaxTicking = false;
+
+      function inViewport(el) {
+        var rect = el.getBoundingClientRect();
+        var vh = window.innerHeight || document.documentElement.clientHeight;
+        return rect.top < vh * 0.92;
+      }
+
+      function revealEl(el) {
+        el.classList.add("is-visible");
+      }
+
+      function scanReveals() {
+        document.querySelectorAll(".reveal:not(.is-visible)").forEach(function (el) {
+          if (inViewport(el)) revealEl(el);
+        });
+      }
+
+      function canParallax() {
+        return !motionQuery.matches && !coarseQuery.matches && window.innerWidth > 767;
+      }
+
+      function resetParallax() {
+        if (heroBg) heroBg.style.transform = "";
+        if (heroInner) heroInner.style.transform = "";
+      }
+
+      function updateParallax() {
+        if (!hero || !heroBg) return;
+        if (!canParallax()) {
+          resetParallax();
+          return;
+        }
+        var rect = hero.getBoundingClientRect();
+        var travel = Math.max(rect.height, 1);
+        var progress = Math.min(1, Math.max(0, -rect.top / travel));
+        heroBg.style.transform = "translate3d(0," + (progress * 42) + "px,0) scale(1.04)";
+        if (heroInner) {
+          heroInner.style.transform = "translate3d(0," + (progress * -18) + "px,0)";
+        }
+      }
+
+      function onParallaxScroll() {
+        scanReveals();
+        if (parallaxTicking) {
+          updateParallax();
+          return;
+        }
+        parallaxTicking = true;
+        updateParallax();
+        window.requestAnimationFrame(function () {
+          updateParallax();
+          parallaxTicking = false;
+        });
+      }
+
+      if (!motionQuery.matches) {
+        document.documentElement.classList.add("is-motion-ready");
+        var revealEls = document.querySelectorAll(".reveal");
+
+        function observeReveals() {
+          if (typeof IntersectionObserver !== "function") {
+            revealEls.forEach(revealEl);
+            return;
+          }
+          var observer = new IntersectionObserver(function (entries) {
+            entries.forEach(function (entry) {
+              if (!entry.isIntersecting) return;
+              revealEl(entry.target);
+              observer.unobserve(entry.target);
+            });
+          }, { threshold: 0, rootMargin: "0px 0px -6% 0px" });
+          revealEls.forEach(function (el) {
+            if (inViewport(el)) revealEl(el);
+            observer.observe(el);
+          });
+        }
+
+        window.requestAnimationFrame(function () {
+          observeReveals();
+          window.requestAnimationFrame(scanReveals);
+        });
+        window.addEventListener("load", scanReveals);
+        window.addEventListener("scroll", onParallaxScroll, { passive: true });
+        window.addEventListener("resize", onParallaxScroll, { passive: true });
+        updateParallax();
+        scanReveals();
+      }
+
+      if (motionQuery.addEventListener) {
+        motionQuery.addEventListener("change", function () {
+          if (motionQuery.matches) {
+            document.documentElement.classList.remove("is-motion-ready");
+            document.querySelectorAll(".reveal").forEach(function (el) {
+              el.classList.add("is-visible");
+            });
+            resetParallax();
+          }
         });
       }
     })();
