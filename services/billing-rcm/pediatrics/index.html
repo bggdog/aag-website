@@ -69,7 +69,7 @@
     "mainEntity": [
       {
         "@type": "Question",
-        "name": "Do you bill Texas Medicaid and STAR Kids for pediatric therapy?",
+        "name": "Do you bill Texas Medicaid and commercial payers?",
         "acceptedAnswer": {
           "@type": "Answer",
           "text": "Yes. We handle claims and authorization workflows for Texas Medicaid fee-for-service, STAR and STAR Kids managed care, and CHIP, alongside commercial payers like BCBS of Texas, Aetna, Cigna, and UnitedHealthcare."
@@ -105,6 +105,14 @@
         "acceptedAnswer": {
           "@type": "Answer",
           "text": "Yes. Because billing is handled remotely, we support pediatric therapy practices anywhere in Texas, from Dallas-Fort Worth and Houston to Austin, San Antonio, and smaller markets."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What additional pediatric services do you bill for?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "In addition to OT, PT, and ST, we also bill for ABA and PDN services. If you have pediatric billing needs outside of this, please reach out to us and we can talk about a customized solution!"
         }
       }
     ]
@@ -583,6 +591,12 @@
       line-height: 1.65;
       opacity: 0.75;
     }
+    .faq__answer a {
+      color: var(--color-accent);
+      text-decoration: underline;
+      text-underline-offset: 0.15em;
+    }
+    .faq__answer a:hover { opacity: 1; }
 
     .cta-strip {
       position: relative;
@@ -974,13 +988,15 @@
       <section class="who">
         <div class="inner">
           <span class="eyebrow reveal">Who this is for</span>
-          <h2 class="section-heading reveal" style="--reveal-delay: 0.08s;">Built for pediatric PT, OT, and speech practices</h2>
+          <h2 class="section-heading reveal" style="--reveal-delay: 0.08s;">Built for pediatric PT, OT, speech, ABA, and PDN practices</h2>
           <ul class="who__checklist">
             <li class="reveal" style="--reveal-delay: 0s;">Pediatric physical therapy practices</li>
             <li class="reveal" style="--reveal-delay: 0.07s;">Pediatric occupational therapy practices</li>
             <li class="reveal" style="--reveal-delay: 0.14s;">Pediatric speech-language pathology practices</li>
-            <li class="reveal" style="--reveal-delay: 0.21s;">Multi-disciplinary pediatric therapy clinics billing across specialties</li>
-            <li class="reveal" style="--reveal-delay: 0.28s;">Practices anywhere in Texas — Dallas-Fort Worth, Houston, Austin, San Antonio, and beyond</li>
+            <li class="reveal" style="--reveal-delay: 0.21s;">Pediatric ABA practices</li>
+            <li class="reveal" style="--reveal-delay: 0.28s;">Pediatric private duty nursing (PDN) practices</li>
+            <li class="reveal" style="--reveal-delay: 0.35s;">Multi-disciplinary pediatric therapy clinics billing across specialties</li>
+            <li class="reveal" style="--reveal-delay: 0.42s;">Practices anywhere in Texas — Dallas-Fort Worth, Houston, Austin, San Antonio, and beyond</li>
           </ul>
         </div>
       </section>
@@ -1026,7 +1042,7 @@
               <h3 class="faq__heading">
                 <button class="faq__trigger" type="button"
                   id="faq-trigger-1" aria-expanded="true" aria-controls="faq-answer-1">
-                  <span>Do you bill Texas Medicaid and STAR Kids for pediatric therapy?</span>
+                  <span>Do you bill Texas Medicaid and commercial payers?</span>
                   <span class="faq__icon" aria-hidden="true"></span>
                 </button>
               </h3>
@@ -1058,7 +1074,7 @@
               </h3>
               <div class="faq__answer" id="faq-answer-3"
                 role="region" aria-labelledby="faq-trigger-3">
-                <p>Yes. We manage payer enrollment and CAQH upkeep from application through in-network approval, including Medicaid MCO panels, so new providers and new locations can start billing sooner.</p>
+                <p>Yes. We manage <a href="/services/credentialing/">payer enrollment and CAQH upkeep</a> from application through in-network approval, including Medicaid MCO panels, so new providers and new locations can start billing sooner.</p>
               </div>
             </article>
             <article class="faq__item reveal" style="--reveal-delay: 0.21s;">
@@ -1085,6 +1101,19 @@
               <div class="faq__answer" id="faq-answer-5"
                 role="region" aria-labelledby="faq-trigger-5">
                 <p>Yes. Because billing is handled remotely, we support pediatric therapy practices anywhere in Texas, from Dallas-Fort Worth and Houston to Austin, San Antonio, and smaller markets.</p>
+              </div>
+            </article>
+            <article class="faq__item reveal" style="--reveal-delay: 0.35s;">
+              <h3 class="faq__heading">
+                <button class="faq__trigger" type="button"
+                  id="faq-trigger-6" aria-expanded="false" aria-controls="faq-answer-6">
+                  <span>What additional pediatric services do you bill for?</span>
+                  <span class="faq__icon" aria-hidden="true"></span>
+                </button>
+              </h3>
+              <div class="faq__answer" id="faq-answer-6"
+                role="region" aria-labelledby="faq-trigger-6">
+                <p>In addition to OT, PT, and ST, we also bill for ABA and PDN services. If you have pediatric billing needs outside of this, please <a href="/contact/">reach out to us</a> and we can talk about a customized solution!</p>
               </div>
             </article>
           </div>
